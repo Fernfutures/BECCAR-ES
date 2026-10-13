@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>v3 · ¿Dónde tienen más demanda los R&amp;C de BECCAR? · FernFutures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FBFBFD;--white:#fff;--ink:#1D1D1F;--sub:#6E6E73;--faint:#8E8E93;--hair:rgba(18,41,94,.10);
+  --navy:#12295E;--navy2:#2C4A9E;--tint:#F4F6FB;--gold:#C49A3A;--gold2:#E0B24A;--golddk:#9C7420;--goldbg:#FBF6EA;
+  --out:cubic-bezier(.16,1,.3,1);--spring:cubic-bezier(.34,1.56,.64,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--canvas:#FBFBFD;--white:#fff;--ink:#1D1D1F}}
+:root[data-theme="dark"]{--canvas:#FBFBFD;--white:#fff;--ink:#1D1D1F}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--canvas)}
+body{font-family:'Barlow',-apple-system,system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:30px clamp(16px,4vw,64px) 18px}
+.brand{display:flex;align-items:center;gap:14px}
+.mark{width:30px;height:30px;color:#0A0B0D}
+h1{font-size:clamp(26px,2.6vw,38px);font-weight:600;letter-spacing:-.015em;line-height:1.1;color:var(--navy)}
+h1 em{font-style:normal;color:var(--gold)}
+.lead{margin-top:6px;color:var(--sub);font-size:15px}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.step-unused{display:flex;align-items:center;gap:8px;padding:7px 13px 7px 8px;border-radius:999px;background:#EEF0F5;color:var(--faint);font-size:13px;font-weight:500;transition:background .35s,color .35s}
+.step b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#fff;font-size:11.5px;font-weight:700}
+.step.on{background:var(--navy);color:#fff}.step.on b{background:var(--gold);color:#fff}
+.step.done{background:#E7EBF5;color:var(--navy)}.step.done b{background:var(--navy);color:#fff}
+#reset{border:0;background:none;color:var(--navy2);font-size:14px;font-weight:500;cursor:pointer;padding:6px 8px;border-radius:8px}
+#reset:hover{background:rgba(18,41,94,.06)}
+
+.stage{position:relative;display:grid;column-gap:26px;grid-template-columns:minmax(270px,340px) 0fr 0fr 0fr 0fr;align-items:start;
+  padding:10px clamp(16px,4vw,64px) 80px;transition:grid-template-columns .9s var(--out)}
+.stage.s2{grid-template-columns:minmax(250px,330px) minmax(340px,440px) 0fr 0fr 0fr}
+.stage.s3{column-gap:22px;grid-template-columns:minmax(200px,250px) minmax(280px,360px) minmax(240px,300px) minmax(150px,.7fr) minmax(250px,300px)}
+#wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0}
+.col{position:relative;z-index:1;min-width:0}
+.col h2{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 12px 4px}
+
+/* demand column — same look as v1: sector rows with %, gold track, "Empresas ›" link; company rows with % and thin bar */
+.dem{grid-column:1}
+/* radial: level 1 → 2 → 3 for the chosen company (same fan as the v1 company view) */
+.rad{grid-column:2;display:none;min-width:0}
+.stage.s2 .rad,.stage.s3 .rad{display:block;animation:slidein .7s var(--out) both}
+.crumb{font-size:14px;color:var(--sub);display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 4px 4px}
+.crumb button{border:0;background:none;padding:0;color:var(--navy2);font-size:14px;cursor:pointer}
+.crumb button:hover{text-decoration:underline}
+.crumb .cur{color:var(--ink);font-weight:600}
+.crumb i{font-style:normal;color:#C7C7CC}
+.radlv{margin:10px 0 0 4px;font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--golddk)}
+.radhint{margin:3px 0 0 4px;font-size:12.5px;color:var(--sub)}
+.radtop{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 10px 4px}
+.tabs{display:flex;gap:14px;flex-wrap:wrap;width:100%}
+.tabs button{border:0;background:none;padding:2px 0;font-size:14px;font-weight:500;color:var(--navy2);cursor:pointer;border-bottom:2px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+.tabs button:disabled{color:#C7C7CC;cursor:default}
+.yn{display:flex;align-items:center;gap:2px;padding:3px;border-radius:999px;background:#EEF0F5;font-size:12.5px}
+.yn span{padding:0 8px 0 6px;color:var(--sub)}
+.yn button{border:0;background:none;padding:4px 10px;border-radius:999px;font-size:12.5px;font-weight:500;color:var(--navy2);cursor:pointer}
+.yn button[aria-pressed="true"]{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(18,41,94,.12)}
+#lvlist{margin-top:6px}
+#lvlist li{animation:none}
+#lvlist li.lv{padding:11px 8px 12px}
+#lvlist li.lv .cn{font-size:16px}
+#lvlist li.lv.si::before{content:"";position:absolute;left:-6px;top:19px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+#lvlist li.lv.na .cn{color:var(--sub)}
+#lvlist.picked li.lv.si:not(.sel){opacity:.5}
+#lvlist li.lv.si:hover{background:#F7F8FC}#lvlist li.lv.si.sel{background:#FBF6EA}
+#lvlist li.t1{padding:14px 8px 10px;margin-top:6px;border-top:1px solid rgba(0,0,0,.08);border-radius:0}
+#lvlist li.t1:first-child{border-top:0;margin-top:0}
+#lvlist li.t1 .cn{font-size:18px;font-weight:600;color:var(--ink)}
+#lvlist li.t2{padding:9px 8px 8px 22px}
+#lvlist li.t2 .cn{font-size:15.5px;font-weight:500;color:var(--navy)}
+#lvlist li.t3{padding:7px 8px 8px 40px;border-radius:10px}
+#lvlist li.t3 .cn{font-size:14px;font-weight:500}
+#lvlist li.t3 .cn em{font-size:15px}
+#lvlist li.t2 .cb,#lvlist li.t3 .cb{height:2px;margin-top:7px}
+#lvlist li.t3::before{content:"";position:absolute;left:26px;top:14px;width:6px;height:6px;border-radius:50%;background:#C9CED9}
+#lvlist li.t3.si::before{background:var(--gold)}
+#lvlist li.leaf:hover{background:none}
+#lvlist li.t3.si:hover{background:#F7F8FC}
+#lvlist.picked li.t3.si:not(.sel){opacity:.5}
+#lvlist.picked li.t1,#lvlist.picked li.t2{opacity:1}#lvlist.picked li.t3.na{opacity:.5}
+#lvlist li.t3.si.sel{background:#FBF6EA}
+#lvlist li.na .cb i{background:linear-gradient(90deg,#B9C3DA,#8A9AC4)}
+#lvlist li.t3.na .cn{color:var(--sub)}
+#lvlist li.na.leaf{cursor:default}
+#lvlist li.na.leaf:hover{background:none}
+#lvlist li .tagna{display:block;margin-top:5px;font-size:11.5px;color:var(--faint)}
+#lvlist li.si .cn{font-weight:600}
+#rsvg{display:block;width:100%;height:auto;max-height:460px;margin-top:6px;overflow:visible}
+#rsvg .spk{fill:none;stroke:#D9DCE3;stroke-width:1.1}
+#rsvg .ctr{fill:var(--navy2)}
+#rsvg .ctl{font-size:15px;font-weight:600;fill:var(--navy2)}
+#rsvg .rb{cursor:pointer}
+#rsvg .rb .bar{fill:var(--gold);opacity:.92;transform-box:fill-box;transform-origin:left center;animation:bgrow .7s var(--out) both;animation-delay:var(--d);transition:opacity .2s,fill .2s}
+#rsvg .rb.hov .bar{opacity:1;fill:var(--golddk)}
+#rsvg .rl{font-size:15px;font-weight:500;fill:var(--navy2);cursor:pointer;opacity:0;animation:tfade .5s ease forwards;animation-delay:var(--d)}
+#rsvg .rl.hov{fill:var(--navy);font-weight:600}
+#rsvg .rnum{fill:var(--sub);font-weight:400;font-size:13px}
+#rsvg.l3 .rb .bar{fill:var(--navy2)}
+#rsvg.l3 .rb.sel .bar{fill:var(--gold);opacity:1}
+#rsvg.l3.has .rb:not(.sel) .bar{opacity:.3}
+#rsvg.l3.has .rl:not(.sel){opacity:.45!important}
+#rsvg .rl.sel{fill:var(--navy);font-weight:600}
+#rsvg .rb:focus{outline:none}#rsvg .rb:focus-visible .bar{stroke:var(--gold);stroke-width:2}
+@keyframes bgrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes tfade{to{opacity:1}}
+.sec{position:relative;padding:20px 2px 18px;border-bottom:1px solid rgba(0,0,0,.08);animation:rise .55s var(--out) backwards}
+.sec:nth-child(2){animation-delay:.08s}
+.sec .row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.sec .nm{font-size:21px;font-weight:600;letter-spacing:-.015em;color:var(--ink);line-height:1.2}
+.sec .pc{font-size:22px;font-weight:300;letter-spacing:-.02em;color:var(--golddk);font-variant-numeric:tabular-nums}
+.tr{height:3px;border-radius:2px;background:#F0F0F3;margin-top:14px;overflow:hidden}
+.tr i,.cb i{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));animation:grow 1s var(--out) both}
+.sec .links{display:flex;gap:18px;margin-top:12px}
+.lk{border:0;background:none;padding:0;font-size:13.5px;font-weight:500;color:var(--navy2);cursor:pointer;transition:color .2s}
+.lk span{display:inline-block;transition:transform .3s var(--out)}
+.lk:hover{color:var(--navy)}
+.lk[aria-expanded="true"]{color:var(--ink);font-weight:600}
+.lk[aria-expanded="true"] span{transform:rotate(90deg)}
+.dem.picked .sec:not(.sel){opacity:.45}
+.cos{list-style:none;margin:8px 0 0}
+.cos li{position:relative;padding:11px 8px 12px;border-radius:10px;cursor:pointer;transition:background .2s,opacity .3s;animation:rise .5s var(--out) backwards}
+.cos li:nth-child(2){animation-delay:.05s}.cos li:nth-child(3){animation-delay:.1s}.cos li:nth-child(4){animation-delay:.15s}
+.cos li:hover{background:#F7F8FC}
+.cos .cn{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:17px;font-weight:500;color:var(--ink);line-height:1.25}
+.cos .cn em{flex:none;font-style:normal;font-weight:300;font-size:18px;color:var(--golddk);font-variant-numeric:tabular-nums}
+.cb{display:block;height:3px;border-radius:2px;background:#F0F0F3;margin-top:9px;overflow:hidden}
+.cos.picked li:not(.sel){opacity:.42}
+.cos li.sel .cn{color:var(--navy);font-weight:600}
+.cos li.sel{background:#F4F6FB}
+.lvl{margin-top:22px;animation:rise .55s var(--out) both}
+.lvl .lt{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--golddk);margin:0 0 2px 8px}
+.lvl .cos{margin-top:4px}
+.lvl .cos .cn{font-size:16px}
+.cos li.si.sel{background:#FBF6EA}
+.cos li.si.sel .cn{color:var(--ink)}
+.cos li .pr{position:absolute;right:-4px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--gold);opacity:0}
+.cos li.si.sel .pr{opacity:1}
+@keyframes grow{from{width:0}}
+
+/* business results */
+.brc{grid-column:3;display:none}
+.stage.s3 .brc{display:block;animation:slidein .7s var(--out) both}
+.brhead{margin:0 0 12px 2px}
+.brhead em{display:block;font-style:normal;font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--golddk)}
+.brhead b{display:block;margin-top:3px;font-size:16px;font-weight:600;color:var(--navy);line-height:1.25}
+.rn{position:relative;padding:13px 15px;margin-bottom:10px;border-radius:16px;background:#fff;border:1px solid var(--hair);transition:border-color .35s,box-shadow .35s,background .35s;animation:rise .55s var(--out) both}
+.rn:nth-child(2){animation-delay:.08s}.rn:nth-child(3){animation-delay:.16s}
+.rn .tag{display:inline-block;padding:1px 8px;border-radius:999px;background:#EEF0F5;color:var(--navy);font-size:10.5px;font-weight:700;letter-spacing:.04em}
+.rn b{display:block;margin-top:6px;font-size:14px;font-weight:600;line-height:1.3}
+.rn .ev{margin-top:7px;font-size:12.5px;color:var(--sub);line-height:1.35}
+.rn .ev summary{cursor:pointer;color:var(--navy2);font-weight:500;list-style:none}
+.rn .ev summary::-webkit-details-marker{display:none}
+.rn .ev ul{margin:6px 0 0 16px}.rn .ev li{margin:3px 0}
+.rn .ev .none{color:var(--faint);font-style:italic}
+.rn .an{position:absolute;right:-4px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:#C9CED9;transition:background .35s,box-shadow .35s}
+.rn .al{position:absolute;left:-4px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--navy2)}
+.rn.lit{border-color:var(--gold);background:#FFFCF4;box-shadow:0 0 0 1px var(--gold),0 10px 26px rgba(196,154,58,.18)}
+.rn.lit .an{background:var(--gold);box-shadow:0 0 0 4px rgba(196,154,58,.22)}
+.rn.lit .tag{background:var(--gold);color:#fff}
+.rn.nos{opacity:.6;background:#F7F7F9}
+
+.radh{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.back{border:0;background:none;padding:2px 0;margin:-2px 0 4px 4px;font-size:13.5px;font-weight:600;color:var(--navy2);cursor:pointer}
+.back:hover{color:var(--navy);text-decoration:underline;text-underline-offset:3px}
+.stage.nodem .dem{display:none}
+.stage.s3.nodem{grid-template-columns:0 minmax(290px,380px) minmax(260px,330px) minmax(170px,.9fr) minmax(260px,320px)}
+.stage.s3.nodem .rad{grid-column:2;margin-left:-22px}
+.l3l{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px}
+.l3a{border:0;background:none;padding:0;font-size:13px;font-weight:500;color:var(--navy2);cursor:pointer}
+.l3a:hover{color:var(--navy);text-decoration:underline;text-underline-offset:3px}
+.l3a.on{color:var(--golddk);font-weight:600}
+.l3a.on::before{content:"● ";font-size:9px;vertical-align:2px}
+#lvlist li.lv.leaf:hover{background:none}
+#lvlist li.lv.dmsel{background:#F4F6FB;opacity:1!important}#lvlist li.lv.dmsel .cn{color:var(--navy)!important;font-weight:600}
+#lvlist.picked li.lv:not(.sel):not(.dmsel){opacity:.5}
+#lvlist li.lv.dmsel .pr{opacity:0}
+.dmc{grid-column:3;display:none}
+.stage.dm .brc,.stage.dm .hub,.stage.dm .rcc{display:none!important}
+.stage.dm .dmc{display:block;animation:slidein .7s var(--out) both}
+.stage.s3.dm.nodem{grid-template-columns:0 minmax(320px,440px) minmax(380px,560px);justify-content:center;column-gap:56px}
+.stage.s3.dm:not(.nodem){grid-template-columns:minmax(220px,280px) minmax(300px,400px) minmax(360px,520px);justify-content:center;column-gap:48px}
+.dmg{margin-bottom:16px}
+.dmgl{display:flex;align-items:center;gap:8px;margin:0 0 8px 2px;font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--golddk)}
+.dmgl span{display:grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--goldbg);font-size:11px;letter-spacing:0}
+.pcard{display:flex;gap:12px;align-items:flex-start;padding:11px 14px;margin-bottom:8px;border-radius:14px;background:#fff;border:1px solid var(--hair);animation:rise .45s var(--out) both}
+.pcard .av{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:600}
+.pcard b{display:block;font-size:14.5px;font-weight:600}
+.pcard div>span{display:block;margin-top:2px;font-size:12.5px;color:var(--sub);line-height:1.35}
+.pcard i{display:block;margin-top:5px;font-style:normal;font-size:11.5px;color:var(--golddk)}
+.dmnone{padding:14px 16px;border-radius:14px;background:#F7F7F9;color:var(--sub);font-size:13.5px}
+/* connection hub: a single point of light, with the solutions written underneath */
+.hub{grid-column:4;display:none;align-self:stretch;padding:0}
+.stage.s3 .hub{display:block;animation:fadein .8s var(--out) .15s both}
+.dropbox{position:relative;margin:0 auto;width:100%;display:flex;flex-direction:column;align-items:center}
+.star{position:relative;width:8px;height:8px;border-radius:50%;background:#fff;
+  box-shadow:0 0 0 1px rgba(18,41,94,.18),0 0 6px rgba(18,41,94,.10);transition:box-shadow .5s,transform .5s var(--spring)}
+.star i{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,1) 0,rgba(240,214,150,.55) 22%,rgba(224,178,74,0) 62%);opacity:0;transition:opacity .5s}
+.hub.live .star{transform:scale(1.2);box-shadow:0 0 0 1px rgba(196,154,58,.55),0 0 8px 2px rgba(224,178,74,.55),0 0 22px 6px rgba(224,178,74,.22)}
+.hub.live .star i{opacity:1;animation:twinkle 2.6s ease-in-out infinite}
+.hub.flash .star{animation:pop .6s var(--spring)}
+@keyframes twinkle{0%,100%{transform:scale(.85);opacity:.75}50%{transform:scale(1.25);opacity:1}}
+.sols{position:relative;z-index:1;margin-top:18px;padding:8px 10px;border-radius:12px;background:var(--canvas);text-align:center;max-width:170px}
+.sols b{display:block;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--golddk);margin-bottom:6px}
+.sols span{display:block;margin:0 0 6px;padding:6px 10px;border-radius:10px;background:#fff;border:1px solid rgba(18,41,94,.16);box-shadow:0 1px 3px rgba(18,41,94,.06);font-size:12.5px;font-weight:600;line-height:1.3;color:var(--navy);animation:rise .4s var(--out) both}
+.sols span:nth-of-type(2){animation-delay:.06s}.sols span:nth-of-type(3){animation-delay:.12s}.sols span:nth-of-type(4){animation-delay:.18s}
+.sols small{display:block;margin-top:10px;font-size:12px;color:var(--sub);line-height:1.35}
+.conn{display:none;margin:0 0 14px;padding:12px 14px;border-radius:14px;background:#FBF6EA;border:1px solid rgba(196,154,58,.45);animation:rise .4s var(--out) both}
+.conn.on{display:block}
+.conn .cv{font-size:14px;font-weight:600;color:var(--navy);line-height:1.35}
+.conn .cs{margin-top:8px;font-size:12px;color:var(--sub)}
+.conn .cs b{display:block;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--golddk);margin-bottom:5px}
+.conn .cs span{display:inline-block;margin:2px 4px 2px 0;padding:3px 9px;border-radius:999px;background:var(--navy);color:#fff;font-size:11.5px;font-weight:500}
+.sig{margin:12px 2px 6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--golddk)}
+.sig:first-child{margin-top:0}
+.selall{margin-left:6px;border:1px solid rgba(196,154,58,.6);background:#FBF6EA;color:var(--golddk);font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;cursor:pointer}
+.selall:hover{background:#F6EBCD}
+
+/* R&C */
+.rcc{grid-column:5;display:none}
+.stage.s3 .rcc{display:block;animation:slidein .75s var(--out) .1s both}
+.rcg{margin-bottom:16px}
+.rcg h3{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:0 0 8px 4px}
+.rc{position:relative;display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:9px 12px 9px 14px;margin-bottom:6px;border-radius:12px;border:1px solid var(--hair);background:#fff;
+  font-size:13.5px;line-height:1.3;cursor:pointer;user-select:none;transition:border-color .25s,box-shadow .25s,opacity .3s,transform .2s}
+.rc:hover{border-color:rgba(196,154,58,.7);box-shadow:0 6px 16px rgba(18,41,94,.08)}
+.rc:active{cursor:grabbing}
+.rc i{flex:none;display:grid;grid-template-columns:repeat(2,3px);gap:2px;opacity:.4}
+.rc i::before,.rc i::after{content:"";width:3px;height:3px;border-radius:50%;background:currentColor;box-shadow:0 5px 0 currentColor,0 10px 0 currentColor}
+.rc i{height:13px}
+.rc .al{position:absolute;left:-4px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:transparent;transition:background .3s,box-shadow .3s}
+.rc.off{opacity:.38;cursor:not-allowed}
+.rc.off:hover{border-color:var(--hair);box-shadow:none}
+.rc.can{border-color:rgba(196,154,58,.75);box-shadow:0 0 0 1px rgba(196,154,58,.25)}
+.rc.can i{opacity:.75;color:var(--golddk)}
+.rc.in{border-color:var(--gold);background:#FBF1D9;box-shadow:0 0 0 1px var(--gold)}
+.rc.in::after{content:"✓";margin-left:auto;color:var(--golddk);font-weight:700}
+.rc.in.ok .al{background:var(--gold);box-shadow:0 0 0 4px rgba(196,154,58,.22)}
+.rc.in.no{border-color:#D5DAE5;background:#F7F7F9;color:var(--faint)}
+.rc.in.no .al{background:#C9CED9}
+.rc.drag{opacity:.4}
+.rchint{font-size:12.5px;color:var(--sub);margin:-4px 0 12px 4px}
+
+/* wires */
+.w{fill:none;stroke-linecap:round}
+.w.base{stroke:#B9C3DA;stroke-width:.9;opacity:.8}
+.w.gold{stroke:url(#wg);stroke-width:1.1}
+.w.rcw{stroke:url(#wg2);stroke-width:1.1}
+.w.dim{stroke:#C9CED9;stroke-width:.9;stroke-dasharray:4 5}
+.w.new{animation:draw 1s var(--out) both}
+.spark{fill:#fff;filter:drop-shadow(0 0 3px rgba(224,178,74,.9))}
+
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes slidein{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+@keyframes shine{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
+@keyframes pulse{0%,100%{transform:scale(.92);opacity:.75}50%{transform:scale(1.08);opacity:1}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
+@keyframes draw{from{stroke-dashoffset:var(--L)}to{stroke-dashoffset:0}}
+
+@media (max-width:1000px){
+  .stage,.stage.s2,.stage.s3{grid-template-columns:1fr}
+  .dem,.rad,.brc,.hub,.rcc{grid-column:1}
+  .rad,.brc,.hub,.rcc{margin-top:22px}
+  #wires{display:none}
+  .dropbox{min-height:300px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="brand"><svg class="mark" viewBox="0 0 3842 3780" aria-hidden="true"><g transform="translate(0.000000,4258.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M9217 33362 l-9217 -9217 0 -515 0 -515 9243 -9241 c9035 -9035 9243
+-9242 9301 -9263 65 -24 200 -30 249 -12 25 10 32 6 95 -58 110 -111 259 -145
+408 -90 58 21 275 237 9742 9703 8939 8938 9685 9686 9715 9746 48 98 47 218
+-3 314 -33 62 -665 676 -9495 9216 l-9460 9150 -680 0 -680 0 -9218 -9218z
+m19677 -672 l8937 -8644 -9133 -9133 c-5023 -5023 -9134 -9130 -9136 -9128 -2
+2 -21 1827 -42 4057 l-38 4053 4808 4810 c4336 4339 4809 4815 4831 4865 19
+44 24 72 24 146 0 164 89 62 -1245 1431 -1337 1372 -1278 1313 -1357 1343 -80
+30 -206 30 -288 0 -59 -22 -124 -86 -2847 -2809 l-2788 -2786 0 3840 0 3840
+883 885 c1005 1007 932 920 932 1095 0 188 133 47 -1410 1495 l-1345 1261 0
+4146 0 4145 138 -133 c76 -74 4160 -4024 9076 -8779z m-8601 -1029 l1189
+-1114 -790 -791 c-434 -435 -794 -799 -799 -809 -8 -16 -12 -16 -54 -2 -66 24
+-192 21 -265 -6 -58 -21 -149 -111 -3634 -3595 l-3575 -3574 -1100 1100 -1100
+1100 4434 4434 4435 4435 35 -31 c20 -18 571 -533 1224 -1147z m7013 -7025
+l895 -920 -4593 -4593 -4593 -4593 -1013 1012 -1012 1013 1514 1514 1513 1513
+58 -21 c80 -30 199 -30 281 0 57 21 136 99 3049 3010 1645 1644 2993 2988
+2998 2986 4 -1 410 -416 903 -921z"/></g></svg><h1>¿Dónde tienen <em>más demanda</em> los R&amp;C de BECCAR?</h1></div>
+    <p class="lead">Elige un sector y una empresa, recorre sus prioridades (niveles 1, 2 y 3) hasta los resultados de negocio y conecta las capacidades de BECCAR.</p>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    
+    <button id="reset" type="button">Empezar de nuevo</button>
+  </div>
+</header>
+
+<main class="stage" id="stage">
+  <svg id="wires" aria-hidden="true">
+    <defs>
+      <linearGradient id="wg" x1="0" x2="1"><stop offset="0" stop-color="#2C4A9E" stop-opacity=".55"/><stop offset="1" stop-color="#E0B24A"/></linearGradient>
+      <linearGradient id="wg2" x1="1" x2="0"><stop offset="0" stop-color="#C49A3A" stop-opacity=".6"/><stop offset="1" stop-color="#E0B24A"/></linearGradient>
+    </defs>
+    <g id="wg-g"></g>
+  </svg>
+
+  <section class="col dem" id="dem" aria-label="Demanda"></section>
+
+  <section class="col rad" id="rad" aria-label="Prioridades de la empresa">
+    <div class="radh"><button type="button" class="back" id="backdem" hidden>‹ Sectores y empresas</button><h2>Prioridades de la empresa</h2></div>
+    <div class="radtop">
+      <div class="tabs" id="tabs" role="tablist" aria-label="Nivel"></div>
+      <div class="yn" role="group" aria-label="Vinculadas a BECCAR"><span>Vinculadas a BECCAR</span><button type="button" data-yn="Y">Sí</button><button type="button" data-yn="N">No</button><button type="button" data-yn="ALL">Todos</button></div>
+    </div>
+    <div class="radhint" id="radhint"></div>
+    <ul class="cos lv" id="lvlist"></ul>
+  </section>
+
+  <section class="col brc" id="brc" aria-label="Resultados de negocio">
+    <h2>Resultados de negocio</h2>
+    <div class="brhead" id="brhead"></div>
+    <div id="rnlist"></div>
+  </section>
+
+  <section class="col dmc" id="dmc" aria-label="Tomadores de decisión">
+    <h2>Tomadores de decisión</h2>
+    <div class="brhead" id="dmhead"></div>
+    <div id="dmlist"></div>
+  </section>
+
+  <section class="col hub" id="hub" aria-label="Conexión">
+    <div class="dropbox" id="dropbox"><div class="star" id="dia"><i></i></div><div class="sols" id="sols"></div></div>
+  </section>
+
+  <section class="col rcc" id="rcc" aria-label="Recursos y capacidades de BECCAR">
+    <h2>Recursos y competencias de sector de BECCAR</h2>
+    <p class="rchint" id="rchint">Haz clic para seleccionar.</p>
+    <div id="rclist"></div>
+  </section>
+</main>
+
+<script>
+const V={"rc": [{"id": "BE-RC001", "type": "capability", "name": "Ingeniería de arquitectura de carrocerías"}, {"id": "BE-RC002", "type": "capability", "name": "Ingeniería de integración carrocería-chasis"}, {"id": "BE-RC003", "type": "capability", "name": "Diseño del espacio de pasajeros"}, {"id": "BE-RC004", "type": "capability", "name": "Ingeniería de integración de carrocerías eléctricas"}, {"id": "BE-RC005", "type": "resource", "name": "Instalaciones de fabricación de carrocerías"}, {"id": "BE-RC006", "type": "capability", "name": "Aseguramiento de conformidad en producción"}, {"id": "BE-RC007", "type": "capability", "name": "Resolución de casos de garantía"}, {"id": "BE-RC008", "type": "capability", "name": "Surtido de refacciones de servicio"}, {"id": "BE-RC009", "type": "capability", "name": "Capacitación técnica de flotas"}, {"id": "BE-RC010", "type": "resource", "name": "Instalaciones de soporte de servicio"}, {"id": "BE-RC011", "type": "capability", "name": "Ingeniería de integración de subsistemas a bordo"}, {"id": "BE-RC012", "type": "capability", "name": "Ensamble de terminación del vehículo"}, {"id": "BE-RC013", "type": "capability", "name": "Acabado de carrocerías"}, {"id": "BE-RC014", "type": "capability", "name": "Fabricación de estructuras de carrocería"}, {"id": "BE-RC015", "type": "capability", "name": "Ingeniería de cambios de configuración"}, {"id": "BE-RC016", "type": "capability", "name": "Soporte al uso de flotas"}, {"id": "BE-RC017", "type": "resource", "name": "Inventario de refacciones de servicio"}, {"id": "BE-RC018", "type": "resource", "name": "Relaciones con socios de chasis y subsistemas"}, {"id": "BE-RC019", "type": "resource", "name": "Experiencia en ingeniería vehicular"}], "sols": [{"id": "S1", "name": "Carrocerías a la medida", "k": ["BE-RC001", "BE-RC002", "BE-RC003", "BE-RC014", "BE-RC012", "BE-RC013", "BE-RC006", "BE-RC005", "BE-RC019"]}, {"id": "S2", "name": "Carrocería para chasis de socios", "k": ["BE-RC002", "BE-RC015", "BE-RC018"]}, {"id": "S8", "name": "Carrocería de socios configurada por mercado", "k": ["BE-RC002", "BE-RC015", "BE-RC011", "BE-RC018"]}, {"id": "S3", "name": "Configuración por ruta y servicio", "k": ["BE-RC011", "BE-RC015", "BE-RC003"]}, {"id": "S7", "name": "Carrocerías fabricadas y entregadas localmente", "k": ["BE-RC014", "BE-RC012", "BE-RC013", "BE-RC005"]}, {"id": "S4", "name": "Carrocería eléctrica y energías alternativas", "k": ["BE-RC004", "BE-RC002", "BE-RC011", "BE-RC019"]}, {"id": "S5", "name": "Refacciones originales", "k": ["BE-RC008", "BE-RC017"]}, {"id": "S6", "name": "Servicio técnico y garantías", "k": ["BE-RC016", "BE-RC007", "BE-RC009", "BE-RC010"]}], "rn": [{"id": "SI1-RN1", "name": "Ganar cuentas y programas de renovación de flota", "sols": ["S2"]}, {"id": "SI1-RN2", "name": "Crecer en transporte urbano, interurbano, de personal y movilidad pública", "sols": ["S1"]}, {"id": "SI1-RN3", "name": "Aumentar conversión mediante demostraciones y soluciones adaptadas a la operación", "sols": ["S3"]}, {"id": "SI2-RN1", "name": "Ampliar cobertura geográfica y acceso a clientes", "sols": ["S2"]}, {"id": "SI2-RN2", "name": "Incrementar ventas a través de distribuidores y nuevos puntos de atención", "sols": ["S8"]}, {"id": "SI2-RN3", "name": "Reducir tiempos de entrega y respuesta mediante disponibilidad regional", "sols": ["S7"]}, {"id": "SI3-RN1", "name": "Atender más aplicaciones y segmentos con un portafolio más amplio", "sols": ["S1", "S3"]}, {"id": "SI3-RN2", "name": "Acelerar la adopción de Euro VI, movilidad eléctrica y combustibles alternativos", "sols": ["S4"]}, {"id": "SI3-RN3", "name": "Diferenciar la oferta mediante eficiencia, configuración y contenido nacional", "sols": ["S3", "S7"]}, {"id": "SI4-RN1", "name": "Reducir las barreras económicas para la renovación de flotas", "sols": []}, {"id": "SI4-RN2", "name": "Incrementar conversión, ticket y valor de la solución completa", "sols": ["S2", "S3"]}, {"id": "SI4-RN3", "name": "Generar ingresos adicionales mediante financiamiento, asesoría y servicios complementarios", "sols": ["S5", "S6"]}, {"id": "SI5-RN1", "name": "Aumentar el uptime y la continuidad operativa de las flotas", "sols": ["S5", "S6"]}, {"id": "SI5-RN2", "name": "Incrementar recompra, retención y valor de vida del cliente", "sols": ["S6"]}, {"id": "SI5-RN3", "name": "Generar ingresos recurrentes de mantenimiento, rehabilitación, refacciones y soporte", "sols": ["S5", "S6"]}], "si": [{"id": "SI1", "name": "Adquisición de clientes y crecimiento en segmentos", "res": ["SI1-RN1", "SI1-RN2", "SI1-RN3"]}, {"id": "SI2", "name": "Expansión de canales y mercados", "res": ["SI2-RN1", "SI2-RN2", "SI2-RN3"]}, {"id": "SI3", "name": "Expansión del portafolio y transición tecnológica", "res": ["SI3-RN1", "SI3-RN2", "SI3-RN3"]}, {"id": "SI4", "name": "Monetización y accesibilidad de la oferta", "res": ["SI4-RN1", "SI4-RN2", "SI4-RN3"]}, {"id": "SI5", "name": "Disponibilidad, posventa y fidelización", "res": ["SI5-RN1", "SI5-RN2", "SI5-RN3"]}], "inits": [{"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "si": "SI1", "rn": "SI1-RN1", "txt": "VWTB reafirmó el acuerdo con AGRÚAS para dar a sus socios condiciones exclusivas de compra de vehículos"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "si": "SI1", "rn": "SI1-RN3", "txt": "Pruebas con un Volksbus 9.180 OD para modernizar el transporte público"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "si": "SI1", "rn": "SI1-RN3", "txt": "Programa de vehículos demostradores para que las empresas prueben y validen su desempeño"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "si": "SI1", "rn": "SI1-RN2", "txt": "Reforzar su posición con los chasis RR2 y RR4 en el segmento de larga distancia"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Retención y lealtad de clientes", "si": "SI4", "rn": "SI4-RN2", "txt": "Implementar una estrategia de soluciones integrales de movilidad"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "si": "SI3", "rn": "SI3-RN2", "txt": "Lanzamiento del programa ‘Mi Primer Euro VI’ para facilitar la transición a la nueva tecnología"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "si": "SI2", "rn": "SI2-RN1", "txt": "Apertura de una nueva agencia en Villahermosa, Tabasco"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "si": "SI2", "rn": "SI2-RN2", "txt": "Alianza estratégica con Grupo TERSA para una nueva agencia en Tijuana"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "si": "SI2", "rn": "SI2-RN1", "txt": "Volkswagen Truck & Bus México abre su nueva agencia en Chihuahua"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "si": "SI2", "rn": "SI2-RN3", "txt": "Apertura de un nuevo hub estratégico de venta de camiones y autobuses en el occidente de México"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "si": "SI1", "rn": "SI1-RN1", "txt": "Firma de convenios de colaboración con AGRÚAS para la renovación de flotas"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "si": "SI2", "rn": "SI2-RN2", "txt": "Ampliación de la red de distribuidores en 2024"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "si": "SI3", "rn": "SI3-RN3", "txt": "Fortalecer la estructura comercial y la integración de producción local en México"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "si": "SI3", "rn": "SI3-RN1", "txt": "Presentación de una nueva generación de autobuses Euro 6"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "si": "SI1", "rn": "SI1-RN2", "txt": "Reforzar su presencia estratégica en el segmento de autocares interurbanos premium"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Retención y lealtad de clientes", "si": "SI4", "rn": "SI4-RN3", "txt": "Enfoque integral que combina producto, posventa, soluciones financieras y capacitación"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "si": "SI3", "rn": "SI3-RN1", "txt": "Lanzamiento del nuevo Volksbus 15.210 SCD Euro 6"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "si": "SI3", "rn": "SI3-RN2", "txt": "Lanzamiento de la nueva gama de autobuses Euro 6 con motores eficientes y postratamiento"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "si": "SI2", "rn": "SI2-RN2", "txt": "Apertura de una nueva agencia con ABG Camiones en Jalisco"}, {"sec": "Distribuidores de vehículos comerciales", "co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "si": "SI3", "rn": "SI3-RN2", "txt": "Implementar nuevas tecnologías para los clientes"}, {"sec": "Distribuidores de vehículos comerciales", "co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "si": "SI3", "rn": "SI3-RN2", "txt": "Instalar la tecnología Gogrin de gas natural comprimido en motores diésel"}, {"sec": "Distribuidores de vehículos comerciales", "co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "si": "SI2", "rn": "SI2-RN3", "txt": "Terminar nuevas instalaciones en Jalisco con 50 bahías de servicio"}, {"sec": "Distribuidores de vehículos comerciales", "co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "si": "SI2", "rn": "SI2-RN1", "txt": "Abrir otra sucursal en Colima"}, {"sec": "Distribuidores de vehículos comerciales", "co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "si": "SI2", "rn": "SI2-RN2", "txt": "Construcción de una nueva agencia en Guadalajara"}, {"sec": "Distribuidores de vehículos comerciales", "co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "si": "SI5", "rn": "SI5-RN1", "txt": "Zapata Camiones León ofrece consultoría de flotas para mejorar la disponibilidad de los vehículos"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "si": "SI1", "rn": "SI1-RN1", "txt": "Volkswagen Truck & Bus México presentó sus productos en Expo Grúas para fortalecer relaciones comerciales"}, {"sec": "Manufactura automotriz", "co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "si": "SI5", "rn": "SI5-RN2", "txt": "Lanzamiento de varios programas para sus marcas VW Camiones y Autobuses y MAN"}], "all": [{"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Gestión estratégica de cartera e inversiones", "l3": "Proyectos de inversión en capacidad y expansión de presencia", "y": 0, "si": null, "txt": "Arranque de la primera fase de operaciones de su nuevo Centro Logístico de Refacciones"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Gestión estratégica de cartera e inversiones", "l3": "Proyectos de inversión en capacidad y expansión de presencia", "y": 0, "si": null, "txt": "Arranque de la segunda fase de su Centro Logístico de Refacciones"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Talento, habilidades y desarrollo de liderazgo", "l3": "Programas de desarrollo de habilidades estratégicas", "y": 0, "si": null, "txt": "Duplicar las horas de capacitación del personal técnico y comercial"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Capacidad organizacional y de gobernanza", "l3": "Modelo operativo y diseño organizacional", "y": 0, "si": null, "txt": "Cambios en la estructura directiva de Volkswagen Truck & Bus México"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Capacidad organizacional y de gobernanza", "l3": "Modelo operativo y diseño organizacional", "y": 0, "si": null, "txt": "Sentar las bases para el crecimiento de las divisiones de Refacciones y Servicio"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Capacidad organizacional y de gobernanza", "l3": "Modelo operativo y diseño organizacional", "y": 0, "si": null, "txt": "Creación de dos nuevos departamentos para reforzar la presencia con clientes"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Gestión estratégica de cartera e inversiones", "l3": "Proyectos de inversión en capacidad y expansión de presencia", "y": 0, "si": null, "txt": "Apertura de un área dedicada a Volkswagen en el Centro Logístico de Refacciones"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Capacidad organizacional y de gobernanza", "l3": "Modelo operativo y diseño organizacional", "y": 0, "si": null, "txt": "Reorganizar operaciones y reubicar el área de posventa dentro de la planta"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Gestión estratégica de cartera e inversiones", "l3": "Proyectos de inversión en capacidad y expansión de presencia", "y": 0, "si": null, "txt": "Rediseñar el interior de la planta y ampliar la línea de producción"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Capacidad organizacional y de gobernanza", "l3": "Modelo operativo y diseño organizacional", "y": 0, "si": null, "txt": "Trasladar todo el negocio de refacciones a Querétaro para controlar inventario y distribución"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Gestión estratégica de cartera e inversiones", "l3": "Proyectos de inversión en capacidad y expansión de presencia", "y": 0, "si": null, "txt": "Ampliación que cuadruplicó la plantilla y elevó la capacidad de 150 a 800 líneas diarias"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Plataformas de innovación e I+D", "l3": "Plataformas de I+D y centros de investigación compartidos", "y": 0, "si": null, "txt": "Lanzamiento del Delivery 6.170 con nueva transmisión automatizada"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Plataformas de innovación e I+D", "l3": "Plataformas de I+D y centros de investigación compartidos", "y": 0, "si": null, "txt": "Inversión de unos 200 millones de dólares en el desarrollo de la nueva gama Euro VI"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Talento, habilidades y desarrollo de liderazgo", "l3": "Programas de desarrollo de habilidades estratégicas", "y": 0, "si": null, "txt": "Volkswagen duplicó el tamaño de su centro de capacitación, la Volkswagen Academy"}, {"co": "Volkswagen Camiones", "l1": "Capital y capacidades", "l2": "Talento, habilidades y desarrollo de liderazgo", "l3": "Programas de desarrollo de habilidades estratégicas", "y": 0, "si": null, "txt": "Inversión en un nuevo Centro de Capacitación para ampliar los cursos para distribuidores"}, {"co": "Volkswagen Camiones", "l1": "ESG", "l2": "Social", "l3": "Comunidad y desarrollo local", "y": 0, "si": null, "txt": "Graduación de la primera generación del programa Formare"}, {"co": "Volkswagen Camiones", "l1": "ESG", "l2": "Gobernanza", "l3": "Gobernanza ESG y supervisión del consejo", "y": 0, "si": null, "txt": "Adhesión al Pacto Mundial de la ONU para impulsar iniciativas de sostenibilidad"}, {"co": "Volkswagen Camiones", "l1": "ESG", "l2": "Social", "l3": "Comunidad y desarrollo local", "y": 0, "si": null, "txt": "Graduación de 18 nuevas conductoras de autobús del programa Mujeres Transformando"}, {"co": "Volkswagen Camiones", "l1": "ESG", "l2": "Social", "l3": "Comunidad y desarrollo local", "y": 0, "si": null, "txt": "Ampliar el programa de formación profesional para jóvenes en México"}, {"co": "Volkswagen Camiones", "l1": "ESG", "l2": "Social", "l3": "Comunidad y desarrollo local", "y": 0, "si": null, "txt": "Proyecto Mujeres Transformando para formar conductoras en México"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Retención y lealtad de clientes", "l3": "Calidad del servicio y resolución de incidencias", "y": 0, "si": null, "txt": "Despliegue de su plan integral de servicio para apoyar la posventa"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mejora de la oferta y servicios de valor agregado", "y": 0, "si": null, "txt": "Implementar soluciones integrales como Service Solutions y Assist para asistencia en sitio"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Fuerza de ventas y desarrollo de cuentas", "y": 1, "si": "SI1", "txt": "VWTB reafirmó el acuerdo con AGRÚAS para dar a sus socios condiciones exclusivas de compra de vehículos"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Fuerza de ventas y desarrollo de cuentas", "y": 1, "si": "SI1", "txt": "Pruebas con un Volksbus 9.180 OD para modernizar el transporte público"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Fuerza de ventas y desarrollo de cuentas", "y": 1, "si": "SI1", "txt": "Programa de vehículos demostradores para que las empresas prueben y validen su desempeño"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mezcla de productos y portafolio para crecer ingresos", "y": 0, "si": null, "txt": "Presentación de la segunda generación de la familia Delivery"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mejora de la oferta y servicios de valor agregado", "y": 0, "si": null, "txt": "Volks Care, un concepto para dar a los clientes más disponibilidad, eficiencia, productividad y rentabilidad"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Diversificación de líneas de negocio", "l3": "Diversificación a sectores adyacentes", "y": 0, "si": null, "txt": "Apertura de TRATON Financial Services México"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mezcla de productos y portafolio para crecer ingresos", "y": 0, "si": null, "txt": "Lanzamiento de los nuevos Volkswagen Constellation 20.480 4×2 y 26.480 6×4 ‘Gigantes’"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mezcla de productos y portafolio para crecer ingresos", "y": 0, "si": null, "txt": "Lanzamiento del nuevo Delivery 6.170 Euro 6 y del MAN TGX Extra Pesado"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Segmentación de clientes y mercados", "y": 0, "si": null, "txt": "Lanzamiento del e-Volksbus, el primer autobús eléctrico de Volkswagen en el país"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Segmentación de clientes y mercados", "y": 1, "si": "SI1", "txt": "Reforzar su posición con los chasis RR2 y RR4 en el segmento de larga distancia"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Retención y lealtad de clientes", "l3": "Calidad del servicio y resolución de incidencias", "y": 1, "si": "SI4", "txt": "Implementar una estrategia de soluciones integrales de movilidad"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Promociones y crecimiento basado en ofertas", "y": 0, "si": null, "txt": "Lanzamiento de TRATON Financial Services para impulsar la venta de vehículos Euro VI"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Promociones y crecimiento basado en ofertas", "y": 1, "si": "SI3", "txt": "Lanzamiento del programa ‘Mi Primer Euro VI’ para facilitar la transición a la nueva tecnología"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 1, "si": "SI2", "txt": "Apertura de una nueva agencia en Villahermosa, Tabasco"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 1, "si": "SI2", "txt": "Alianza estratégica con Grupo TERSA para una nueva agencia en Tijuana"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 1, "si": "SI2", "txt": "Volkswagen Truck & Bus México abre su nueva agencia en Chihuahua"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 1, "si": "SI2", "txt": "Apertura de un nuevo hub estratégico de venta de camiones y autobuses en el occidente de México"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Fuerza de ventas y desarrollo de cuentas", "y": 1, "si": "SI1", "txt": "Firma de convenios de colaboración con AGRÚAS para la renovación de flotas"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 1, "si": "SI2", "txt": "Ampliación de la red de distribuidores en 2024"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mezcla de productos y portafolio para crecer ingresos", "y": 0, "si": null, "txt": "Lanzamiento de su gama de productos Euro 6"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Retención y lealtad de clientes", "l3": "Calidad del servicio y resolución de incidencias", "y": 0, "si": null, "txt": "Fortalecimiento de su estrategia de posventa"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mejora de la oferta y servicios de valor agregado", "y": 0, "si": null, "txt": "Programa Volks Care que combina telemetría, contratos de mantenimiento, garantías y herramientas digitales"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Fuerza de ventas y desarrollo de cuentas", "y": 1, "si": "SI3", "txt": "Fortalecer la estructura comercial y la integración de producción local en México"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Segmentación de clientes y mercados", "y": 0, "si": null, "txt": "Lanzamiento de producto Euro 6 y entrada al mercado de tractocamiones"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Mezcla de productos y portafolio para crecer ingresos", "y": 1, "si": "SI3", "txt": "Presentación de una nueva generación de autobuses Euro 6"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Segmentación de clientes y mercados", "y": 1, "si": "SI1", "txt": "Reforzar su presencia estratégica en el segmento de autocares interurbanos premium"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Retención y lealtad de clientes", "l3": "Calidad del servicio y resolución de incidencias", "y": 1, "si": "SI4", "txt": "Enfoque integral que combina producto, posventa, soluciones financieras y capacitación"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mezcla de productos y portafolio para crecer ingresos", "y": 0, "si": null, "txt": "Introducción de una nueva generación de productos Euro 6"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mezcla de productos y portafolio para crecer ingresos", "y": 1, "si": "SI3", "txt": "Lanzamiento del nuevo Volksbus 15.210 SCD Euro 6"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mezcla de productos y portafolio para crecer ingresos", "y": 0, "si": null, "txt": "Ampliación del portafolio de productos de Volkswagen Truck & Bus México"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mezcla de productos y portafolio para crecer ingresos", "y": 1, "si": "SI3", "txt": "Lanzamiento de la nueva gama de autobuses Euro 6 con motores eficientes y postratamiento"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Segmentación de clientes y mercados", "y": 0, "si": null, "txt": "Entrega de las primeras seis unidades del camión e-Delivery de 14 toneladas"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 1, "si": "SI2", "txt": "Apertura de una nueva agencia con ABG Camiones en Jalisco"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Fuerza de ventas y desarrollo de cuentas", "y": 0, "si": null, "txt": "Lanzamiento del Truck & Road ESPECTACULAR Roadshow"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Marketing y activación de marca", "y": 1, "si": "SI1", "txt": "Volkswagen Truck & Bus México presentó sus productos en Expo Grúas para fortalecer relaciones comerciales"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Retención y lealtad de clientes", "l3": "Calidad del servicio y resolución de incidencias", "y": 0, "si": null, "txt": "Consolidación de un servicio de posventa sólido"}, {"co": "Volkswagen Camiones", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mejora de la oferta y servicios de valor agregado", "y": 1, "si": "SI5", "txt": "Lanzamiento de varios programas para sus marcas VW Camiones y Autobuses y MAN"}, {"co": "Zapata", "l1": "ESG", "l2": "Social", "l3": "Bienestar, inclusión y estándares laborales", "y": 0, "si": null, "txt": "Implementar una política de salario digno para todos sus empleados"}, {"co": "Zapata", "l1": "ESG", "l2": "Social", "l3": "Bienestar, inclusión y estándares laborales", "y": 0, "si": null, "txt": "Extender la política de ingreso digno a todos los empleados"}, {"co": "Zapata", "l1": "ESG", "l2": "Ambiental", "l3": "Clima y transición energética", "y": 0, "si": null, "txt": "Instalación de 238 paneles solares para abastecer toda la agencia"}, {"co": "Zapata", "l1": "ESG", "l2": "Ambiental", "l3": "Clima y transición energética", "y": 0, "si": null, "txt": "Instalación de un nuevo sistema de iluminación en el edificio"}, {"co": "Zapata", "l1": "ESG", "l2": "Ambiental", "l3": "Eficiencia de recursos y circularidad", "y": 0, "si": null, "txt": "Sistema de captación de agua de lluvia con cisternas"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 0, "si": null, "txt": "Triplicar la capacidad del taller de la sucursal Tlalnepantla"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Fuerza de ventas y desarrollo de cuentas", "y": 1, "si": "SI3", "txt": "Implementar nuevas tecnologías para los clientes"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mejora de la oferta y servicios de valor agregado", "y": 1, "si": "SI3", "txt": "Instalar la tecnología Gogrin de gas natural comprimido en motores diésel"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 1, "si": "SI2", "txt": "Terminar nuevas instalaciones en Jalisco con 50 bahías de servicio"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 1, "si": "SI2", "txt": "Abrir otra sucursal en Colima"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales digitales", "y": 0, "si": null, "txt": "Lanzamiento de la tienda de refacciones Pits2Go"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 1, "si": "SI2", "txt": "Construcción de una nueva agencia en Guadalajara"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 0, "si": null, "txt": "Apertura de un Centro de Refacciones y Servicio (CARS)"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 0, "si": null, "txt": "Reubicación de puntos de servicio y construcción de nuevas instalaciones"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mejora de la oferta y servicios de valor agregado", "y": 0, "si": null, "txt": "Implementación del tablero de indicadores Business Insights"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 0, "si": null, "txt": "Apertura de nuevas instalaciones sustentables tras una remodelación"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales digitales", "y": 0, "si": null, "txt": "Lanzamiento de ‘Pits to go’, plataforma automatizada de comercio electrónico de refacciones"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 0, "si": null, "txt": "Remodelación de las instalaciones de Zapata Camiones Tlalnepantla"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Fuerza de ventas y desarrollo de cuentas", "y": 0, "si": null, "txt": "Inversión en herramientas e infraestructura de servicio para mantenimiento"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Expansión de canales y mercados", "l3": "Expansión de canales y formatos físicos", "y": 0, "si": null, "txt": "Lanzamiento de talleres móviles y unidades de reparto"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Monetización y precios para el crecimiento", "l3": "Mejora de la oferta y servicios de valor agregado", "y": 1, "si": "SI5", "txt": "Zapata Camiones León ofrece consultoría de flotas para mejorar la disponibilidad de los vehículos"}, {"co": "Zapata", "l1": "Crecimiento de ingresos", "l2": "Captación y expansión de clientes", "l3": "Marketing y activación de marca", "y": 0, "si": null, "txt": "Zapata Racing Team pone a Ivanna Richards al volante en la categoría Gran Turismo México"}, {"co": "Zapata", "l1": "Mitigación de riesgos", "l2": "Riesgo operativo y de cadena de suministro", "l3": "Gestión del riesgo de calidad y confiabilidad del producto", "y": 0, "si": null, "txt": "Lograr la certificación Evolución Elite en sus nueve agencias"}, {"co": "Zapata", "l1": "Mitigación de riesgos", "l2": "Riesgo regulatorio, legal y de cumplimiento", "l3": "Diseño y ejecución de programas de cumplimiento regulatorio", "y": 0, "si": null, "txt": "Compra y resguardo de inventario para gestionar el cambio de norma de emisiones"}, {"co": "Zapata", "l1": "Mitigación de riesgos", "l2": "Riesgo operativo y de cadena de suministro", "l3": "Gestión del riesgo de calidad y confiabilidad del producto", "y": 0, "si": null, "txt": "Implementación de la certificación Evolución Elite"}, {"co": "Zapata", "l1": "Mitigación de riesgos", "l2": "Riesgo operativo y de cadena de suministro", "l3": "Gestión del riesgo de calidad y confiabilidad del producto", "y": 0, "si": null, "txt": "Conclusión de la certificación Evolución Elite de Daimler Truck México"}, {"co": "Zapata", "l1": "Mitigación de riesgos", "l2": "Riesgo operativo y de cadena de suministro", "l3": "Gestión del riesgo de calidad y confiabilidad del producto", "y": 0, "si": null, "txt": "Obtuvo la certificación Evolución Elite de Daimler Truck México"}, {"co": "Zapata", "l1": "Mitigación de riesgos", "l2": "Riesgo operativo y de cadena de suministro", "l3": "Gestión del riesgo de calidad y confiabilidad del producto", "y": 0, "si": null, "txt": "Obtuvo la certificación Evolución Elite de Daimler Truck México"}], "dmi": {"Volkswagen Camiones|Expansión de canales y formatos físicos": {"groups": [["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"], ["Frank Gundlach", "Director de Mercados Internacionales (incl. México), VW Caminhões e Ônibus"], ["Rafael Santos Magalhães", "Director de Operaciones, VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Fuerza de ventas y desarrollo de cuentas": {"groups": [["C-Suite / VP", [["Ricardo Alouche", "VP de Ventas, Marketing y Posventa, VW Caminhões e Ônibus"]]], ["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Mezcla de productos y portafolio para crecer ingresos": {"groups": [["C-Suite / VP", [["Ricardo Alouche", "VP de Ventas, Marketing y Posventa, VW Caminhões e Ônibus"]]], ["Director", [["Frank Gundlach", "Director de Mercados Internacionales (incl. México), VW Caminhões e Ônibus"], ["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Segmentación de clientes y mercados": {"groups": [["C-Suite / VP", [["Ricardo Alouche", "VP de Ventas, Marketing y Posventa, VW Caminhões e Ônibus"]]], ["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Calidad del servicio y resolución de incidencias": {"groups": [["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"], ["Rafael Santos Magalhães", "Director de Operaciones, VW Truck & Bus México"]]], ["Gerente", [["Álvaro Rodríguez", "Gerente de Calidad (nombrado en 2023; confirmar que sigue en el puesto)"]]]]}, "Volkswagen Camiones|Promociones y crecimiento basado en ofertas": {"groups": [["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"], ["Rafael Santos Magalhães", "Director de Operaciones (también CFO), VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Marketing y activación de marca": {"groups": [["C-Suite / VP", [["Ricardo Alouche", "VP de Ventas, Marketing y Posventa, VW Caminhões e Ônibus"]]], ["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Mejora de la oferta y servicios de valor agregado": {"groups": [["C-Suite / VP", [["Roberto Cortés", "Presidente y CEO, VW Caminhões e Ônibus"]]], ["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"], ["Rafael Santos Magalhães", "Director de Operaciones, VW Truck & Bus México"]]]]}}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const RN=Object.fromEntries(V.rn.map(r=>[r.id,r])),SOL=Object.fromEntries(V.sols.map(s=>[s.id,s])),SI=Object.fromEntries(V.si.map(s=>[s.id,s])),RC=Object.fromEntries(V.rc.map(r=>[r.id,r]));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const S={sec:null,co:null,l1:null,l2:null,sis:[],dropped:[],showDem:false,dm:null};
+const stage=$('stage');
+
+// ---------- demand drill ----------
+function uniq(a){return [...new Set(a)];}
+function count(list,key){const m={};list.forEach(x=>m[x[key]]=(m[x[key]]||0)+1);return m;}
+const TOT=V.inits.length;
+const pct=n=>Math.max(1,Math.round(n/TOT*100))+'%';
+function rows(items,kind,selVal,cls){
+  return '<ul class="cos'+(selVal?' picked':'')+'">'+items.map(it=>'<li class="opt'+(cls?' '+cls:'')+(it.v===selVal?' sel':'')+'" data-k="'+kind+'" data-v="'+esc(it.v)+'" tabindex="0" role="button"><span class="cn">'+esc(it.label)+'<em>'+it.meta+'</em></span><span class="cb"><i style="width:'+it.w+'%"></i></span><span class="pr"></span></li>').join('')+'</ul>';}
+function renderDem(){
+  const I=V.inits;let h='';
+  const secs=uniq(I.map(i=>i.sec)),mx=Math.max(...secs.map(s=>I.filter(i=>i.sec===s).length));
+  h+=secs.map(s=>{const n=I.filter(i=>i.sec===s).length,open=S.sec===s,cos=uniq(I.filter(i=>i.sec===s).map(i=>i.co));
+    return '<div class="sec'+(open?' sel':'')+'"><div class="row"><span class="nm">'+esc(s)+'</span><span class="pc">'+pct(n)+'</span></div><div class="tr"><i style="width:'+(n/mx*100)+'%"></i></div>'+
+      '<div class="links"><button type="button" class="lk opt" data-k="sec" data-v="'+esc(s)+'" aria-expanded="'+open+'">Empresas <span>›</span></button></div>'+
+      (open?rows(cos.map(c=>{const m=I.filter(i=>i.co===c).length;return {v:c,label:c,meta:pct(m),w:m/mx*100};}),'co',S.co):'')+'</div>';}).join('');
+  $('dem').innerHTML=h;$('dem').classList.toggle('picked',!!S.sec);}
+$('dem').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('li.opt')){e.preventDefault();e.target.click();}});
+$('dem').addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;const k=b.dataset.k,v=b.dataset.v;
+  const order=['sec','co','l1','l2','si'],ix=order.indexOf(k);
+  if(S[k]===v){order.slice(ix).forEach(x=>S[x]=null);}else{S[k]=v;order.slice(ix+1).forEach(x=>S[x]=null);}
+  renderDem();renderLevels();setStage();});
+
+// ---------- level list (rows with bars): nivel 1 → nivel 2 → nivel 3 · iniciativas estratégicas ----------
+S.yn='ALL';
+function rowsCo(){return V.all.filter(r=>r.co===S.co&&(S.yn==='ALL'||(S.yn==='Y'?r.y:!r.y)));}
+function curLevel(){return S.l2?3:S.l1?2:1;}
+S.view=1;
+function renderLevels(){
+  if(!S.co){$('lvlist').innerHTML='';return;}
+  const rs=rowsCo(),lvl=S.view;
+  S.sis=S.sis.filter(s=>rs.some(r=>r.si===s));
+  document.querySelectorAll('.yn button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.yn===S.yn));
+  $('tabs').innerHTML=[1,2,3].map(n=>'<button type="button" role="tab" data-lv="'+n+'" aria-selected="'+(n===lvl)+'">Nivel '+n+'</button>').join('');
+  const linked=uniq(rs.filter(r=>r.y).map(r=>r.si)),allOn=linked.length&&linked.every(s=>S.sis.includes(s));
+  $('radhint').innerHTML=lvl===3?'Iniciativas estratégicas · haz clic en una o varias'+(linked.length?' <button type="button" class="selall" id="selall3">'+(allOn?'Quitar selección':'Seleccionar todas')+'</button>':''):'Todos los '+(lvl===1?'nivel 1':'nivel 2')+' de la empresa, agregados';
+  if(!rs.length){$('lvlist').innerHTML='<li class="na leaf"><span class="cn" style="color:var(--faint)">No hay iniciativas aquí</span></li>';return;}
+  // flat, aggregated view of the chosen level across the whole company
+  const g={};rs.forEach(r=>{const k=lvl===1?'1|'+r.l1:lvl===2?'2|'+r.l2:(r.y?'si|'+r.si:'na|'+r.l3);
+    if(!g[k])g[k]={k,label:lvl===1?r.l1:lvl===2?r.l2:(r.y?SI[r.si].name:r.l3),n:0,y:0};g[k].n++;g[k].y+=r.y;});
+  const items=Object.values(g).sort((a,b)=>(lvl===3?(b.y>0)-(a.y>0):0)||b.n-a.n),top=Math.max(...items.map(x=>x.n),1);
+  $('lvlist').innerHTML=items.map(x=>{const isSI=x.k.startsWith('si|'),v=x.k.slice(3),sel=isSI&&S.sis.includes(v),dms=lvl===3&&S.dm&&S.dm.k===x.k;
+    const links=lvl===3?'<span class="l3l">'+(isSI?'<button type="button" class="l3a'+(sel?' on':'')+'" data-act="br" data-si="'+esc(v)+'">Resultados de negocio</button>':'')+
+      '<button type="button" class="l3a'+(dms?' on':'')+'" data-act="dm" data-k="'+esc(x.k)+'" data-label="'+esc(x.label)+'">Tomadores de decisión</button></span>':'';
+    return '<li class="lv'+(isSI?' si':'')+(x.y?'':' na')+' leaf'+(sel?' sel':'')+(dms?' dmsel':'')+'"'+(isSI?' data-si="'+esc(v)+'"':'')+'>'+
+      '<span class="cn">'+esc(x.label)+'</span><span class="cb"><i style="width:'+(x.n/top*100)+'%"></i></span>'+
+      (lvl===3&&!isSI?'<span class="tagna">Sin vínculo con BECCAR</span>':lvl<3&&S.yn==='ALL'&&x.y?'<span class="tagna">'+x.y+' vinculada'+(x.y>1?'s':'')+' a BECCAR</span>':'')+links+'<span class="pr"></span></li>';}).join('');
+  $('lvlist').classList.toggle('picked',(S.sis.length>0||!!S.dm)&&lvl===3);}
+$('lvlist').addEventListener('click',e=>{const b=e.target.closest('.l3a');if(!b)return;
+  if(b.dataset.act==='br'){const v=b.dataset.si;S.dm=null;S.sis=S.sis.includes(v)?S.sis.filter(x=>x!==v):S.sis.concat(v);}
+  else{const k=b.dataset.k;S.sis=[];S.dropped=[];S.dm=S.dm&&S.dm.k===k?null:{k,label:b.dataset.label};}
+  renderLevels();setStage();});
+$('radhint').addEventListener('click',e=>{if(!e.target.closest('#selall3'))return;const linked=uniq(rowsCo().filter(r=>r.y).map(r=>r.si));
+  S.dm=null;S.sis=linked.every(s=>S.sis.includes(s))?[]:linked.sort((a,b)=>a.localeCompare(b));renderLevels();setStage();});
+$('tabs').addEventListener('click',e=>{const b=e.target.closest('[data-lv]');if(!b)return;S.view=+b.dataset.lv;renderLevels();requestAnimationFrame(()=>wires(false));});
+$('lvlist').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('li[data-key]')){e.preventDefault();e.target.click();}});
+document.querySelector('.yn').addEventListener('click',e=>{const b=e.target.closest('[data-yn]');if(!b)return;S.yn=b.dataset.yn;renderLevels();setStage();});
+function fitRadial(){}
+
+// ---------- business results ----------
+function companyRN(r){return V.inits.filter(i=>i.co===S.co&&i.rn===r);}
+const RANK=['C-Suite / VP','Director','Gerente'];
+function peopleFor(k){const [kind,...r]=k.split('|'),v=r.join('|');
+  const l3s=kind==='si'?uniq(V.all.filter(x=>x.co===S.co&&x.si===v).map(x=>x.l3)):[v];
+  const g={};l3s.forEach(l3=>{const d=V.dmi[S.co+'|'+l3];if(!d)return;d.groups.forEach(([grp,ppl])=>{g[grp]=g[grp]||{};ppl.forEach(([n,ti])=>{g[grp][n]=g[grp][n]||{ti,a:new Set()};g[grp][n].a.add(l3);});});});
+  return RANK.filter(x=>g[x]).map(x=>[x,Object.entries(g[x])]);}
+function renderDM(){if(!S.dm){$('dmlist').innerHTML='';return;}
+  const gs=peopleFor(S.dm.k);
+  $('dmhead').innerHTML='<em>'+esc(S.co)+'</em><b>'+esc(S.dm.label)+'</b>';
+  $('dmlist').innerHTML=!gs.length?'<p class="dmnone">Los tomadores de decisión de esta área están por agregarse.</p>':
+    gs.map(([grp,ppl])=>'<section class="dmg"><div class="dmgl">'+esc(grp)+'<span>'+ppl.length+'</span></div>'+ppl.map(([n,o],i)=>'<div class="pcard" style="animation-delay:'+(i*50)+'ms"><span class="av">'+esc(n.split(' ').map(w=>w[0]).slice(0,2).join(''))+'</span><div><b>'+esc(n)+'</b><span>'+esc(o.ti)+'</span>'+(S.dm.k.startsWith('si|')&&o.a.size?'<i>'+[...o.a].map(esc).join(' · ')+'</i>':'')+'</div></div>').join('')+'</section>').join('');}
+function selRN(){return S.sis.flatMap(s=>SI[s].res);}
+function renderBR(){
+  if(!S.sis.length){$('rnlist').innerHTML='';$('brhead').innerHTML='';return;}
+  const one=S.sis.length===1;
+  $('brhead').innerHTML='<em>'+esc(S.co)+'</em><b>'+(one?esc(SI[S.sis[0]].name):S.sis.length+' iniciativas estratégicas')+'</b>';
+  $('rnlist').innerHTML=S.sis.map(si=>(one?'':'<div class="sig">'+esc(SI[si].name)+'</div>')+SI[si].res.map((r,k)=>{const R=RN[r],ev=companyRN(r),nos=!R.sols.length;
+    return '<div class="rn'+(nos?' nos':'')+'" data-rn="'+r+'" data-si="'+si+'"><span class="al"></span><span class="tag">RN'+(k+1)+'</span><b>'+esc(R.name)+'</b><div class="ev">'+
+      (ev.length?'':'<span class="none">Sin iniciativas de '+esc(S.co)+' en este resultado</span>')+
+      (nos?'<div class="none" style="margin-top:4px">Sin solución directa de BECCAR</div>':'')+'</div><span class="an"></span></div>';}).join('')).join('');}
+
+// ---------- R&C ----------
+function renderRC(){
+  const g=t=>V.rc.filter(r=>r.type===t);
+  $('rclist').innerHTML=[['Competencias','capability'],['Recursos','resource']].map(([n,t])=>'<div class="rcg"><h3>'+n+'</h3>'+
+    g(t).map(r=>'<div class="rc" tabindex="0" role="button" data-rc="'+r.id+'"><span class="al"></span><span>'+esc(r.name)+'</span></div>').join('')+'</div>').join('');}
+
+// connection: which of the selected initiative's results a given R&C can move, and through which solutions
+function links(rc){const out=[];
+  selRN().forEach(r=>RN[r].sols.forEach(s=>{if(SOL[s]&&SOL[s].k.includes(rc))out.push({rn:r,sol:s});}));return out;}
+
+// ---------- stage + hub ----------
+function setStage(){
+  const s=(S.sis.length||S.dm)?3:S.co?2:1;stage.classList.toggle('dm',!!S.dm&&!S.sis.length);
+  if(s===3&&!stage.classList.contains('s3'))S.showDem=false;   // entering business results: tuck the sector / company column away
+  stage.classList.toggle('s2',s===2);stage.classList.toggle('s3',s===3);
+  const hide=s===3&&!S.showDem;stage.classList.toggle('nodem',hide);
+  const bk=$('backdem');bk.hidden=s!==3;bk.textContent='‹ Volver a sectores y empresas';
+  renderBR();renderDM();S.dropped=S.dropped.filter(id=>links(id).length);markRC();updateHub(false);
+  requestAnimationFrame(()=>{fitRadial();wires(true);});setTimeout(()=>{fitRadial();wires(false);},950);}
+function markRC(){document.querySelectorAll('.rc').forEach(el=>{const can=S.sis.length&&links(el.dataset.rc).length>0;
+  el.classList.toggle('can',!!can);el.classList.toggle('off',!can);el.removeAttribute('draggable');el.setAttribute('aria-disabled',can?'false':'true');});
+  const n=document.querySelectorAll('.rc.can').length;$('rchint').textContent=S.sis.length?(n+' R&C pueden conectar · haz clic para seleccionarlos'):'Haz clic para seleccionar.';}
+function updateHub(flash){
+  const all=S.dropped.map(id=>({id,l:links(id)}));
+  const rns=uniq(all.flatMap(x=>x.l.map(y=>y.rn))),sols=uniq(all.flatMap(x=>x.l.map(y=>y.sol)));
+  const live=rns.length>0;$('hub').classList.toggle('live',live);
+  if(flash&&live){$('hub').classList.remove('flash');void $('hub').offsetWidth;$('hub').classList.add('flash');}
+  const co=S.co||'',tot=selRN().length;
+  $('sols').innerHTML=sols.length?'<b>Solución BECCAR</b>'+sols.map(s=>'<span>'+esc(SOL[s].name)+'</span>').join('')+'<small>'+S.dropped.length+' R&C · '+rns.length+' de '+tot+' resultados de '+esc(co)+'</small>':'';
+  document.querySelectorAll('#rnlist .rn').forEach(el=>el.classList.toggle('lit',rns.includes(el.dataset.rn)));
+  document.querySelectorAll('.rc').forEach(el=>{const d=all.find(x=>x.id===el.dataset.rc);el.classList.toggle('in',!!d);el.classList.toggle('ok',!!d);});}
+function addRC(id){if(!S.sis.length||!RC[id]||S.dropped.includes(id)||!links(id).length)return;S.dropped.push(id);updateHub(true);requestAnimationFrame(()=>wires(id));}
+function rmRC(id){S.dropped=S.dropped.filter(x=>x!==id);updateHub(false);requestAnimationFrame(()=>wires(false));}
+
+// drag & drop
+let DRAG=null;
+$('rclist').addEventListener('click',e=>{const el=e.target.closest('.rc');if(!el||el.classList.contains('off'))return;S.dropped.includes(el.dataset.rc)?rmRC(el.dataset.rc):addRC(el.dataset.rc);});
+$('rclist').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('.rc')){e.preventDefault();e.target.click();}});
+
+// ---------- wires ----------
+function placeDot(){const L=$('rnlist'),db=$('dropbox');if(!L.firstChild||!stage.classList.contains('s3')){db.style.marginTop='';return;}
+  const hub=$('hub').getBoundingClientRect(),lr=L.getBoundingClientRect(),vis=Math.min(lr.bottom,innerHeight)-Math.max(lr.top,0);
+  const mid=(Math.max(lr.top,0)+Math.min(lr.bottom,innerHeight))/2;db.style.marginTop=Math.max(40,mid-hub.top-4)+'px';}
+function wires(animate){placeDot();
+  const g=$('wg-g'),sr=stage.getBoundingClientRect();let h='';
+  if(innerWidth<=1000){g.innerHTML='';return;}
+  const P=(el,side)=>{const r=el.getBoundingClientRect();return {x:(side==='r'?r.right:side==='l'?r.left:r.left+r.width/2)-sr.left,y:r.top+r.height/2-sr.top};};
+  const cur=(a,b,k=.5)=>{if(Math.abs(a.y-b.y)<1.5)b={x:b.x,y:a.y+1.5};const mx=a.x+(b.x-a.x)*k;return 'M'+a.x+','+a.y+' C'+mx+','+a.y+' '+mx+','+b.y+' '+b.x+','+b.y;};
+  if(stage.classList.contains('dm')){}
+  else if(stage.classList.contains('s3')){
+    document.querySelectorAll('#rnlist .rn').forEach(el=>{const src=document.querySelector('#lvlist li.si.sel[data-si="'+el.dataset.si+'"] .pr');if(!src)return;
+      h+='<path class="w base'+(animate===true?' new':'')+'" d="'+cur(P(src,'c'),P(el.querySelector('.al'),'c'))+'"/>';});
+    const dia=$('dia').getBoundingClientRect(),L={x:dia.left+dia.width/2-sr.left,y:dia.top+dia.height/2-sr.top},R=L;
+    document.querySelectorAll('#rnlist .rn.lit').forEach(el=>{h+='<path class="w gold'+(animate?' new':'')+'" d="'+cur(P(el.querySelector('.an'),'c'),L,.06)+'"/>';});
+    document.querySelectorAll('.rc.in').forEach(el=>{const ok=el.classList.contains('ok'),isNew=animate===el.dataset.rc||animate===true;
+      h+='<path class="w '+(ok?'rcw':'dim')+(isNew?' new':'')+'" d="'+cur(P(el.querySelector('.al'),'c'),R,.06)+'"/>';});
+    if(document.querySelector('.rn.lit'))h+='<circle class="spark" r="2"><animateMotion dur="2.4s" repeatCount="indefinite" path="'+cur(P(document.querySelector('.rn.lit .an'),'c'),L,.06)+'"/></circle>';
+  }
+  g.innerHTML=h;
+  if(!reduce)g.querySelectorAll('.w.new').forEach(p=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.setProperty('--L',L);
+    p.addEventListener('animationend',()=>{p.style.strokeDasharray='';p.classList.remove('new');},{once:true});});
+  g.querySelectorAll('.w.dim').forEach(p=>p.style.strokeDasharray='4 5');}
+let rq=0;const rr=()=>{if(rq)return;rq=requestAnimationFrame(()=>{rq=0;fitRadial();wires(false);});};
+addEventListener('resize',rr);addEventListener('scroll',rr,{passive:true});
+document.addEventListener('toggle',rr,true);
+new ResizeObserver(rr).observe(stage);
+
+// back to the company: drop the initiatives and every R&C connection, close results and R&C
+$('backdem').addEventListener('click',()=>{S.sis=[];S.dropped=[];S.dm=null;renderLevels();setStage();});
+$('reset').addEventListener('click',()=>{Object.assign(S,{sec:null,co:null,l1:null,l2:null,sis:[],dropped:[],dm:null});renderDem();renderLevels();setStage();});
+renderDem();renderRC();setStage();
+</script>
+</body>
+</html>
