@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Dónde tienen más demanda los R&amp;C de BECCAR? · FernFutures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFFFF;--ink:#1D1D1F;--sub:#86868B;--line:#E8E8ED;--navy:#12295E;--navy2:#2C4A9E;--gold:#C49A3A;--gold2:#E0B24A;--golddk:#9C7420;
+  --f:'Barlow',-apple-system,BlinkMacSystemFont,'SF Pro Display',system-ui,sans-serif;--ease:cubic-bezier(.25,.1,.25,1);--out:cubic-bezier(.2,.8,.2,1);
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#FFFFFF;--ink:#1D1D1F}}
+:root[data-theme="dark"]{--bg:#FFFFFF;--ink:#1D1D1F}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:8px}
+
+/* ---------- layout: s0 centred question, s1 split ---------- */
+.app{position:relative;min-height:100vh;min-height:100dvh;display:grid;grid-template-columns:1fr;align-content:center;justify-items:center;padding:6vh 24px}
+.q{max-width:900px;text-align:center;margin:0 0 4.5vh}
+h1{margin:0;font-weight:600;font-size:clamp(34px,4.6vw,64px);line-height:1.06;letter-spacing:-.032em;color:var(--ink)}
+h1 em{font-style:normal;background:linear-gradient(90deg,#9C7420,#C49A3A 40%,#E0B24A);-webkit-background-clip:text;background-clip:text;color:transparent}
+.opts{display:grid;align-content:start;align-self:start;grid-template-columns:repeat(2,minmax(0,360px));gap:0 28px;width:100%;max-width:760px}
+.col h2{margin:0 0 10px;padding:0 6px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
+.op{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:#fff;border-radius:18px;padding:12px 16px 12px 12px;margin:0 0 8px;cursor:pointer;
+  font-size:16px;font-weight:500;color:#424245;line-height:1.3;box-shadow:inset 0 0 0 1px rgba(44,74,158,.35);
+  transition:color .25s,background .3s var(--ease),box-shadow .3s var(--ease),transform .3s cubic-bezier(.34,1.56,.64,1)}
+.op:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--navy2)}
+.op:active{transform:scale(.985)}
+.op[aria-checked="true"]{background:#fff;box-shadow:inset 0 0 0 1.5px var(--navy2)}
+.dot{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid #C7C7CC;background:#fff;display:grid;place-items:center;transition:border-color .25s,background .3s var(--ease),transform .3s}
+.op:hover .dot{border-color:var(--gold)}
+.dot svg{width:12px;height:12px;opacity:0;transform:scale(.5);transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.op[aria-checked="true"]{color:var(--ink)}
+.op[aria-checked="true"] .dot{background:var(--gold);border-color:var(--gold)}
+.op[aria-checked="true"] .dot svg{opacity:1;transform:none}
+.op .pin{margin-left:auto;flex:none;width:6px;height:6px;margin-right:-6px;border-radius:50%;background:transparent;transition:background .3s}
+.s1 .op[aria-checked="true"] .pin{background:var(--gold)}
+
+/* split state */
+.s1 .app{grid-template-columns:minmax(270px,380px) minmax(60px,1fr) minmax(220px,260px) minmax(60px,1fr) minmax(270px,380px);align-content:start;justify-items:stretch;column-gap:0;padding:7vh clamp(24px,5vw,80px) 6vh}
+.app>.cta{grid-column:1/-1}
+.s1 .q{grid-column:1/-1;text-align:left;margin:0 0 4.5vh;max-width:none}
+.s1 h1{font-size:clamp(26px,2.6vw,38px)}
+.s1 .opts{grid-column:1;grid-template-columns:1fr;gap:0;max-width:none}
+.s1 .col+.col{margin-top:26px}
+.s1 .op{font-size:14px;padding:9px 12px 9px 10px;margin-bottom:6px;border-radius:14px}
+.s1 .dot{width:19px;height:19px}
+
+.cta{position:sticky;bottom:18px;z-index:5;display:flex;align-items:center;justify-content:center;gap:18px;margin-top:4vh;padding:8px 8px 8px 22px;border-radius:999px;font-size:14px;color:var(--sub);
+  background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);box-shadow:0 0 0 1px rgba(0,0,0,.04),0 8px 30px rgba(0,0,0,.06);transition:opacity .4s}
+.cta .sel{border:0;background:none;padding:0;font-size:14px;font-weight:500;color:var(--navy2);cursor:pointer}
+.go2{border:0;border-radius:999px;padding:13px 24px;background:var(--ink);color:#fff;font-size:15px;font-weight:600;cursor:pointer;opacity:.25;transform:translateY(4px);
+  transition:opacity .35s var(--ease),transform .45s var(--out),background .25s;box-shadow:0 10px 28px rgba(29,29,31,.18)}
+.go2 span{display:inline-block;transition:transform .3s var(--out)}
+.cta.ready .go2{opacity:1;transform:none}
+.cta.ready .go2:hover{background:var(--navy)}.cta.ready .go2:hover span{transform:translateX(3px)}
+.go2[disabled]{cursor:default;box-shadow:none}
+.s1 .cta{display:none}
+/* sectors */
+.blabels{position:absolute;inset:0;pointer-events:none;z-index:3}
+.bl{position:absolute;transform:translate(-50%,-50%);width:184px;padding:3px 10px;pointer-events:auto;cursor:default;border-radius:9px;background:rgba(255,255,255,.96);box-shadow:0 0 0 1px rgba(196,154,58,.5),0 4px 12px rgba(18,41,94,.08);font-size:11.5px;line-height:1.3;font-weight:500;color:#1D1D1F;text-align:left;opacity:0;animation:blin .5s .35s forwards}
+.bl span{display:block;padding:3px 0}.bl span+span{border-top:1px solid rgba(196,154,58,.3)}
+.bl.dim{opacity:.18!important;animation:none}
+@keyframes blin{from{opacity:0;transform:translate(-50%,-46%)}to{opacity:1;transform:translate(-50%,-50%)}}
+@media (max-width:980px){.blabels{display:none}}
+.mbar,.rpick{display:none;grid-column:1/-1}
+.s1 .mbar{display:none;flex-wrap:wrap;align-items:center;gap:6px;margin:-2vh 0 22px}
+.mbar .ml{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#86868B;margin-right:6px}
+.mbar button{display:inline-flex;align-items:center;gap:7px;border:0;background:#F2F3F6;color:#3A3A3F;font-size:13px;font-weight:500;padding:7px 13px 7px 8px;border-radius:999px;cursor:pointer;transition:background .25s,color .25s,box-shadow .25s}
+.mbar button b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#fff;color:#2C4A9E;font-size:11.5px;font-weight:700}
+.mbar button[aria-pressed="true"]{background:#12295E;color:#fff}
+.mbar button[aria-pressed="true"] b{background:#C49A3A;color:#fff}
+.s1 .rpick{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 26px;padding:14px 16px;border-radius:18px;background:#FBF6EA}
+.rpick .rq small{display:block;font-size:12.5px;font-weight:400;color:#9C7420;margin-top:2px}.rpick .rq{font-size:15px;font-weight:600;color:#12295E;margin-right:6px}
+#rpills{display:flex;flex-wrap:wrap;gap:8px}
+.rp{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(196,154,58,.55);background:#fff;color:#3A3A3F;font-size:13px;padding:7px 13px 7px 9px;border-radius:999px;cursor:grab;user-select:none;transition:all .25s;text-align:left}
+.rp:hover{border-color:#C49A3A;box-shadow:0 4px 12px rgba(196,154,58,.18)}.rp:active{cursor:grabbing}.rp i{display:grid;grid-template-columns:repeat(2,3px);gap:2px}.rp i:before,.rp i:after{content:"";display:block;width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.45;box-shadow:0 5px 0 currentColor,0 10px 0 currentColor}.rp i{height:13px;opacity:.9}.rp.drag{opacity:.4}.rp.on{cursor:default}
+.rdz{display:grid;place-items:center;min-height:130px;padding:18px;border:1.5px dashed rgba(196,154,58,.6);border-radius:16px;background:transparent;font-size:13.5px;line-height:1.4;color:#9C7420;text-align:center;transition:background .25s,border-color .25s,transform .25s}
+.rdz.more{display:none;min-height:70px;margin-top:4px}.rdrag .rdz.more{display:grid}.rdz.more b{font-size:17px;margin-bottom:0}.rdz>div{padding:10px 14px;border-radius:12px;background:rgba(251,246,234,.92)}.rdz b{display:block;font-size:22px;font-weight:400;margin-bottom:4px}.resx.over .rdz{background:#FBF1D9;border-color:#C49A3A;transform:scale(1.02)}.resx.over .rc{box-shadow:0 0 0 2px #C49A3A}
+.rc .rx{position:absolute;top:6px;right:8px;border:0;background:none;color:#9C7420;font-size:16px;line-height:1;cursor:pointer;padding:2px 4px}.rc .rx:hover{color:#12295E}.rc.sel b{padding-right:16px}.rp.on{background:#C49A3A;border-color:#C49A3A;color:#fff}
+.s1.rsel .op:not(.lit){opacity:.35}
+/* results column (mode 1) */
+.resx{display:none}
+.rmini{display:none}
+.s1:not(.rshow) .rmini{display:none;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;grid-column:4;grid-row:3;justify-self:center;align-self:start;position:sticky;top:7vh;z-index:2;width:210px;min-height:0;white-space:nowrap;padding:0 8px 4px;border:1.5px dashed transparent;border-radius:14px;background:transparent;color:#9C7420;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;line-height:1.3;text-align:center;cursor:default;transition:background .25s,border-color .25s,min-height .3s var(--out),padding .3s var(--out),box-shadow .25s}
+.rmini .rml{display:block;width:28px;height:2px;border-radius:2px;background:#C49A3A;opacity:.7}
+.rmini .rmi{display:none;place-items:center;width:26px;height:26px;border-radius:50%;background:#C49A3A;color:#fff;font-size:17px;font-weight:400;letter-spacing:0;line-height:1}
+.rmini .rmh{display:none;font-size:11.5px;font-weight:400;letter-spacing:0;text-transform:none;color:#9C7420}
+.s1:not(.rshow) .rmini.over{min-height:120px;padding:14px 10px;border-color:#C49A3A;background:#FBF6EA;box-shadow:0 6px 18px rgba(196,154,58,.14);justify-content:center}
+.rmini.over .rmi{display:grid}.rmini.over .rmh{display:block}.rmini.over .rml{display:none}.s1:not(.rshow) .rmini{cursor:pointer}.rmini .rmc{display:inline-grid;place-items:center;min-width:18px;height:18px;margin-left:6px;padding:0 5px;border-radius:9px;background:#C49A3A;color:#fff;font-size:11px;letter-spacing:0;vertical-align:1px}.rmini .rmc:empty{display:none}
+.s1.rshow .app{grid-template-columns:minmax(240px,310px) minmax(28px,.45fr) minmax(190px,230px) minmax(28px,.55fr) minmax(190px,232px) minmax(28px,.55fr) minmax(260px,370px)}
+.s1 .solx{grid-column:3}.s1.rshow .resx{display:block;grid-column:5;align-self:start;position:sticky;top:7vh;animation:rcin .35s var(--out) both}.s1.rshow .secs{grid-column:7}
+.resx h2{margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#86868B}
+.rc{position:relative;padding:12px 14px;margin-bottom:8px;border-radius:14px;background:#FFFCF4;box-shadow:0 0 0 1px rgba(196,154,58,.5);animation:rcin .5s var(--out) both}
+.rc b{display:block;font-size:13px;font-weight:600;line-height:1.3;color:#1D1D1F}
+.rc span{display:block;margin-top:4px;font-size:11.5px;line-height:1.3;color:#86868B}
+.rc.sel{box-shadow:0 0 0 2px #C49A3A,0 8px 22px rgba(196,154,58,.18)}
+.rc .pl,.rc .pr{position:absolute;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#C49A3A}.rc .pl{left:-3px}.rc .pr{right:-3px}
+.rph{padding:16px;border:1.5px dashed rgba(196,154,58,.45);border-radius:14px;font-size:13px;color:#86868B;line-height:1.4}
+@keyframes rcin{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+/* inside the solution card (mode 2) */
+.sres{margin-top:10px;padding-top:9px;border-top:1px solid rgba(196,154,58,.35)}
+.sres em{display:block;font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9C7420;margin-bottom:4px}
+.sres div{font-size:12.5px;line-height:1.35;color:#1D1D1F;padding:4px 0 4px 14px;position:relative}
+.sres div:before{content:"";position:absolute;left:2px;top:10px;width:5px;height:5px;border-radius:50%;background:#C49A3A}
+.sres small{display:block;color:#86868B;font-size:11px}
+/* story panel (mode 3) */
+.story{position:fixed;left:50%;bottom:16px;z-index:60;width:min(1080px,calc(100vw - 32px));max-height:min(52vh,560px);overflow:auto;transform:translate(-50%,24px);opacity:0;transition:opacity .35s var(--ease),transform .5s var(--out);background:rgba(255,255,255,.97);backdrop-filter:blur(18px);border-radius:22px;box-shadow:0 0 0 1px rgba(0,0,0,.06),0 24px 60px rgba(18,41,94,.18);padding:22px 26px 24px}
+.story.on{opacity:1;transform:translate(-50%,0)}.story[hidden]{display:none}
+.stx{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;border:0;background:#F2F3F6;font-size:18px;color:#6E6E73;cursor:pointer}
+.story h3{margin:0;font-size:22px;font-weight:600;color:#12295E;letter-spacing:-.01em}
+.story .stsub{margin:6px 0 16px;color:#6E6E73;font-size:14.5px}.story .stsub i{font-style:normal;color:#1D1D1F;font-weight:600}
+.stgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.stc{border-radius:16px;background:#FFFCF4;box-shadow:0 0 0 1px rgba(196,154,58,.45);padding:14px 16px}
+.stc b{display:block;font-size:15px;font-weight:600;color:#1D1D1F;line-height:1.3}
+.stc .ms{display:block;margin-top:4px;font-size:12px;color:#9C7420}
+.stc ul{margin:10px 0 0;padding:0;list-style:none}
+.stc li{font-size:13px;line-height:1.35;color:#3A3A3F;padding:6px 0;border-top:1px solid rgba(0,0,0,.06)}
+.stc li small{display:block;color:#86868B;font-size:11.5px;margin-top:1px}
+.m3 .sec .row .nm{cursor:pointer;text-decoration:underline;text-decoration-color:rgba(44,74,158,.25);text-underline-offset:4px}
+.stb{margin-left:10px;border:0;background:#FBF6EA;color:#9C7420;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.shint{margin:6px 0 0;padding:18px 18px;border:1.5px dashed rgba(44,74,158,.28);border-radius:16px;color:#6E6E73;font-size:15px;line-height:1.4;opacity:0;transform:translateX(16px);transition:opacity .5s var(--ease),transform .7s var(--out)}
+.shint.in{opacity:1;transform:none}.shint.gone{display:none}
+.secs.nosel .sec{display:none}
+.secs{display:none;grid-column:5;align-self:start;position:sticky;top:7vh}
+/* solutions (middle column) */
+.solx{display:none;grid-column:3;align-self:start;position:sticky;top:7vh}
+.s1 .solx{display:block}
+.solx h2{margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#86868B)}
+.sl{position:relative;padding:14px 16px;margin-bottom:8px;border-radius:14px;background:#fff;box-shadow:0 0 0 1px rgba(44,74,158,.22);opacity:0;transform:scale(.96);transition:box-shadow .3s}
+.sl.in{opacity:1;transform:none;transition:opacity .6s var(--ease),transform .8s var(--out),box-shadow .3s}
+.sl.zero{opacity:.32}
+.sl .sn{display:block;font-size:13.5px;font-weight:500;line-height:1.3;color:var(--ink)}
+.sl .sp{display:block;margin-top:6px;font-size:12.5px;color:var(--gold,#C49A3A);font-weight:600;font-variant-numeric:tabular-nums}
+.sl .sb{display:block;height:3px;border-radius:3px;background:#EEF0F4;margin-top:9px;overflow:hidden}
+.sl .sb i{display:block;height:100%;width:0;background:linear-gradient(90deg,#C49A3A,#E0B24A);border-radius:3px;transition:width .8s var(--out)}
+.sl{cursor:pointer}.sl:hover{box-shadow:0 0 0 1.5px rgba(44,74,158,.5)}
+.sl.hot{background:#F6F8FD;box-shadow:0 0 0 1.5px var(--navy2,#2C4A9E),0 8px 22px rgba(18,41,94,.10)}
+.sl .pl,.sl .pr{position:absolute;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--navy2,#2C4A9E)}
+.sl .pl{left:-3px}.sl .pr{right:-3px}
+.s1 .secs{display:block}
+.sec{position:relative;width:100%;text-align:left;border:0;background:none;padding:22px 2px 20px;border-bottom:1px solid var(--line);cursor:pointer;opacity:0;transform:translateX(24px)}
+.sec.in{opacity:1;transform:none;transition:opacity .7s var(--ease),transform .9s var(--out)}
+.sec.zero{opacity:.35}
+.sec .row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.sec .nm{font-size:21px;font-weight:600;letter-spacing:-.015em;color:var(--ink)}
+.sec .pc{font-size:22px;font-weight:300;letter-spacing:-.02em;color:var(--golddk);font-variant-numeric:tabular-nums}
+.sec .tr{height:3px;border-radius:2px;background:#F0F0F3;margin-top:14px;overflow:hidden}
+.sec .tr i{display:block;height:100%;width:0;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 1s var(--out)}
+.sec{cursor:default}
+.sec .links{display:flex;gap:18px;margin-top:12px}
+.sec .lk{border:0;background:none;padding:0;font-size:13.5px;font-weight:500;color:var(--navy2);cursor:pointer;transition:color .2s}
+.sec .lk span{display:inline-block;transition:transform .3s var(--out)}
+.sec .lk:hover{color:var(--navy)}
+.sec .lk[aria-expanded="true"]{color:var(--ink);font-weight:600}
+.sec .lk[aria-expanded="true"] span{transform:rotate(90deg)}
+.sec.zero .links{visibility:hidden}
+.sec .res{max-height:0;overflow:hidden;transition:max-height .7s var(--out)}
+.sec.open .res{max-height:1200px}
+.res ul{list-style:none;margin:14px 0 0;padding:0}
+.res li{padding:14px 0;border-top:1px solid var(--line);font-size:17px;font-weight:500;line-height:1.35;color:var(--ink)}
+.res li span{display:block;font-size:14.5px;font-weight:400;color:var(--sub);margin-top:3px}
+.res p{margin:10px 0 0;font-size:12.5px;color:var(--sub)}
+.sum{margin:18px 2px 0;font-size:14px;line-height:1.5;color:var(--sub);opacity:0;transition:opacity .6s var(--ease)}
+.sum.in{opacity:1}.sum b{color:var(--ink);font-weight:600}
+.reset{display:none;margin-top:14px;border:0;background:none;padding:0;font-size:13px;font-weight:500;color:var(--navy2);cursor:pointer}
+.s1 .reset{display:inline-block}
+.note{display:none;grid-column:1/-1;margin-top:6vh;font-size:12px;line-height:1.6;color:var(--sub);max-width:760px}
+.s1 .note{display:block}
+
+.res h4{margin:18px 0 2px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
+.res .cos .cn{display:flex;justify-content:space-between;gap:10px;color:var(--ink)}
+.res .cos .cn{margin-top:0;font-size:17px;font-weight:500;color:var(--ink)}
+.res .cos .cn em{font-style:normal;font-weight:300;font-size:18px;color:var(--golddk)}
+.res .cos .cb{display:block;height:3px;border-radius:2px;background:#F0F0F3;margin-top:9px;overflow:hidden}
+.res .cos .cb i{display:block;height:100%;width:0;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .9s var(--out)}
+.res ul{margin-top:6px!important}
+/* company radial popup */
+.res .cos li{cursor:pointer;border-radius:10px;transition:background .2s}
+.res .cos li:hover{background:#F7F8FC}
+.res .cos li:hover .cn{color:var(--navy2)}
+.rpop{position:fixed;inset:0;z-index:40;display:grid;place-items:center}
+.rpop[hidden]{display:none}
+.rpbg{position:absolute;inset:0;background:rgba(250,250,252,.6);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);opacity:0;transition:opacity .35s var(--ease)}
+.rpc{position:relative;width:min(900px,calc(100vw - 32px));max-height:calc(100vh - 40px);overflow:auto;background:#fff;border-radius:26px;padding:26px 30px 22px;
+  box-shadow:0 40px 100px rgba(18,41,94,.18),0 0 0 1px rgba(0,0,0,.04);opacity:0;transform:translateY(18px) scale(.97);transition:opacity .35s var(--ease),transform .5s var(--out)}
+.rpop.on .rpbg{opacity:1}.rpop.on .rpc{opacity:1;transform:none}
+.rph{display:flex;align-items:flex-start;gap:16px}
+.rph h3{margin:0;font-size:28px;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+.rph p{margin:4px 0 0;font-size:14.5px;color:var(--sub)}
+.rph .rpn2{display:block;margin-top:2px;font-size:12.5px;color:var(--sub);font-weight:400}.rph p b{color:var(--golddk);font-weight:600}
+.rpx{margin-left:auto;width:34px;height:34px;border-radius:50%;border:0;background:#F2F2F5;color:#6E6E73;cursor:pointer;font-size:14px}
+.rpx:hover{background:#E8E8ED;color:var(--ink)}
+.rpn{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 0;padding-top:14px;border-top:1px solid var(--line)}
+.crumb{font-size:14px;color:var(--sub);display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.crumb button{border:0;background:none;padding:0;color:var(--navy2);font-size:14px;cursor:pointer}
+.crumb button:hover{text-decoration:underline}
+.crumb .cur{color:var(--ink);font-weight:600}.crumb i{font-style:normal;color:#C7C7CC}
+.lvl{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--golddk)}
+.key{display:flex;gap:16px;font-size:12.5px;color:var(--sub);margin-top:8px}
+.key i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+#rsvg{display:block;width:100%;height:auto;max-height:calc(100vh - 260px);margin-top:4px}
+#rsvg .spk{fill:none;stroke:#D9DCE3;stroke-width:1.1}
+#rsvg .ctr{fill:var(--navy2)}
+#rsvg .ctl{font-family:var(--f);font-size:14px;font-weight:600;fill:var(--navy2)}
+#rsvg .rb{cursor:pointer;transform-box:view-box}
+#rsvg.leaf .rb,#rsvg.leaf .rl{cursor:default}
+#rsvg .rb .bar{fill:var(--gold);opacity:.92;transform-origin:inherit;animation:grow .7s var(--out) both;animation-delay:var(--d);transition:opacity .2s}
+#rsvg .rb .bal{fill:var(--gold);animation:grow .7s var(--out) both;animation-delay:calc(var(--d) + 120ms)}
+#rsvg .rb.hov .bar{opacity:1;fill:var(--golddk)}
+@keyframes grow{from{opacity:0;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+#rsvg .rl{font-family:var(--f);font-size:14px;font-weight:500;fill:var(--navy2);cursor:pointer;opacity:0;animation:fadein .5s var(--ease) forwards;animation-delay:var(--d)}
+#rsvg .rl.hov{fill:var(--navy);font-weight:600}
+#rsvg .rn{fill:var(--sub);font-weight:400;font-size:12.5px}
+@keyframes fadein{to{opacity:1}}
+.rplist{margin-top:10px}.rplist[hidden]{display:none}
+.rplist ul{list-style:none;margin:0;padding:0}
+.rplist>ul>li{padding:13px 0;border-bottom:1px solid var(--line);font-size:16px;line-height:1.45;color:var(--ink)}
+.rplist>ul>li>span{display:inline-block;margin-left:8px;font-size:12px;font-weight:600;color:#fff;background:var(--gold);padding:2px 8px;border-radius:999px;vertical-align:1px}
+
+.rpr{display:flex;align-items:center;gap:18px}
+.yn{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub)}
+.yn select{-webkit-appearance:none;appearance:none;border:0;border-bottom:1.5px solid #D2D2D7;border-radius:0;background:transparent;padding:4px 22px 4px 2px;font:inherit;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,#1D1D1F 50%),linear-gradient(135deg,#1D1D1F 50%,transparent 50%);background-position:calc(100% - 9px) 55%,calc(100% - 4px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+.yn select:focus{outline:none;border-bottom-color:var(--gold)}
+#rsvg.no .rb .bar{fill:var(--navy2)}
+#rsvg.all .rb .bar{fill:var(--navy)}
+#rsvg.all .rb.hov .bar{fill:#0A1A42}
+#rsvg.no .rb.hov .bar{fill:var(--navy)}
+#rsvg .emp{font-family:var(--f);font-size:15px;fill:var(--sub)}
+
+.views{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:12px}
+.views button{border:0;background:none;padding:2px 0;font-size:13.5px;font-weight:500;color:var(--navy2);cursor:pointer;border-bottom:1.5px solid transparent}
+.views button:hover{color:var(--navy)}
+.views button[aria-selected="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--gold)}
+.tree{margin-top:6px}
+.tree ul{list-style:none;margin:0;padding:0}
+.tree ul ul{margin-left:22px;border-left:1px solid var(--line);padding-left:14px}
+.tree li{padding:6px 0}
+.tree .tw{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.tree .tl{font-size:15px;color:var(--ink)}
+.tree .tr0>li>.tw .tl{font-size:17px;font-weight:600}
+.tree .tl em{font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:.06em;color:var(--golddk);margin-right:8px}
+.rpc.no .tree .tl em{color:var(--navy2)}
+.tree .tc{font-size:14px;font-weight:300;color:var(--golddk);font-variant-numeric:tabular-nums}
+.rpc.no .tree .tc{color:var(--navy2)}
+.tree .tb{display:block;height:3px;border-radius:2px;background:#F0F0F3;margin-top:5px;overflow:hidden}
+.tree .tb i{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.rpc.no .tree .tb i{background:var(--navy2)}
+.emp2{color:var(--sub);font-size:15px}
+
+.dmcard{position:fixed;z-index:60;width:min(540px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:hidden;padding:14px 16px 12px;border-radius:16px;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:0 18px 44px rgba(18,41,94,.16),0 0 0 1px rgba(0,0,0,.05);pointer-events:none;opacity:0;transform:translateY(4px) scale(.98);transition:opacity .18s var(--ease),transform .25s var(--out)}
+.dmcard.on{opacity:1;transform:none}
+.dmh{font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:10px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.dmcard dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:7px 12px;font-size:13.5px}
+.dmcard dt{color:var(--sub)}
+.dmcard dd{margin:0;color:var(--ink);font-weight:500;text-align:right}
+.dmcard .tbc{color:#B4B6BE;font-weight:400;font-style:italic}
+
+.allopp{display:inline-flex;align-items:center;gap:8px;margin:16px 0 4px;border:0;border-radius:999px;padding:10px 18px;background:var(--ink);color:#fff;font-size:14px;font-weight:600;cursor:pointer;
+  box-shadow:0 8px 22px rgba(29,29,31,.16);transition:background .25s,transform .3s var(--out)}
+.allopp span{transition:transform .3s var(--out)}
+.allopp:hover{background:var(--navy)}.allopp:hover span{transform:translateX(3px)}
+.opp{position:fixed;inset:0;z-index:80;background:#fbfbfd;opacity:0;transform:translateY(24px);transition:opacity .4s var(--ease),transform .55s var(--out)}
+.opp.on{opacity:1;transform:none}
+.opp[hidden]{display:none}
+.opp iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fbfbfd}
+.oppback{position:absolute;z-index:2;left:18px;top:calc(14px + env(safe-area-inset-top,0px));border:0;border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;
+  background:rgba(255,255,255,.85);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);box-shadow:0 0 0 1px rgba(0,0,0,.06),0 8px 22px rgba(0,0,0,.08)}
+.oppback:hover{background:#fff}
+
+.dmh small{display:block;margin-top:2px;font-size:12px;font-weight:500;color:var(--sub)}
+.dmg+.dmg{margin-top:10px}
+.dml{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--golddk);margin-bottom:4px}
+.dml span{font-size:10.5px;font-weight:500;color:var(--sub);letter-spacing:0}
+.dmg ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 16px}
+.dmg li{display:flex;flex-direction:column;padding:3px 0;line-height:1.3}
+.dmg li b{font-size:13px;font-weight:600;color:var(--ink)}
+.dmg li span{font-size:12px;color:var(--sub)}
+.dmcard p.tbc{margin:0;font-size:13px}
+
+.rpbody{display:block}
+.rpc.withdm{width:min(1180px,calc(100vw - 32px))}
+.rpc.withdm .rpbody{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:28px;align-items:start}
+.dmpanel{display:none}
+.rpc.withdm .dmpanel{display:block;padding:0}
+.dmres{border:1px solid var(--line);border-radius:20px;padding:18px 20px 8px;background:#fff}
+.dmres section:last-child li:last-child{border-bottom:0}
+.dpe{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--golddk)}
+.dmpanel h4{margin:6px 0 2px;font-size:21px;font-weight:600;letter-spacing:-.015em;line-height:1.2;color:var(--ink)}
+.dpc{margin:0 0 6px;font-size:14px;color:var(--sub)}
+.dpn{margin:12px 0 0;font-size:15px;color:var(--sub);line-height:1.5}
+.dmpanel section{margin-top:18px}
+.dpl{display:flex;align-items:baseline;justify-content:space-between;font-size:19px;font-weight:600;letter-spacing:-.01em;color:var(--navy2);padding-bottom:8px;border-bottom:1px solid var(--line)}
+.dpl span{font-size:17px;font-weight:600;color:var(--navy2);opacity:.75}
+.dmpanel ul{list-style:none;margin:0;padding:0}
+.dmpanel li{display:flex;flex-direction:column;gap:2px;padding:11px 0;border-bottom:1px solid #F2F2F5}
+.dmpanel li b{font-size:15px;font-weight:600;color:var(--ink);line-height:1.3}
+.dmpanel li span{font-size:14.5px;font-weight:500;color:#3A3A3F;line-height:1.4}
+#rsvg .rb.sel .bar{fill:var(--golddk);opacity:1}
+#rsvg.no .rb.sel .bar,#rsvg.all .rb.sel .bar{fill:var(--navy)}
+
+#rsvg .rb.drag{cursor:grab}
+#rsvg .rb:focus{outline:none}
+#rsvg .rb:focus-visible .bar{stroke:var(--gold);stroke-width:2}
+body.dragging-bar,body.dragging-bar *{cursor:grabbing!important;user-select:none}
+.dmghost{position:fixed;left:0;top:0;z-index:90;pointer-events:none;max-width:260px;padding:9px 14px;border-radius:12px;background:var(--gold);color:#fff;font-size:14px;font-weight:600;line-height:1.3;box-shadow:0 14px 34px rgba(156,116,32,.35)}
+.dz{position:relative;display:flex;align-items:center;justify-content:center;padding:26px 18px;border:1.5px solid #D2D2D7;border-radius:18px;background:#fff;font-size:16px;font-weight:600;color:var(--ink);letter-spacing:-.005em;transition:border-color .2s,background .2s,transform .25s var(--out)}
+.dz.sm{padding:14px 16px;border-radius:14px;font-size:16px;text-align:center;line-height:1.3;border-color:var(--gold);background:#FFFCF4;color:var(--ink)}
+.dz.ready{border-color:var(--gold);background:#FFFCF4;color:var(--golddk)}
+.dz.over{border-style:solid;border-color:var(--gold);background:#FFF6E2;transform:scale(1.02)}
+.dzplus{flex:none;width:44px;height:44px;border-radius:50%;border:1.5px solid #D2D2D7;background:#fff;color:var(--golddk);font-size:24px;font-weight:300;line-height:1;cursor:pointer;transition:all .2s}
+.dz.sm .dzplus{width:32px;height:32px;font-size:19px}
+.dzplus:hover,.dz.over .dzplus{border-color:var(--gold);background:var(--gold);color:#fff}
+.dzt b{display:block;font-size:15px;font-weight:600;color:var(--ink)}
+.dz.sm .dzt b{font-size:13.5px}
+.dzt span{font-size:13px;color:var(--sub)}
+.dzmenu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:5;padding:6px;border-radius:14px;background:#fff;box-shadow:0 18px 40px rgba(18,41,94,.16),0 0 0 1px rgba(0,0,0,.05)}
+.dzmenu[hidden]{display:none}
+.dzmenu button{display:block;width:100%;text-align:left;border:0;background:none;padding:10px 12px;border-radius:10px;font-size:14.5px;color:var(--ink);cursor:pointer}
+.dzmenu button:hover{background:#F5F5F7}
+.dmres{position:relative;margin-top:14px}
+.dmclr{position:absolute;right:20px;top:18px;border:0;background:none;padding:0;font-size:13px;font-weight:500;color:var(--navy2);cursor:pointer}
+.rpc.withdm .dmpanel{padding-top:2px}
+.res .cos .cn .pri{flex:none;display:inline-grid;place-items:center;width:24px;height:24px;margin-right:10px;border-radius:50%;background:#F5F5F7;font-size:12.5px;font-weight:600;color:var(--navy2)}
+.res .cos .cn{justify-content:flex-start!important;align-items:center}
+.res .cos .cn em{margin-left:auto}
+.dmopp{display:inline-flex;align-items:center;gap:6px;margin:14px 2px 0;border:0;background:none;padding:0;font-size:14.5px;font-weight:600;color:var(--navy2);cursor:pointer}
+.dmopp span{transition:transform .3s var(--out)}
+.dmopp:hover{color:var(--navy)}.dmopp:hover span{transform:translateX(3px)}
+/* rays */
+#rays{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;display:none}
+.s1 #rays{display:block}
+.ray{fill:none;stroke-linecap:round}
+
+/* logo turn */
+.veil{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:opacity .45s var(--ease)}
+.veil.on{opacity:1}
+.veil svg{width:58px;height:58px;color:#0A0B0D;opacity:0;transform:scale(.85);transition:opacity .4s,transform .5s var(--out)}
+.veil.on svg{opacity:1;transform:none}
+.mark{position:fixed;left:clamp(24px,5vw,80px);top:22px;width:22px;height:22px;color:#0A0B0D;opacity:0;transition:opacity .6s}
+.s1 .mark{opacity:1}
+
+@media (max-width:980px){
+  .opts{grid-template-columns:1fr;max-width:460px}.col+.col{margin-top:26px}
+  .s1 .app{grid-template-columns:1fr}.s1 .secs{grid-column:1;position:static;margin-top:28px}.solx{grid-column:1;position:static;margin-top:28px}.s1 #rays{display:none}}
+@media (prefers-reduced-motion: reduce){.sec.in,.sec .tr i,.veil,.veil svg{transition:none}}
+</style>
+</head>
+<body class="s0">
+<svg class="mark" viewBox="0 0 3842 3780" aria-hidden="true"><g transform="translate(0.000000,4258.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M9217 33362 l-9217 -9217 0 -515 0 -515 9243 -9241 c9035 -9035 9243
+-9242 9301 -9263 65 -24 200 -30 249 -12 25 10 32 6 95 -58 110 -111 259 -145
+408 -90 58 21 275 237 9742 9703 8939 8938 9685 9686 9715 9746 48 98 47 218
+-3 314 -33 62 -665 676 -9495 9216 l-9460 9150 -680 0 -680 0 -9218 -9218z
+m19677 -672 l8937 -8644 -9133 -9133 c-5023 -5023 -9134 -9130 -9136 -9128 -2
+2 -21 1827 -42 4057 l-38 4053 4808 4810 c4336 4339 4809 4815 4831 4865 19
+44 24 72 24 146 0 164 89 62 -1245 1431 -1337 1372 -1278 1313 -1357 1343 -80
+30 -206 30 -288 0 -59 -22 -124 -86 -2847 -2809 l-2788 -2786 0 3840 0 3840
+883 885 c1005 1007 932 920 932 1095 0 188 133 47 -1410 1495 l-1345 1261 0
+4146 0 4145 138 -133 c76 -74 4160 -4024 9076 -8779z m-8601 -1029 l1189
+-1114 -790 -791 c-434 -435 -794 -799 -799 -809 -8 -16 -12 -16 -54 -2 -66 24
+-192 21 -265 -6 -58 -21 -149 -111 -3634 -3595 l-3575 -3574 -1100 1100 -1100
+1100 4434 4434 4435 4435 35 -31 c20 -18 571 -533 1224 -1147z m7013 -7025
+l895 -920 -4593 -4593 -4593 -4593 -1013 1012 -1012 1013 1514 1514 1513 1513
+58 -21 c80 -30 199 -30 281 0 57 21 136 99 3049 3010 1645 1644 2993 2988
+2998 2986 4 -1 410 -416 903 -921z"/></g></svg>
+<main class="app" id="app">
+  <svg id="rays" aria-hidden="true"><defs><linearGradient id="rg" x1="0" x2="1"><stop offset="0" stop-color="#C49A3A"/><stop offset="1" stop-color="#2C4A9E" stop-opacity=".6"/></linearGradient><linearGradient id="rgl" x1="0" x2="1"><stop offset="0" stop-color="#E6CB85"/><stop offset="1" stop-color="#A9BBE6"/></linearGradient></defs><g id="rayg"></g></svg>
+  <div class="blabels" id="blabels" aria-hidden="true"></div>
+  <div class="q" id="q"><h1>¿Dónde tienen <em>más demanda</em> los R&amp;C de BECCAR?</h1></div>
+  <div class="mbar" id="mbar"><span class="ml">Resultados de negocio</span><button data-m="1" aria-pressed="true"><b>1</b>Columna</button><button data-m="2" aria-pressed="false"><b>2</b>En la solución</button><button data-m="3" aria-pressed="false"><b>3</b>Panel de historia</button><button data-m="4" aria-pressed="false"><b>4</b>Desde el resultado</button></div>
+  <div class="rpick" id="rpick"><span class="rq">¿Qué quiere lograr el cliente?<small>Pasa el cursor aquí y arrastra un resultado a la columna «Lo que logra el cliente»</small></span><div id="rpills"></div></div>
+  <div class="opts" id="opts"></div>
+  <div class="solx" id="solx"><h2>Soluciones</h2><div id="sollist"></div></div>
+  <div class="resx" id="resx"><h2>Lo que logra el cliente</h2><div id="reslist"></div></div>
+  <div class="rmini" id="rmini" title="Arrastra aquí un resultado de negocio"><span class="rmi">+</span><span>Resultados de negocio<span class="rmc"></span></span><span class="rml"></span><span class="rmh">Arrastra aquí un resultado</span></div>
+  <div class="cta" id="cta"><span id="cta-n">Selecciona uno o más</span><button class="sel" id="selall">Seleccionar todo</button><button class="go2" id="go" disabled>Ver dónde se necesitan <span aria-hidden="true">→</span></button></div>
+  <div class="secs" id="secs" aria-live="polite"></div>
+</main>
+<div class="rpop" id="rpop" hidden role="dialog" aria-modal="true" aria-labelledby="rp-co"><div class="rpbg"></div><div class="rpc">
+  <div class="rph"><div><h3 id="rp-co"></h3><p id="rp-sub"></p></div><button class="rpx" id="rp-x" aria-label="Cerrar">✕</button></div>
+  <div class="rpn"><div class="crumb" id="rp-crumb"></div><div class="rpr"><label class="yn"><span>Abordable</span><select id="rp-yn" aria-label="Iniciativas abordables"><option value="Y">Sí</option><option value="N">No</option><option value="ALL">Todas</option></select></label><span class="lvl" id="rp-lvl" hidden></span></div></div>
+  <div class="views" id="rp-views" role="tablist" aria-label="Vista"><button data-v="drill" aria-selected="true">Todo</button><button data-v="1" aria-selected="false">Nivel 1</button><button data-v="2" aria-selected="false">Nivel 2</button><button data-v="3" aria-selected="false">Nivel 3</button><button data-v="4" aria-selected="false">Nivel 4</button></div>
+  <div class="key"><span>Haz clic en una barra para bajar un nivel</span></div>
+  <div class="rpbody"><div class="rpchart"><svg id="rsvg" role="img" aria-label="Iniciativas estratégicas por nivel"></svg><div class="rplist" id="rp-list" hidden></div></div>
+  <aside class="dmpanel" id="dmpanel" aria-live="polite"></aside></div>
+</div></div>
+<div class="dmcard" id="dmcard" role="tooltip"></div>
+<div class="opp" id="opp" hidden role="dialog" aria-modal="true" aria-label="Todas las oportunidades"><button class="oppback" id="oppback"><span aria-hidden="true">←</span> Volver</button><iframe id="oppframe" title="Todas las oportunidades"></iframe></div>
+<script type="text/plain" id="oppData"></script>
+<aside class="story" id="story" hidden aria-live="polite"><button class="stx" id="stx" aria-label="Cerrar">×</button><div id="stbody"></div></aside>
+<div class="veil" id="veil"><svg viewBox="0 0 3842 3780" id="vmark"><g transform="translate(0.000000,4258.000000) scale(0.100000,-0.100000)" fill="currentColor"><path d="M9217 33362 l-9217 -9217 0 -515 0 -515 9243 -9241 c9035 -9035 9243
+-9242 9301 -9263 65 -24 200 -30 249 -12 25 10 32 6 95 -58 110 -111 259 -145
+408 -90 58 21 275 237 9742 9703 8939 8938 9685 9686 9715 9746 48 98 47 218
+-3 314 -33 62 -665 676 -9495 9216 l-9460 9150 -680 0 -680 0 -9218 -9218z
+m19677 -672 l8937 -8644 -9133 -9133 c-5023 -5023 -9134 -9130 -9136 -9128 -2
+2 -21 1827 -42 4057 l-38 4053 4808 4810 c4336 4339 4809 4815 4831 4865 19
+44 24 72 24 146 0 164 89 62 -1245 1431 -1337 1372 -1278 1313 -1357 1343 -80
+30 -206 30 -288 0 -59 -22 -124 -86 -2847 -2809 l-2788 -2786 0 3840 0 3840
+883 885 c1005 1007 932 920 932 1095 0 188 133 47 -1410 1495 l-1345 1261 0
+4146 0 4145 138 -133 c76 -74 4160 -4024 9076 -8779z m-8601 -1029 l1189
+-1114 -790 -791 c-434 -435 -794 -799 -799 -809 -8 -16 -12 -16 -54 -2 -66 24
+-192 21 -265 -6 -58 -21 -149 -111 -3634 -3595 l-3575 -3574 -1100 1100 -1100
+1100 4434 4434 4435 4435 35 -31 c20 -18 571 -533 1224 -1147z m7013 -7025
+l895 -920 -4593 -4593 -4593 -4593 -1013 1012 -1012 1013 1514 1514 1513 1513
+58 -21 c80 -30 199 -30 281 0 57 21 136 99 3049 3010 1645 1644 2993 2988
+2998 2986 4 -1 410 -416 903 -921z"/></g></svg></div>
+
+<script>
+const D={"rc": [{"id": "BE-RC001", "type": "capability", "name": "Ingeniería de arquitectura de carrocerías"}, {"id": "BE-RC002", "type": "capability", "name": "Ingeniería de integración carrocería-chasis"}, {"id": "BE-RC003", "type": "capability", "name": "Diseño del espacio de pasajeros"}, {"id": "BE-RC004", "type": "capability", "name": "Ingeniería de integración de carrocerías eléctricas"}, {"id": "BE-RC005", "type": "resource", "name": "Instalaciones de fabricación de carrocerías"}, {"id": "BE-RC006", "type": "capability", "name": "Aseguramiento de conformidad en producción"}, {"id": "BE-RC007", "type": "capability", "name": "Resolución de casos de garantía"}, {"id": "BE-RC008", "type": "capability", "name": "Surtido de refacciones de servicio"}, {"id": "BE-RC009", "type": "capability", "name": "Capacitación técnica de flotas"}, {"id": "BE-RC010", "type": "resource", "name": "Instalaciones de soporte de servicio"}, {"id": "BE-RC011", "type": "capability", "name": "Ingeniería de integración de subsistemas a bordo"}, {"id": "BE-RC012", "type": "capability", "name": "Ensamble de terminación del vehículo"}, {"id": "BE-RC013", "type": "capability", "name": "Acabado de carrocerías"}, {"id": "BE-RC014", "type": "capability", "name": "Fabricación de estructuras de carrocería"}, {"id": "BE-RC015", "type": "capability", "name": "Ingeniería de cambios de configuración"}, {"id": "BE-RC016", "type": "capability", "name": "Soporte al uso de flotas"}, {"id": "BE-RC017", "type": "resource", "name": "Inventario de refacciones de servicio"}, {"id": "BE-RC018", "type": "resource", "name": "Relaciones con socios de chasis y subsistemas"}, {"id": "BE-RC019", "type": "resource", "name": "Experiencia en ingeniería vehicular"}], "sols": [{"id": "S1", "name": "Carrocerías de autobús a la medida (URBI, URBUS G4, URVIABUS, B340)", "caps": ["BE-RC001", "BE-RC002", "BE-RC003", "BE-RC014", "BE-RC012", "BE-RC013", "BE-RC006"], "res": ["BE-RC005", "BE-RC019"], "scope": ""}, {"id": "S2", "name": "Carrocería recomendada para chasis de socios", "caps": ["BE-RC002", "BE-RC015"], "res": ["BE-RC018"], "scope": ""}, {"id": "S3", "name": "Configuración por ruta y servicio", "caps": ["BE-RC011", "BE-RC015", "BE-RC003"], "res": [], "scope": ""}, {"id": "S4", "name": "Carrocería eléctrica y de energías alternativas (E URVIABUS LF)", "caps": ["BE-RC004", "BE-RC002", "BE-RC011"], "res": ["BE-RC019"], "scope": ""}, {"id": "S5", "name": "Refacciones originales de carrocería", "caps": ["BE-RC008"], "res": ["BE-RC017"], "scope": ""}, {"id": "S6", "name": "Servicio técnico y seguimiento de garantías", "caps": ["BE-RC016", "BE-RC007", "BE-RC009"], "res": ["BE-RC010"], "scope": ""}, {"id": "S7", "name": "Producción local en Jalisco", "caps": ["BE-RC014", "BE-RC012", "BE-RC013"], "res": ["BE-RC005"], "scope": ""}], "res": [{"id": "T1", "sector": "", "name": "Vender el vehículo completo (chasis + carrocería) en cada operación", "sols": ["S1", "S2", "S3"], "measures": "Porcentaje de chasis vendidos con carrocería incluida"}, {"id": "T2", "sector": "", "name": "Activar nuevos mercados regionales con carrocerías entregadas localmente", "sols": ["S1", "S2", "S7"], "measures": "Tiempo de entrega de carrocería por mercado"}, {"id": "T3", "sector": "", "name": "Completar la gama de autobuses Euro 6 con más configuraciones", "sols": ["S1", "S3"], "measures": "Configuraciones de carrocería homologadas por chasis"}, {"id": "T4", "sector": "", "name": "Ganar el segmento interurbano premium con un autocar completo", "sols": ["S1", "S2", "S3"], "measures": "Autocares interurbanos vendidos con carrocería"}, {"id": "T5", "sector": "", "name": "Ganar pruebas y licitaciones con un vehículo hecho en México", "sols": ["S1", "S7"], "measures": "Tasa de conversión de pruebas y licitaciones"}, {"id": "T6", "sector": "", "name": "Incorporar nuevas tecnologías y energías alternativas", "sols": ["S4", "S3"], "measures": "Unidades eléctricas o de GNC con carrocería compatible"}, {"id": "T7", "sector": "", "name": "Acompañar al operador en todo el ciclo de vida de la carrocería", "sols": ["S5", "S6"], "measures": "Contratos de posventa de carrocería por flota"}], "inits": [{"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "VWTB reafirmó el acuerdo con AGRÚAS para dar a sus socios condiciones exclusivas de compra de vehículos", "res": ["T1"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: win fleet renewal business from AGRÚAS (crane sector) members through exclusive terms. BECCAR's contribution: Crane sector companies transport large workforces to remote sites — personnel transport buses are a core operational need. BECCAR's Urbus G4 is purpose-built for this use case: rugged, configurable, adapted to rough terrain. BECCAR joins the AGRÚAS agreement as the recommended body for personnel transport, giving VW a more complete offer for crane operators who need workforce mobility, not just cranes.", "src": "https://vwcamionesybuses.com.mx/volkswagen-truck-bus-mexico-un-aliado-espectacular-en-el-sector-de-gruas/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Pruebas con un Volksbus 9.180 OD para modernizar el transporte público", "res": ["T5"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: win Quintana Roo's state mobility programme — a government fleet procurement. BECCAR's contribution: Government tenders in Mexico increasingly require domestic content and local manufacturing. A VW chassis assembled in Querétaro with a BECCAR body built in Jalisco is a 'Hecho en México' solution that a Brazilian or European assembled body cannot match. BECCAR's involvement in the Quintana Roo trial strengthens VW's bid by adding Mexican body manufacturing to the proposal.", "src": "https://www.tyt.com.mx/nota/quintana-roo-inicia-pruebas-con-un-volksbus-9-180-od-con-miras-a-modernizar-el-transporte"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Programa de vehículos demostradores para que las empresas prueben y validen su desempeño", "res": ["T5"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: let ADO, IAMSA and CISA evaluate Euro 6 buses in real operating conditions. BECCAR's contribution: Demo vehicles with standard bodies don't tell operators how the body will perform on their specific routes. BECCAR builds the demo body to each operator's route profile — passenger density, accessibility requirements, luggage configuration. A demo with a BECCAR custom body is a demo of the actual vehicle the operator would buy, not a generic showcase. VW's close rates improve when the demo matches the purchase.", "src": "https://revistamagazzine.com/autobuses/volkswagen-truck-bus-mexico-fortalece-alianzas-con-empresas-lideres-del-transporte-de-pasajeros/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Reforzar su posición con los chasis RR2 y RR4 en el segmento de larga distancia", "res": ["T4"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: win premium intercity coach segment with MAN RR2/RR4 chassis. BECCAR's contribution: Premium intercity operators don't buy bare chassis — they buy a complete coach. BECCAR's B340 and B350 are designed for the long-distance intercity segment. As VW's recommended bodybuilder for RR2/RR4, BECCAR completes the premium intercity offer, allowing VW to pitch a full coach solution — not just a chassis — to operators like IAMSA and ADO.", "src": "https://www.pasajero7.com/volkswagen-truck-bus-mexico-lanza-e-volkbus-electrico-en-expo-foro-2026/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Implementar una estrategia de soluciones integrales de movilidad", "res": ["T1"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: move from selling vehicles to selling complete mobility solutions — product + service + finance + body. BECCAR's contribution: Customisation IS the value-added service in this bundle. When VW promises an operator a 'tailored mobility solution,' BECCAR delivers the body configured to that operator's exact routes, passenger load and accessibility requirements. Without a bodybuilder partner, VW's mobility solution is still a commodity chassis. With BECCAR, it becomes a genuinely bespoke vehicle.", "src": "https://www.pasajero7.com/volkswagen-truck-bus-mexico-lanza-e-volkbus-electrico-en-expo-foro-2026/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Lanzamiento del programa ‘Mi Primer Euro VI’ para facilitar la transición a la nueva tecnología", "res": ["T1"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: remove financial barriers so operators transition their fleets to Euro VI faster. BECCAR's contribution: The body is often the second major cost after the chassis in a fleet renewal. BECCAR offers competitive body pricing on VW Euro VI chassis with the same payment flexibility. If VW can offer 'My First Euro VI' with the chassis cost covered, BECCAR enables the operator to complete the vehicle — body included — at a total cost that makes the transition viable today, not next year.", "src": "https://www.tyt.com.mx/nota/volkswagen-truck-bus-mexico-sienta-las-bases-para-seguir-creciendo"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Apertura de una nueva agencia en Villahermosa, Tabasco", "res": ["T2"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: capture bus/truck demand in Villahermosa and the southeast. BECCAR's contribution: Tabasco's oil and gas sector generates significant personnel transport demand — offshore and field workers need buses adapted for tropical heat, rough terrain and long-distance site access. BECCAR configures carrocerías for these specific conditions. VW's Villahermosa dealership can differentiate by offering operators a chassis + body solution adapted to Tabasco's specific operational environment.", "src": "https://www.tyt.com.mx/nota/volkswagen-truck-bus-mexico-sienta-las-bases-para-seguir-creciendo"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Alianza estratégica con Grupo TERSA para una nueva agencia en Tijuana", "res": ["T2"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: establish full coverage in Baja California through TERSA. BECCAR's contribution: Baja California has a growing manufacturing and logistics sector. Fleet operators there need personnel transport and intercity buses configured for Baja's road conditions and temperature extremes. BECCAR's local adaptation expertise — 40 years building for Mexican conditions — complements TERSA's commercial reach. VW + TERSA + BECCAR = complete bus solution in Baja.", "src": "https://vwcamionesybuses.com.mx/volkswagen-truck-bus-mexico-avanza-a-paso-firme-y-conquista-territorio-en-tijuana/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Volkswagen Truck & Bus México abre su nueva agencia en Chihuahua", "res": ["T2"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: serve northern Mexico's industrial and transport market from Chihuahua. BECCAR's contribution: Northern Mexico has significant maquiladora and industrial activity — personnel transport is a core need for every large manufacturing facility. BECCAR's Urbus G4 is the personnel transport solution. VW's Chihuahua dealership can offer a complete personnel transport package — VW chassis + BECCAR Urbus G4 body — to every maquiladora in the state.", "src": "https://vwcamionesybuses.com.mx/volkswagen-truck-bus-mexico-amplia-su-cobertura-nacional-y-celebra-la-apertura-de-su-nuevo-distribuidor-en-chihuahua/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Apertura de un nuevo hub estratégico de venta de camiones y autobuses en el occidente de México", "res": ["T2"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: establish a major commercial presence in western Mexico (Jalisco/Bajío). BECCAR's contribution: BECCAR's plant is in Zapotlanejo — 25 minutes from this hub. For every bus chassis VW sells through this hub, BECCAR can deliver a configured body faster than any alternative supplier. VW's western hub becomes more competitive because the body lead time — often the bottleneck in bus delivery — is shorter here than anywhere else in Mexico. BECCAR is the local body advantage VW gains by partnering.", "src": "https://www.tyt.com.mx/nota/ano-de-festejos-y-crecimiento-para-volkswagen-truck-bus-mexico"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Firma de convenios de colaboración con AGRÚAS para la renovación de flotas", "res": ["T1"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: formalise fleet renewal as a structured programme with AGRÚAS members. BECCAR's contribution: Fleet renewal is a total vehicle decision, not just a chassis decision. BECCAR's inclusion in the AGRÚAS renewal programme means crane operators replace their ageing personnel transport buses with a complete VW chassis + BECCAR body solution — one procurement conversation, one supplier relationship, complete vehicle.", "src": "https://www.tyt.com.mx/nota/ano-de-festejos-y-crecimiento-para-volkswagen-truck-bus-mexico"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Ampliación de la red de distribuidores en 2024", "res": ["T2"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: increase national commercial coverage by activating new dealer markets. BECCAR's contribution: For every new market VW activates, the body availability question becomes critical. Operators won't buy a chassis if they can't get a body delivered locally. BECCAR's national distribution capability means every new VW dealer can offer a complete vehicle — chassis + body — without operators waiting for imported bodies. BECCAR's partnership makes every new VW dealer more commercially effective from day one.", "src": "https://www.indicadorautomotriz.com.mx/autobuses/volkswagen-truck-bus-celebra-exitosa-participacion-en-expo-foro-movilidad-2024/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Fortalecer la estructura comercial y la integración de producción local en México", "res": ["T5"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: deepen local commercial and production integration to reduce import dependency and strengthen Mexico market position, particularly under USMCA uncertainty. BECCAR's contribution: BECCAR is 100% Mexican-manufactured — 40 years, Jalisco plant, local content, local workforce. In a USMCA environment where local content matters, a VW chassis + BECCAR body combination maximises Mexican content in the final vehicle. BECCAR strengthens VW's 'Made in Mexico' story and reduces the commercial risk of imported body supply chains.", "src": "https://t21.com.mx/volkswagen-truck-bus-define-prioridades-para-2026/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Presentación de una nueva generación de autobuses Euro 6", "res": ["T3"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: lead the market with the most comprehensive Euro 6 bus range. BECCAR's contribution: 'Comprehensive range' means covering every body configuration the market needs. BECCAR's portfolio — urban, BRT, personnel, intercity, electric — extends VW's range into body variants VW doesn't manufacture internally. Each new Euro 6 chassis VW presents becomes more valuable with BECCAR as an approved bodybuilder option sitting alongside it.", "src": "https://transporte.mx/volkswagen-truck-bus-mexico-impulsa-una-nueva-era-del-transporte-de-pasajeros-en-expo-foro-2026/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Reforzar su presencia estratégica en el segmento de autocares interurbanos premium", "res": ["T4"], "decision": "BECCAR?=Y", "level": "", "reason": "VW strengthening premium intercity — MAN RR2/RR4 chassis for intercity operators. These chassis are typically sold as bare chassis with bodybuilder carrocerías. BECCAR's B340 and B350 compete in this exact application. BECCAR approaches VW's bus division to be the recommended carrocería for premium intercity on MAN chassis", "src": "https://transporte.mx/volkswagen-truck-bus-mexico-impulsa-una-nueva-era-del-transporte-de-pasajeros-en-expo-foro-2026/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Enfoque integral que combina producto, posventa, soluciones financieras y capacitación", "res": ["T7"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: support operators across the full vehicle lifecycle — from purchase to operation. BECCAR's contribution: Body customisation at purchase + local body aftersales during operation. When panels need replacing, when livery needs updating, when interior configurations need changing — BECCAR is 25 minutes from VW's western hub. That proximity makes BECCAR a lifecycle partner, not just a one-time supplier, strengthening VW's 'full lifecycle support' promise to operators.", "src": "https://transporte.mx/volkswagen-truck-bus-mexico-impulsa-una-nueva-era-del-transporte-de-pasajeros-en-expo-foro-2026/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Lanzamiento del nuevo Volksbus 15.210 SCD Euro 6", "res": ["T3"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: expand urban/intercity bus portfolio with new Euro 6 platform. BECCAR's contribution: BECCAR's Urviabus MT and Urviabus MD are purpose-built for exactly this chassis class. By homologating BECCAR carrocerías on the 15.210 SCD, VW expands its addressable market — operators who want the 15.210 platform but need a specific body configuration that VW's standard offering doesn't cover. BECCAR fills that gap without VW developing new products.", "src": "https://mantruckandbus.com.mx/volkswagen-truck-bus-mexico-presenta-una-nueva-era-de-innovacion-eficiencia-y-potencia-en-expo-transporte-2025/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Lanzamiento de la nueva gama de autobuses Euro 6 con motores eficientes y postratamiento", "res": ["T3"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: position Euro 6 technology as the complete answer to operator needs for efficiency and compliance. BECCAR's contribution: Efficiency doesn't stop at the engine — body weight, aerodynamics and interior configuration all affect fuel consumption and operational cost. BECCAR's lightweight carrocería design on VW's Euro 6 engine gives operators a genuinely more efficient total vehicle. BECCAR becomes the body argument in VW's efficiency story.", "src": "https://vwcamionesybuses.com.mx/volkswagen-truck-bus-mexico-presenta-su-nueva-linea-de-autobuses-euro-6-y-fortalece-alianzas-con-empresas-lideres-de-transporte-de-pasajeros-en-el-pais/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Apertura de una nueva agencia con ABG Camiones en Jalisco", "res": ["T2"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: activate Jalisco bus/truck market through ABG Camiones. BECCAR's contribution: ABG Camiones sells the chassis; BECCAR builds the body — and BECCAR is 25 minutes from ABG's location. Together they form a complete local solution for Jalisco fleet operators: VW/MAN mechanicals, BECCAR carrocería, local aftersales for both. No operator in western Mexico has to wait months for an imported body. That's a genuine competitive advantage ABG can lead with in every fleet conversation.", "src": "https://vwcamionesybuses.com.mx/volkswagen-truck-bus-continua-su-expansion-en-mexico-y-celebra-la-inauguracion-de-su-nuevo-distribuidor-en-guadalajara/"}, {"sector": "Distribuidores de vehículos comerciales", "co": "Zapata", "txt": "Implementar nuevas tecnologías para los clientes", "res": ["T6"], "decision": "BECCAR?=Y", "level": "", "reason": "Zapata's goal: differentiate by offering fleet operators access to new technologies that improve operational performance. BECCAR's contribution: Body technology IS fleet technology. BECCAR's Cab Forward design improves driver visibility and urban safety. Night Light improves external visibility at night. The E Urviabus LF brings zero-emission technology. When Zapata presents 'new technologies' to their 200+ forum operators, BECCAR's body innovations belong in that conversation — they improve the operator's metrics, not just the vehicle's spec sheet.", "src": "https://www.tyt.com.mx/nota/grupo-zapata-reitera-su-compromiso-con-el-exito-de-sus-clientes"}, {"sector": "Distribuidores de vehículos comerciales", "co": "Zapata", "txt": "Instalar la tecnología Gogrin de gas natural comprimido en motores diésel", "res": ["T6"], "decision": "BECCAR?=Y", "level": "", "reason": "Zapata's goal: offer CNG conversion as a fuel cost and emissions management solution for operators. BECCAR's contribution: CNG-converted buses need body configurations compatible with CNG tanks — tank placement, ventilation, safety clearances all change. BECCAR configures carrocerías for CNG-equipped chassis. Zapata's Gogrin offer becomes more complete: 'We convert the engine to CNG AND we recommend BECCAR for a body designed around CNG operation.' That's a full technical solution, not just a fuel system retrofit.", "src": "https://www.tyt.com.mx/nota/grupo-zapata-reitera-su-compromiso-con-el-exito-de-sus-clientes"}, {"sector": "Distribuidores de vehículos comerciales", "co": "Zapata", "txt": "Terminar nuevas instalaciones en Jalisco con 50 bahías de servicio", "res": ["T2"], "decision": "BECCAR?=Y", "level": "", "reason": "Zapata's goal: build the capacity to support a large and growing bus/truck fleet in Jalisco. BECCAR's contribution: 50 service bays serving bus operators means Zapata has a large installed base of Daimler bus customers in Jalisco. These same customers need carrocerías for their next fleet renewal. BECCAR becomes Zapata's recommended body partner — every Zapata service customer in Jalisco is a BECCAR body prospect, and BECCAR's proximity makes the body side of fleet renewal as seamless as the chassis side.", "src": "https://alianzaflotillera.com/zapata-mantiene-crecimiento-contra-viento-y-marea/"}, {"sector": "Distribuidores de vehículos comerciales", "co": "Zapata", "txt": "Abrir otra sucursal en Colima", "res": ["T2"], "decision": "BECCAR?=Y", "level": "", "reason": "Zapata's goal: expand into Colima to serve transport operators in the Pacific coast region. BECCAR's contribution: Colima has port activity, tourism and regional transit — all of which generate bus demand. BECCAR's product range (Urbus G4 for private transport, B340 for tourism, Urviabus for urban) covers Colima's buyer profile. Zapata's Colima entry creates a new market where BECCAR can be introduced as the recommended carrocería alongside Daimler chassis, without BECCAR needing to build its own sales presence there.", "src": "https://alianzaflotillera.com/zapata-mantiene-crecimiento-contra-viento-y-marea/"}, {"sector": "Distribuidores de vehículos comerciales", "co": "Zapata", "txt": "Construcción de una nueva agencia en Guadalajara", "res": ["T2"], "decision": "BECCAR?=Y", "level": "", "reason": "Zapata's goal: build the largest and most innovative Daimler dealership in the country to dominate the western Mexico commercial vehicle market. BECCAR's contribution: 'Largest and most innovative' means offering complete solutions, not just chassis. BECCAR — 25 minutes from Zapata's new Guadalajara location — becomes the body partner that completes Zapata's offer for Mercedes-Benz bus customers. Every Daimler bus chassis Zapata sells in Guadalajara can be immediately paired with a BECCAR carrocería, giving Zapata a complete vehicle offer that smaller dealers can't match.", "src": "https://alianzaflotillera.com/zapata-camiones-acelera-expansion-en-mexico/"}, {"sector": "Distribuidores de vehículos comerciales", "co": "Zapata", "txt": "Zapata Camiones León ofrece consultoría de flotas para mejorar la disponibilidad de los vehículos", "res": ["T1"], "decision": "BECCAR?=Y", "level": "", "reason": "Zapata's goal: deepen relationships with fleet operators through consultancy that improves uptime and profitability — building loyalty before the next procurement cycle. BECCAR's contribution: Corporativo Transporta just bought 30 buses with Torino MD bodies through Zapata León. The next procurement cycle is BECCAR's opening. Zapata's consultancy relationship with Corporativo Transporta means Zapata can introduce BECCAR before the next tender is written — 'for your next 30 buses, BECCAR will configure the body to your 12 routes, not to a standard spec.' Zapata adds value to its consultancy by bringing in a body expert. BECCAR wins the next sale.", "src": "https://www.tyt.com.mx/nota/zapata-camiones-leon-entrega-30-autobuses-mercedes-benz-a-corporativo-transporta"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Volkswagen Truck & Bus México presentó sus productos en Expo Grúas para fortalecer relaciones comerciales", "res": ["T1"], "decision": "BECCAR?=Y", "level": "", "reason": "VW explicitly attended with \"partner bodybuilders\" — BECCAR can position as a preferred bodybuilder partner for VW chassis in the crane/utility vehicle segment (Urbus G4 for personnel transport)", "src": "https://vwcamionesybuses.com.mx/volkswagen-truck-bus-mexico-un-aliado-espectacular-en-el-sector-de-gruas/"}, {"sector": "Manufactura automotriz", "co": "Volkswagen Camiones", "txt": "Lanzamiento de varios programas para sus marcas VW Camiones y Autobuses y MAN", "res": ["T7"], "decision": "BECCAR?=Y", "level": "", "reason": "VW's goal: deepen customer relationships with tailored after-sales and service programmes. BECCAR's contribution: Body-specific programmes are missing from VW's current offering. A 'BECCAR Body Care' module within VW's programme suite — covering body inspection, refurbishment and livery maintenance — gives fleet operators a reason to stay within the VW ecosystem for body needs, not just mechanical ones.", "src": "https://mantruckandbus.com.mx/volkswagen-truck-bus-mexico-celebra-20-anos-en-mexicoy-refuerza-su-compromiso-con-la-post-venta-presentadonueva-estrategia-que-involucra-el-nuevo-parts-logistic-center/"}], "totals": {}, "accts": [], "yflags": {}, "used": ["BE-RC001", "BE-RC002", "BE-RC003", "BE-RC004", "BE-RC005", "BE-RC006", "BE-RC007", "BE-RC008", "BE-RC009", "BE-RC010", "BE-RC011", "BE-RC012", "BE-RC013", "BE-RC014", "BE-RC015", "BE-RC016", "BE-RC017", "BE-RC018", "BE-RC019"], "tax": {"Volkswagen Camiones": [["Capital y capacidades", "Gestión estratégica de cartera e inversiones", "Proyectos de inversión en capacidad y expansión de presencia", "Construcción de nuevos centros logísticos y de distribución", 0, "Arranque de la primera fase de operaciones de su nuevo Centro Logístico de Refacciones", "Volkswagen Camiones|Arranque de la primera fase de operaciones de su nuevo Centro Logístico de Refacciones"], ["Capital y capacidades", "Gestión estratégica de cartera e inversiones", "Proyectos de inversión en capacidad y expansión de presencia", "Construcción de nuevos centros logísticos y de distribución", 0, "Arranque de la segunda fase de su Centro Logístico de Refacciones", "Volkswagen Camiones|Arranque de la segunda fase de su Centro Logístico de Refacciones"], ["Capital y capacidades", "Talento, habilidades y desarrollo de liderazgo", "Programas de desarrollo de habilidades estratégicas", "Programas de capacidades por función", 0, "Duplicar las horas de capacitación del personal técnico y comercial", "Volkswagen Camiones|Duplicar las horas de capacitación del personal técnico y comercial"], ["Capital y capacidades", "Capacidad organizacional y de gobernanza", "Modelo operativo y diseño organizacional", "Rediseño de la estructura del grupo y unidades de negocio", 0, "Cambios en la estructura directiva de Volkswagen Truck & Bus México", "Volkswagen Camiones|Cambios en la estructura directiva de Volkswagen Truck & Bus México"], ["Capital y capacidades", "Capacidad organizacional y de gobernanza", "Modelo operativo y diseño organizacional", "Rediseño de la estructura del grupo y unidades de negocio", 0, "Sentar las bases para el crecimiento de las divisiones de Refacciones y Servicio", "Volkswagen Camiones|Sentar las bases para el crecimiento de las divisiones de Refacciones y Servicio"], ["Capital y capacidades", "Capacidad organizacional y de gobernanza", "Modelo operativo y diseño organizacional", "Rediseño de la estructura del grupo y unidades de negocio", 0, "Creación de dos nuevos departamentos para reforzar la presencia con clientes", "Volkswagen Camiones|Creación de dos nuevos departamentos para reforzar la presencia con clientes"], ["Capital y capacidades", "Gestión estratégica de cartera e inversiones", "Proyectos de inversión en capacidad y expansión de presencia", "Ampliación de capacidad de instalaciones existentes", 0, "Apertura de un área dedicada a Volkswagen en el Centro Logístico de Refacciones", "Volkswagen Camiones|Apertura de un área dedicada a Volkswagen en el Centro Logístico de Refacciones"], ["Capital y capacidades", "Capacidad organizacional y de gobernanza", "Modelo operativo y diseño organizacional", "Rediseño de la estructura del grupo y unidades de negocio", 0, "Reorganizar operaciones y reubicar el área de posventa dentro de la planta", "Volkswagen Camiones|Reorganizar operaciones y reubicar el área de posventa dentro de la planta"], ["Capital y capacidades", "Gestión estratégica de cartera e inversiones", "Proyectos de inversión en capacidad y expansión de presencia", "Ampliación de capacidad de instalaciones existentes", 0, "Rediseñar el interior de la planta y ampliar la línea de producción", "Volkswagen Camiones|Rediseñar el interior de la planta y ampliar la línea de producción"], ["Capital y capacidades", "Capacidad organizacional y de gobernanza", "Modelo operativo y diseño organizacional", "Rediseño de la estructura del grupo y unidades de negocio", 0, "Trasladar todo el negocio de refacciones a Querétaro para controlar inventario y distribución", "Volkswagen Camiones|Trasladar todo el negocio de refacciones a Querétaro para controlar inventario y distribución"], ["Capital y capacidades", "Gestión estratégica de cartera e inversiones", "Proyectos de inversión en capacidad y expansión de presencia", "Ampliación de capacidad de instalaciones existentes", 0, "Ampliación que cuadruplicó la plantilla y elevó la capacidad de 150 a 800 líneas diarias", "Volkswagen Camiones|Ampliación que cuadruplicó la plantilla y elevó la capacidad de 150 a 800 líneas diarias"], ["Capital y capacidades", "Plataformas de innovación e I+D", "Plataformas de I+D y centros de investigación compartidos", "Programas y hojas de ruta de investigación", 0, "Lanzamiento del Delivery 6.170 con nueva transmisión automatizada", "Volkswagen Camiones|Lanzamiento del Delivery 6.170 con nueva transmisión automatizada"], ["Capital y capacidades", "Plataformas de innovación e I+D", "Plataformas de I+D y centros de investigación compartidos", "Programas y hojas de ruta de investigación", 0, "Inversión de unos 200 millones de dólares en el desarrollo de la nueva gama Euro VI", "Volkswagen Camiones|Inversión de unos 200 millones de dólares en el desarrollo de la nueva gama Euro VI"], ["Capital y capacidades", "Talento, habilidades y desarrollo de liderazgo", "Programas de desarrollo de habilidades estratégicas", "Estrategia de aprendizaje y diseño de academia", 0, "Volkswagen duplicó el tamaño de su centro de capacitación, la Volkswagen Academy", "Volkswagen Camiones|Volkswagen duplicó el tamaño de su centro de capacitación, la Volkswagen Academy"], ["Capital y capacidades", "Talento, habilidades y desarrollo de liderazgo", "Programas de desarrollo de habilidades estratégicas", "Estrategia de aprendizaje y diseño de academia", 0, "Inversión en un nuevo Centro de Capacitación para ampliar los cursos para distribuidores", "Volkswagen Camiones|Inversión en un nuevo Centro de Capacitación para ampliar los cursos para distribuidores"], ["ESG", "Social", "Comunidad y desarrollo local", "Alianzas de educación, habilidades y empleabilidad", 0, "Graduación de la primera generación del programa Formare", "Volkswagen Camiones|Graduación de la primera generación del programa Formare"], ["ESG", "Gobernanza", "Gobernanza ESG y supervisión del consejo", "Integración de ESG en la estrategia y gestión de riesgos", 0, "Adhesión al Pacto Mundial de la ONU para impulsar iniciativas de sostenibilidad", "Volkswagen Camiones|Adhesión al Pacto Mundial de la ONU para impulsar iniciativas de sostenibilidad"], ["ESG", "Social", "Comunidad y desarrollo local", "Alianzas de educación, habilidades y empleabilidad", 0, "Graduación de 18 nuevas conductoras de autobús del programa Mujeres Transformando", "Volkswagen Camiones|Graduación de 18 nuevas conductoras de autobús del programa Mujeres Transformando"], ["ESG", "Social", "Comunidad y desarrollo local", "Alianzas de educación, habilidades y empleabilidad", 0, "Ampliar el programa de formación profesional para jóvenes en México", "Volkswagen Camiones|Ampliar el programa de formación profesional para jóvenes en México"], ["ESG", "Social", "Comunidad y desarrollo local", "Alianzas de educación, habilidades y empleabilidad", 0, "Proyecto Mujeres Transformando para formar conductoras en México", "Volkswagen Camiones|Proyecto Mujeres Transformando para formar conductoras en México"], ["Crecimiento de ingresos", "Retención y lealtad de clientes", "Calidad del servicio y resolución de incidencias", "Rediseño de procesos de servicio", 0, "Despliegue de su plan integral de servicio para apoyar la posventa", "Volkswagen Camiones|Despliegue de su plan integral de servicio para apoyar la posventa"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mejora de la oferta y servicios de valor agregado", "Complementos de garantía y mantenimiento", 0, "Implementar soluciones integrales como Service Solutions y Assist para asistencia en sitio", "Volkswagen Camiones|Implementar soluciones integrales como Service Solutions y Assist para asistencia en sitio"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Fuerza de ventas y desarrollo de cuentas", "Programas de captación de cuentas clave", 1, "VWTB reafirmó el acuerdo con AGRÚAS para dar a sus socios condiciones exclusivas de compra de vehículos", "Volkswagen Camiones|VWTB reafirmó el acuerdo con AGRÚAS para dar a sus socios condiciones exclusivas de compra de vehículos"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Fuerza de ventas y desarrollo de cuentas", "Herramientas de habilitación comercial para captación", 1, "Pruebas con un Volksbus 9.180 OD para modernizar el transporte público", "Volkswagen Camiones|Pruebas con un Volksbus 9.180 OD para modernizar el transporte público"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Fuerza de ventas y desarrollo de cuentas", "Herramientas de habilitación comercial para captación", 1, "Programa de vehículos demostradores para que las empresas prueben y validen su desempeño", "Volkswagen Camiones|Programa de vehículos demostradores para que las empresas prueben y validen su desempeño"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mezcla de productos y portafolio para crecer ingresos", "Reequilibrio del portafolio orientado al crecimiento", 0, "Presentación de la segunda generación de la familia Delivery", "Volkswagen Camiones|Presentación de la segunda generación de la familia Delivery"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mejora de la oferta y servicios de valor agregado", "Complementos de garantía y mantenimiento", 0, "Volks Care, un concepto para dar a los clientes más disponibilidad, eficiencia, productividad y rentabilidad", "Volkswagen Camiones|Volks Care, un concepto para dar a los clientes más disponibilidad, eficiencia, productividad y rentabilidad"], ["Crecimiento de ingresos", "Diversificación de líneas de negocio", "Diversificación a sectores adyacentes", "Lanzamiento de un negocio adyacente nuevo", 0, "Apertura de TRATON Financial Services México", "Volkswagen Camiones|Apertura de TRATON Financial Services México"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mezcla de productos y portafolio para crecer ingresos", "Reequilibrio del portafolio orientado al crecimiento", 0, "Lanzamiento de los nuevos Volkswagen Constellation 20.480 4×2 y 26.480 6×4 ‘Gigantes’", "Volkswagen Camiones|Lanzamiento de los nuevos Volkswagen Constellation 20.480 4×2 y 26.480 6×4 ‘Gigantes’"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mezcla de productos y portafolio para crecer ingresos", "Reequilibrio del portafolio orientado al crecimiento", 0, "Lanzamiento del nuevo Delivery 6.170 Euro 6 y del MAN TGX Extra Pesado", "Volkswagen Camiones|Lanzamiento del nuevo Delivery 6.170 Euro 6 y del MAN TGX Extra Pesado"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Segmentación de clientes y mercados", "Propuesta de valor para nuevos segmentos", 0, "Lanzamiento del e-Volksbus, el primer autobús eléctrico de Volkswagen en el país", "Volkswagen Camiones|Lanzamiento del e-Volksbus, el primer autobús eléctrico de Volkswagen en el país"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Segmentación de clientes y mercados", "Propuesta de valor para nuevos segmentos", 1, "Reforzar su posición con los chasis RR2 y RR4 en el segmento de larga distancia", "Volkswagen Camiones|Reforzar su posición con los chasis RR2 y RR4 en el segmento de larga distancia"], ["Crecimiento de ingresos", "Retención y lealtad de clientes", "Calidad del servicio y resolución de incidencias", "Rediseño de procesos de servicio", 1, "Implementar una estrategia de soluciones integrales de movilidad", "Volkswagen Camiones|Implementar una estrategia de soluciones integrales de movilidad"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Promociones y crecimiento basado en ofertas", "Ofertas de lanzamiento e introducción", 0, "Lanzamiento de TRATON Financial Services para impulsar la venta de vehículos Euro VI", "Volkswagen Camiones|Lanzamiento de TRATON Financial Services para impulsar la venta de vehículos Euro VI"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Promociones y crecimiento basado en ofertas", "Ofertas de lanzamiento e introducción", 1, "Lanzamiento del programa ‘Mi Primer Euro VI’ para facilitar la transición a la nueva tecnología", "Volkswagen Camiones|Lanzamiento del programa ‘Mi Primer Euro VI’ para facilitar la transición a la nueva tecnología"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Expansión de la red de distribuidores", 1, "Apertura de una nueva agencia en Villahermosa, Tabasco", "Volkswagen Camiones|Apertura de una nueva agencia en Villahermosa, Tabasco"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Expansión de la red de distribuidores", 1, "Alianza estratégica con Grupo TERSA para una nueva agencia en Tijuana", "Volkswagen Camiones|Alianza estratégica con Grupo TERSA para una nueva agencia en Tijuana"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Expansión de la red de distribuidores", 1, "Volkswagen Truck & Bus México abre su nueva agencia en Chihuahua", "Volkswagen Camiones|Volkswagen Truck & Bus México abre su nueva agencia en Chihuahua"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Expansión de la red de distribuidores", 1, "Apertura de un nuevo hub estratégico de venta de camiones y autobuses en el occidente de México", "Volkswagen Camiones|Apertura de un nuevo hub estratégico de venta de camiones y autobuses en el occidente de México"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Fuerza de ventas y desarrollo de cuentas", "Programas de captación de cuentas clave", 1, "Firma de convenios de colaboración con AGRÚAS para la renovación de flotas", "Volkswagen Camiones|Firma de convenios de colaboración con AGRÚAS para la renovación de flotas"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Expansión de la red de distribuidores", 1, "Ampliación de la red de distribuidores en 2024", "Volkswagen Camiones|Ampliación de la red de distribuidores en 2024"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mezcla de productos y portafolio para crecer ingresos", "Reequilibrio del portafolio orientado al crecimiento", 0, "Lanzamiento de su gama de productos Euro 6", "Volkswagen Camiones|Lanzamiento de su gama de productos Euro 6"], ["Crecimiento de ingresos", "Retención y lealtad de clientes", "Calidad del servicio y resolución de incidencias", "Rediseño de procesos de servicio", 0, "Fortalecimiento de su estrategia de posventa", "Volkswagen Camiones|Fortalecimiento de su estrategia de posventa"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mejora de la oferta y servicios de valor agregado", "Complementos de garantía y mantenimiento", 0, "Programa Volks Care que combina telemetría, contratos de mantenimiento, garantías y herramientas digitales", "Volkswagen Camiones|Programa Volks Care que combina telemetría, contratos de mantenimiento, garantías y herramientas digitales"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Fuerza de ventas y desarrollo de cuentas", "Rediseño del modelo de cobertura comercial", 1, "Fortalecer la estructura comercial y la integración de producción local en México", "Volkswagen Camiones|Fortalecer la estructura comercial y la integración de producción local en México"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Segmentación de clientes y mercados", "Propuesta de valor para nuevos segmentos", 0, "Lanzamiento de producto Euro 6 y entrada al mercado de tractocamiones", "Volkswagen Camiones|Lanzamiento de producto Euro 6 y entrada al mercado de tractocamiones"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Mezcla de productos y portafolio para crecer ingresos", "Reequilibrio del portafolio orientado al crecimiento", 1, "Presentación de una nueva generación de autobuses Euro 6", "Volkswagen Camiones|Presentación de una nueva generación de autobuses Euro 6"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Segmentación de clientes y mercados", "Propuesta de valor para nuevos segmentos", 1, "Reforzar su presencia estratégica en el segmento de autocares interurbanos premium", "Volkswagen Camiones|Reforzar su presencia estratégica en el segmento de autocares interurbanos premium"], ["Crecimiento de ingresos", "Retención y lealtad de clientes", "Calidad del servicio y resolución de incidencias", "Rediseño de procesos de servicio", 1, "Enfoque integral que combina producto, posventa, soluciones financieras y capacitación", "Volkswagen Camiones|Enfoque integral que combina producto, posventa, soluciones financieras y capacitación"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mezcla de productos y portafolio para crecer ingresos", "Reequilibrio del portafolio orientado al crecimiento", 0, "Introducción de una nueva generación de productos Euro 6", "Volkswagen Camiones|Introducción de una nueva generación de productos Euro 6"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mezcla de productos y portafolio para crecer ingresos", "Reequilibrio del portafolio orientado al crecimiento", 1, "Lanzamiento del nuevo Volksbus 15.210 SCD Euro 6", "Volkswagen Camiones|Lanzamiento del nuevo Volksbus 15.210 SCD Euro 6"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mezcla de productos y portafolio para crecer ingresos", "Reequilibrio del portafolio orientado al crecimiento", 0, "Ampliación del portafolio de productos de Volkswagen Truck & Bus México", "Volkswagen Camiones|Ampliación del portafolio de productos de Volkswagen Truck & Bus México"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mezcla de productos y portafolio para crecer ingresos", "Reequilibrio del portafolio orientado al crecimiento", 1, "Lanzamiento de la nueva gama de autobuses Euro 6 con motores eficientes y postratamiento", "Volkswagen Camiones|Lanzamiento de la nueva gama de autobuses Euro 6 con motores eficientes y postratamiento"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Segmentación de clientes y mercados", "Propuesta de valor para nuevos segmentos", 0, "Entrega de las primeras seis unidades del camión e-Delivery de 14 toneladas", "Volkswagen Camiones|Entrega de las primeras seis unidades del camión e-Delivery de 14 toneladas"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Expansión de la red de distribuidores", 1, "Apertura de una nueva agencia con ABG Camiones en Jalisco", "Volkswagen Camiones|Apertura de una nueva agencia con ABG Camiones en Jalisco"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Fuerza de ventas y desarrollo de cuentas", "Herramientas de habilitación comercial para captación", 0, "Lanzamiento del Truck & Road ESPECTACULAR Roadshow", "Volkswagen Camiones|Lanzamiento del Truck & Road ESPECTACULAR Roadshow"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Marketing y activación de marca", "Campañas de marca y notoriedad", 1, "Volkswagen Truck & Bus México presentó sus productos en Expo Grúas para fortalecer relaciones comerciales", "Volkswagen Camiones|Volkswagen Truck & Bus México presentó sus productos en Expo Grúas para fortalecer relaciones comerciales"], ["Crecimiento de ingresos", "Retención y lealtad de clientes", "Calidad del servicio y resolución de incidencias", "Rediseño de procesos de servicio", 0, "Consolidación de un servicio de posventa sólido", "Volkswagen Camiones|Consolidación de un servicio de posventa sólido"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mejora de la oferta y servicios de valor agregado", "Complementos de garantía y mantenimiento", 1, "Lanzamiento de varios programas para sus marcas VW Camiones y Autobuses y MAN", "Volkswagen Camiones|Lanzamiento de varios programas para sus marcas VW Camiones y Autobuses y MAN"]], "Zapata": [["ESG", "Social", "Bienestar, inclusión y estándares laborales", "Salario justo, condiciones laborales y voz del empleado", 0, "Implementar una política de salario digno para todos sus empleados", "Zapata|Implementar una política de salario digno para todos sus empleados"], ["ESG", "Social", "Bienestar, inclusión y estándares laborales", "Salario justo, condiciones laborales y voz del empleado", 0, "Extender la política de ingreso digno a todos los empleados", "Zapata|Extender la política de ingreso digno a todos los empleados"], ["ESG", "Ambiental", "Clima y transición energética", "Electricidad renovable y energía baja en carbono", 0, "Instalación de 238 paneles solares para abastecer toda la agencia", "Zapata|Instalación de 238 paneles solares para abastecer toda la agencia"], ["ESG", "Ambiental", "Clima y transición energética", "Programas de eficiencia energética y reducción de demanda", 0, "Instalación de un nuevo sistema de iluminación en el edificio", "Zapata|Instalación de un nuevo sistema de iluminación en el edificio"], ["ESG", "Ambiental", "Eficiencia de recursos y circularidad", "Programas de eficiencia, reúso y conservación de agua", 0, "Sistema de captación de agua de lluvia con cisternas", "Zapata|Sistema de captación de agua de lluvia con cisternas"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Ampliación y remodelación de sucursales existentes", 0, "Triplicar la capacidad del taller de la sucursal Tlalnepantla", "Zapata|Triplicar la capacidad del taller de la sucursal Tlalnepantla"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Fuerza de ventas y desarrollo de cuentas", "Herramientas de habilitación comercial para captación", 1, "Implementar nuevas tecnologías para los clientes", "Zapata|Implementar nuevas tecnologías para los clientes"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mejora de la oferta y servicios de valor agregado", "Complementos de garantía y mantenimiento", 1, "Instalar la tecnología Gogrin de gas natural comprimido en motores diésel", "Zapata|Instalar la tecnología Gogrin de gas natural comprimido en motores diésel"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Apertura de nuevas sucursales", 1, "Terminar nuevas instalaciones en Jalisco con 50 bahías de servicio", "Zapata|Terminar nuevas instalaciones en Jalisco con 50 bahías de servicio"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Apertura de nuevas sucursales", 1, "Abrir otra sucursal en Colima", "Zapata|Abrir otra sucursal en Colima"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales digitales", "Lanzamiento o expansión de comercio electrónico propio", 0, "Lanzamiento de la tienda de refacciones Pits2Go", "Zapata|Lanzamiento de la tienda de refacciones Pits2Go"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Apertura de nuevas sucursales", 1, "Construcción de una nueva agencia en Guadalajara", "Zapata|Construcción de una nueva agencia en Guadalajara"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Lanzamiento de nuevos formatos físicos", 0, "Apertura de un Centro de Refacciones y Servicio (CARS)", "Zapata|Apertura de un Centro de Refacciones y Servicio (CARS)"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Ampliación y remodelación de sucursales existentes", 0, "Reubicación de puntos de servicio y construcción de nuevas instalaciones", "Zapata|Reubicación de puntos de servicio y construcción de nuevas instalaciones"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mejora de la oferta y servicios de valor agregado", "Complementos digitales, de datos y analítica", 0, "Implementación del tablero de indicadores Business Insights", "Zapata|Implementación del tablero de indicadores Business Insights"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Ampliación y remodelación de sucursales existentes", 0, "Apertura de nuevas instalaciones sustentables tras una remodelación", "Zapata|Apertura de nuevas instalaciones sustentables tras una remodelación"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales digitales", "Lanzamiento o expansión de comercio electrónico propio", 0, "Lanzamiento de ‘Pits to go’, plataforma automatizada de comercio electrónico de refacciones", "Zapata|Lanzamiento de ‘Pits to go’, plataforma automatizada de comercio electrónico de refacciones"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Ampliación y remodelación de sucursales existentes", 0, "Remodelación de las instalaciones de Zapata Camiones Tlalnepantla", "Zapata|Remodelación de las instalaciones de Zapata Camiones Tlalnepantla"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Fuerza de ventas y desarrollo de cuentas", "Programas de captación de cuentas clave", 0, "Inversión en herramientas e infraestructura de servicio para mantenimiento", "Zapata|Inversión en herramientas e infraestructura de servicio para mantenimiento"], ["Crecimiento de ingresos", "Expansión de canales y mercados", "Expansión de canales y formatos físicos", "Lanzamiento de nuevos formatos físicos", 0, "Lanzamiento de talleres móviles y unidades de reparto", "Zapata|Lanzamiento de talleres móviles y unidades de reparto"], ["Crecimiento de ingresos", "Monetización y precios para el crecimiento", "Mejora de la oferta y servicios de valor agregado", "Complementos de servicios profesionales y asesoría", 1, "Zapata Camiones León ofrece consultoría de flotas para mejorar la disponibilidad de los vehículos", "Zapata|Zapata Camiones León ofrece consultoría de flotas para mejorar la disponibilidad de los vehículos"], ["Crecimiento de ingresos", "Captación y expansión de clientes", "Marketing y activación de marca", "Patrocinios y alianzas para alcance de marca", 0, "Zapata Racing Team pone a Ivanna Richards al volante en la categoría Gran Turismo México", "Zapata|Zapata Racing Team pone a Ivanna Richards al volante en la categoría Gran Turismo México"], ["Mitigación de riesgos", "Riesgo operativo y de cadena de suministro", "Gestión del riesgo de calidad y confiabilidad del producto", "Implementación de sistemas de gestión de calidad y normas", 0, "Lograr la certificación Evolución Elite en sus nueve agencias", "Zapata|Lograr la certificación Evolución Elite en sus nueve agencias"], ["Mitigación de riesgos", "Riesgo regulatorio, legal y de cumplimiento", "Diseño y ejecución de programas de cumplimiento regulatorio", "Mapeo de obligaciones regulatorias y evaluación de riesgos", 0, "Compra y resguardo de inventario para gestionar el cambio de norma de emisiones", "Zapata|Compra y resguardo de inventario para gestionar el cambio de norma de emisiones"], ["Mitigación de riesgos", "Riesgo operativo y de cadena de suministro", "Gestión del riesgo de calidad y confiabilidad del producto", "Implementación de sistemas de gestión de calidad y normas", 0, "Implementación de la certificación Evolución Elite", "Zapata|Implementación de la certificación Evolución Elite"], ["Mitigación de riesgos", "Riesgo operativo y de cadena de suministro", "Gestión del riesgo de calidad y confiabilidad del producto", "Implementación de sistemas de gestión de calidad y normas", 0, "Conclusión de la certificación Evolución Elite de Daimler Truck México", "Zapata|Conclusión de la certificación Evolución Elite de Daimler Truck México"], ["Mitigación de riesgos", "Riesgo operativo y de cadena de suministro", "Gestión del riesgo de calidad y confiabilidad del producto", "Implementación de sistemas de gestión de calidad y normas", 0, "Obtuvo la certificación Evolución Elite de Daimler Truck México", "Zapata|Obtuvo la certificación Evolución Elite de Daimler Truck México"], ["Mitigación de riesgos", "Riesgo operativo y de cadena de suministro", "Gestión del riesgo de calidad y confiabilidad del producto", "Implementación de sistemas de gestión de calidad y normas", 0, "Obtuvo la certificación Evolución Elite de Daimler Truck México", "Zapata|Obtuvo la certificación Evolución Elite de Daimler Truck México"]]}, "dmi": {"Volkswagen Camiones|Expansión de canales y formatos físicos": {"groups": [["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"], ["Frank Gundlach", "Director de Mercados Internacionales (incl. México), VW Caminhões e Ônibus"], ["Rafael Santos Magalhães", "Director de Operaciones, VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Fuerza de ventas y desarrollo de cuentas": {"groups": [["C-Suite / VP", [["Ricardo Alouche", "VP de Ventas, Marketing y Posventa, VW Caminhões e Ônibus"]]], ["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Mezcla de productos y portafolio para crecer ingresos": {"groups": [["C-Suite / VP", [["Ricardo Alouche", "VP de Ventas, Marketing y Posventa, VW Caminhões e Ônibus"]]], ["Director", [["Frank Gundlach", "Director de Mercados Internacionales (incl. México), VW Caminhões e Ônibus"], ["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Segmentación de clientes y mercados": {"groups": [["C-Suite / VP", [["Ricardo Alouche", "VP de Ventas, Marketing y Posventa, VW Caminhões e Ônibus"]]], ["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Calidad del servicio y resolución de incidencias": {"groups": [["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"], ["Rafael Santos Magalhães", "Director de Operaciones, VW Truck & Bus México"]]], ["Gerente", [["Álvaro Rodríguez", "Gerente de Calidad (nombrado en 2023; confirmar que sigue en el puesto)"]]]]}, "Volkswagen Camiones|Promociones y crecimiento basado en ofertas": {"groups": [["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"], ["Rafael Santos Magalhães", "Director de Operaciones (también CFO), VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Marketing y activación de marca": {"groups": [["C-Suite / VP", [["Ricardo Alouche", "VP de Ventas, Marketing y Posventa, VW Caminhões e Ônibus"]]], ["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"]]]]}, "Volkswagen Camiones|Mejora de la oferta y servicios de valor agregado": {"groups": [["C-Suite / VP", [["Roberto Cortés", "Presidente y CEO, VW Caminhões e Ônibus"]]], ["Director", [["Giovanni Juárez", "Director de Ventas, Marketing y Posventa, VW Truck & Bus México"], ["Rafael Santos Magalhães", "Director de Operaciones, VW Truck & Bus México"]]]]}}};
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const RC=Object.fromEntries(D.rc.map(x=>[x.id,x])),SOL=Object.fromEntries(D.sols.map(x=>[x.id,x])),RES=Object.fromEntries(D.res.map(x=>[x.id,x]));
+const F=[];
+D.inits.forEach((i,ix)=>{const rs=i.res.filter(r=>RES[r]);rs.forEach(r=>{const R=RES[r],wr=1/rs.length;R.sols.forEach(s=>{const S=SOL[s];if(!S)return;
+  const items=S.caps.concat(S.res),w=wr/R.sols.length/items.length;items.forEach(k=>F.push({rc:k,res:r,sol:s,sec:i.sector,co:i.co,ini:ix,w}));});});});
+const sum=(a,f)=>a.reduce((t,x)=>t+f(x),0);
+const TOTAL=D.inits.length;
+const SECS=[...new Set(D.inits.map(i=>i.sector))].map(s=>({s,n:D.inits.filter(i=>i.sector===s).length})).sort((a,b)=>b.n-a.n);
+const MAX=SECS[0].n;
+const tot=id=>sum(F.filter(f=>f.rc===id),f=>f.w);
+const caps=D.used.filter(id=>RC[id].type==='capability').sort((a,b)=>tot(b)-tot(a));
+const ress=D.used.filter(id=>RC[id].type==='resource').sort((a,b)=>tot(b)-tot(a));
+const ON=new Set();let STATE=0,BUSY=false,OPEN=null,KIND=null;
+const CHK='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const optsEl=document.getElementById('opts'),secsEl=document.getElementById('secs'),rayg=document.getElementById('rayg'),app=document.getElementById('app');
+optsEl.innerHTML=[['Competencias',caps],['Recursos',ress]].map(g=>'<div class="col"><h2>'+g[0]+'</h2>'+g[1].map(id=>
+  '<button class="op" role="checkbox" aria-checked="false" data-id="'+id+'"><span class="dot">'+CHK+'</span><span>'+esc(RC[id].name)+'</span><span class="pin"></span></button>').join('')+'</div>').join('');
+secsEl.innerHTML='<p class="shint" id="shint">Haz clic en una solución para ver dónde tiene demanda</p>'+SECS.map(x=>'<div class="sec" data-sec="'+esc(x.s)+'"><div class="row"><span class="nm">'+esc(x.s)+'</span><span class="pc">0%</span></div><div class="tr"><i></i></div><span class="links"><button class="lk" data-k="co">Empresas <span aria-hidden="true">›</span></button></span><div class="res"></div></div>').join('')+
+  '<p class="sum" id="sum"></p><button class="reset" id="reset">Empezar de nuevo</button>';
+const sumEl=document.getElementById('sum');secsEl.classList.add('nosel');document.body.classList.add('m4');
+const SOLIDS=D.sols.map(x=>x.id).filter(id=>F.some(f=>f.sol===id)).sort((a,b)=>sum(F.filter(f=>f.sol===b),f=>f.w)-sum(F.filter(f=>f.sol===a),f=>f.w));
+const solL=document.getElementById('sollist');
+solL.innerHTML=SOLIDS.map(id=>'<div class="sl" data-sol="'+id+'"><span class="pl"></span><span class="sn">'+esc(SOL[id].name)+'</span><span class="pr"></span></div>').join('');
+const SMAX=Math.max(...SOLIDS.map(id=>sum(F.filter(f=>f.sol===id),f=>f.w)),0.0001);
+solL.addEventListener('click',e=>{const el=e.target.closest('.sl');if(!el||STATE!==1||BUSY)return;const id=el.dataset.sol,had=SELSOL.size;
+  if(SELRES.length){SELRES=[];HOVER=false;document.body.classList.remove('rsel','rshow');optsEl.querySelectorAll('.op.lit').forEach(o=>o.classList.remove('lit'));pills();}
+  SELSOL.has(id)?SELSOL.delete(id):SELSOL.add(id);el.classList.toggle('hot',SELSOL.has(id));
+  el.animate([{transform:'scale(1)'},{transform:'scale(.97)'},{transform:'scale(1)'}],{duration:300,easing:'ease-out'});
+  syncSecs(had);update(true);});
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const SELSOL=new Set(),MODES=new Set(['4']);let SELRES=[];const M1=()=>SELRES.length>0&&document.body.classList.contains('rshow');
+const onF=f=>ON.has(f.rc)&&SELSOL.has(f.sol)&&(!SELRES.length||SELRES.includes(f.res));
+const resL=document.getElementById('reslist');
+function syncSecs(had){const hint=document.getElementById('shint');
+  if(!had&&SELSOL.size){hint.classList.add('gone');secsEl.classList.remove('nosel');secsEl.querySelectorAll('.sec').forEach((x,k)=>setTimeout(()=>x.classList.add('in'),reduce?0:k*110));}
+  if(had&&!SELSOL.size){closeAll();secsEl.querySelectorAll('.sec').forEach(x=>x.classList.remove('in'));secsEl.classList.add('nosel');hint.classList.remove('gone');closeStory();}}
+function setModes(){['1','2','3','4'].forEach(m=>document.body.classList.toggle('m'+m,MODES.has(m)));
+  document.querySelectorAll('#mbar button').forEach(b=>b.setAttribute('aria-pressed',MODES.has(b.dataset.m)));
+  if(!MODES.has('4')&&SELRES.length){SELRES=[];document.body.classList.remove('rsel');pills();}
+  if(!MODES.has('3'))closeStory();}
+document.getElementById('mbar').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const m=b.dataset.m;MODES.has(m)?MODES.delete(m):MODES.add(m);setModes();if(OPEN)fillRes(secsEl.querySelector('.sec.open'));update(false);setTimeout(()=>rays(null),60);});
+// mode 4: start from the result
+const RESIDS=D.res.map(r=>r.id).filter(id=>F.some(f=>f.res===id));
+function pills(){document.getElementById('rpills').innerHTML=RESIDS.map(id=>'<span class="rp'+(SELRES.includes(id)?' on':'')+'" data-r="'+id+'" draggable="'+(!SELRES.includes(id))+'"><i></i>'+esc(RES[id].name)+'</span>').join('');}
+pills();
+function setRes(add,rem){if(STATE!==1||BUSY)return;document.body.classList.remove('rdrag');DRAG=null;
+  if(add&&!SELRES.includes(add))SELRES.push(add);if(rem)SELRES=SELRES.filter(x=>x!==rem);
+  DRAGGING=false;HOVER=true;rshow();const had=SELSOL.size;SELSOL.clear();SELRES.forEach(r=>RES[r].sols.forEach(x=>{if(SOLIDS.includes(x))SELSOL.add(x);}));
+  document.body.classList.toggle('rsel',SELRES.length>0);
+  const lit=new Set(F.filter(f=>SELRES.includes(f.res)).map(f=>f.rc));optsEl.querySelectorAll('.op').forEach(o=>o.classList.toggle('lit',lit.has(o.dataset.id)));
+  solL.querySelectorAll('.sl').forEach(el=>el.classList.toggle('hot',SELSOL.has(el.dataset.sol)));pills();syncSecs(had);update(true);}
+const rpE=document.getElementById('rpills'),resX=document.getElementById('resx');let DRAG=null;
+let HOVER=false,DRAGGING=false;
+function rshow(){const on=HOVER||DRAGGING||SELRES.length>0;if(document.body.classList.contains('rshow')===on)return;document.body.classList.toggle('rshow',on);requestAnimationFrame(()=>rays(null));setTimeout(()=>rays(null),120);}
+rpE.addEventListener('dragstart',e=>{const b=e.target.closest('.rp');if(!b||b.classList.contains('on')){e.preventDefault();return;}DRAG=b.dataset.r;b.classList.add('drag');setTimeout(()=>{DRAGGING=true;rshow();document.body.classList.add('rdrag');},0);e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',DRAG);});
+rpE.addEventListener('dragend',e=>{const b=e.target.closest('.rp');if(b)b.classList.remove('drag');DRAG=null;resX.classList.remove('over');document.body.classList.remove('rdrag');DRAGGING=false;rshow();});
+resX.addEventListener('dragover',e=>{if(!DRAG&&!e.dataTransfer.types.includes('text/plain'))return;e.preventDefault();e.dataTransfer.dropEffect='move';resX.classList.add('over');});
+resX.addEventListener('dragleave',e=>{if(!resX.contains(e.relatedTarget))resX.classList.remove('over');});
+resX.addEventListener('drop',e=>{e.preventDefault();resX.classList.remove('over');const id=e.dataTransfer.getData('text/plain')||DRAG;DRAG=null;if(RES[id])setRes(id);});
+resX.addEventListener('click',e=>{const x=e.target.closest('.rx');if(x)setRes(null,x.closest('.rc').dataset.res);});
+const rmE=document.getElementById('rmini');
+const rpkE=document.getElementById('rpick');
+rpkE.addEventListener('mouseenter',()=>{if(STATE!==1)return;HOVER=true;rshow();});
+document.addEventListener('mousemove',e=>{if(!HOVER||DRAGGING)return;if(!document.body.classList.contains('rshow'))return;
+  const inR=(r,pad)=>e.clientX>r.left-pad&&e.clientX<r.right+pad&&e.clientY>r.top-pad&&e.clientY<r.bottom+pad;
+  const rr=resX.getBoundingClientRect(),pk=rpkE.getBoundingClientRect();
+  // keep open over the top panel, the results column, and the corridor between them
+  const corridor=e.clientX>rr.left-28&&e.clientX<rr.right+28&&e.clientY>pk.top&&e.clientY<rr.top;
+  const inside=inR(pk,6)||inR({left:rr.left,right:rr.right,top:rr.top,bottom:Math.max(rr.bottom,rr.top+160)},28)||corridor;
+  if(!inside){HOVER=false;rshow();}});
+rmE.addEventListener('dragover',e=>{e.preventDefault();rmE.classList.add('over');});
+rmE.addEventListener('dragleave',()=>rmE.classList.remove('over'));
+rmE.addEventListener('drop',e=>{e.preventDefault();rmE.classList.remove('over');const id=e.dataTransfer.getData('text/plain')||DRAG;DRAG=null;if(RES[id])setRes(id);});
+// mode 3: story panel
+const story=document.getElementById('story');
+function closeStory(){if(story.hidden)return;story.classList.remove('on');setTimeout(()=>{story.hidden=true;},350);}
+function openStory(kind,name){const fl=F.filter(f=>onF(f)&&(kind==='sec'?f.sec===name:f.co===name));if(!fl.length)return;
+  const rm={};fl.forEach(f=>{(rm[f.res]=rm[f.res]||{w:0,ini:new Set()}).w+=f.w;rm[f.res].ini.add(f.ini);});
+  const rs=Object.entries(rm).sort((a,b)=>b[1].w-a[1].w);
+  const sn=[...SELSOL].map(id=>'<i>'+esc(SOL[id].name)+'</i>').join(', ');
+  document.getElementById('stbody').innerHTML='<h3>Para '+esc(name)+'</h3><p class="stsub">'+sn+(SELSOL.size>1?' logran':' logra')+':</p><div class="stgrid">'+
+    rs.map(([id,v])=>'<div class="stc"><b>'+esc(RES[id].name)+'</b><span class="ms">Se mide por '+esc(RES[id].measures.toLowerCase())+'</span><ul>'+
+      [...v.ini].map(ix=>'<li>'+esc(D.inits[ix].txt)+(kind==='sec'?'<small>'+esc(D.inits[ix].co)+'</small>':'')+'</li>').join('')+'</ul></div>').join('')+'</div>';
+  story.hidden=false;requestAnimationFrame(()=>story.classList.add('on'));story.scrollTop=0;}
+document.getElementById('stx').addEventListener('click',closeStory);
+
+const served=s=>sum(F.filter(f=>f.sec===s&&onF(f)),f=>f.w);
+
+// FLIP helper: animate elements from their old to new positions after a layout change
+function flip(els,change,dur){const first=els.map(e=>e.getBoundingClientRect());change();
+  els.forEach((e,i)=>{const l=e.getBoundingClientRect(),f=first[i],dx=f.left-l.left,dy=f.top-l.top,sx=f.width/l.width,sy=f.height/l.height;
+    if(!dx&&!dy&&Math.abs(sx-1)<.01)return;
+    e.animate([{transformOrigin:'0 0',transform:'translate('+dx+'px,'+dy+'px) scale('+sx+','+sy+')'},{transformOrigin:'0 0',transform:'none'}],{duration:dur,easing:'cubic-bezier(.2,.8,.2,1)'});});}
+
+async function enter(){ // centred question → split view, with the logo turning in between
+  BUSY=true;const veil=document.getElementById('veil'),vm=document.getElementById('vmark');
+  if(!reduce){veil.classList.add('on');await wait(380);
+    for(let i=0;i<4;i++){await vm.animate([{transform:'rotate('+(i*45)+'deg)'},{transform:'rotate('+((i+1)*45)+'deg)'}],{duration:340,easing:'cubic-bezier(.45,.05,.25,1)',fill:'forwards'}).finished;await wait(70);}
+    await wait(160);}
+  const movers=[document.getElementById('q')].concat([...optsEl.querySelectorAll('.col h2,.op')]);
+  flip(movers,()=>{document.body.classList.remove('s0');document.body.classList.add('s1');},reduce?1:850);
+  veil.classList.remove('on');vm.getAnimations().forEach(a=>a.cancel());
+  STATE=1;await wait(reduce?0:420);
+  solL.querySelectorAll('.sl').forEach((el,k)=>setTimeout(()=>el.classList.add('in'),reduce?0:k*80));
+  document.getElementById('shint').classList.add('in');
+  setTimeout(()=>{update(true);sumEl.classList.add('in');},reduce?0:380);
+  BUSY=false;}
+async function leave(){BUSY=true;OPEN=null;KIND=null;secsEl.querySelectorAll('.lk').forEach(l=>l.setAttribute('aria-expanded','false'));secsEl.querySelectorAll('.sec').forEach(el=>el.classList.remove('in','open'));solL.querySelectorAll('.sl').forEach(el=>el.classList.remove('in','hot'));SELSOL.clear();SELRES=[];HOVER=false;DRAGGING=false;document.body.classList.remove('rsel','rshow');optsEl.querySelectorAll('.op.lit').forEach(o=>o.classList.remove('lit'));pills();closeStory();resL.innerHTML='';resL.dataset.k='';secsEl.classList.add('nosel');document.getElementById('shint').classList.remove('in','gone');sumEl.classList.remove('in');rayg.innerHTML='';document.getElementById('blabels').innerHTML='';document.getElementById('blabels').dataset.k='';
+  await wait(reduce?0:300);
+  const movers=[document.getElementById('q')].concat([...optsEl.querySelectorAll('.col h2,.op')]);
+  flip(movers,()=>{document.body.classList.remove('s1');document.body.classList.add('s0');},reduce?1:800);
+  STATE=0;BUSY=false;cta();}
+function update(drawAll,newId){
+  let total=0,best=null,bv=0;
+  secsEl.querySelectorAll('.sec').forEach(el=>{const s=el.dataset.sec,v=served(s);total+=v;if(v>bv){bv=v;best=s;}
+    el.classList.toggle('zero',v<0.005);const pc=v/TOTAL*100;el.querySelector('.pc').textContent=v<0.005?'0%':pc<1?'<1%':Math.round(pc)+'%';
+    el.querySelector('.tr i').style.width=(v/MAX*100)+'%';if(OPEN===s){if(v<0.005)closeAll();else{fillRes(el);growBars();}}});
+  solL.querySelectorAll('.sl').forEach(el=>{const id=el.dataset.sol,v=sum(F.filter(f=>f.sol===id&&ON.has(f.rc)&&(!OPEN||f.sec===OPEN)),f=>f.w);
+    el.classList.toggle('zero',v<0.005);let x=el.querySelector('.sres');
+    if(MODES.has('2')&&SELSOL.has(id)){const rm={};F.filter(f=>f.sol===id&&ON.has(f.rc)&&(!SELRES.length||SELRES.includes(f.res))&&(!OPEN||f.sec===OPEN)).forEach(f=>rm[f.res]=(rm[f.res]||0)+f.w);
+      const h='<em>Resultado para el cliente</em>'+Object.entries(rm).sort((a,b)=>b[1]-a[1]).map(r=>'<div>'+esc(RES[r[0]].name)+'</div>').join('');
+      if(!x){x=document.createElement('div');x.className='sres';el.insertBefore(x,el.querySelector('.pr'));}if(x.innerHTML!==h)x.innerHTML=h;}
+    else if(x)x.remove();});
+  document.querySelector('#rmini .rmc').textContent=SELRES.length?SELRES.length:'';
+  {const rs=SELRES.map(r=>[r,1]);
+    const h=!SELRES.length?'<div class="rdz"><div><b>+</b>Arrastra aquí lo que quiere lograr el cliente</div></div>':
+      rs.map(r=>'<div class="rc sel'+'" data-res="'+r[0]+'"><span class="pl"></span><button class="rx" aria-label="Quitar">×</button><b>'+esc(RES[r[0]].name)+'</b><span>Se mide por '+esc(RES[r[0]].measures.toLowerCase())+'</span><span class="pr"></span></div>').join('')+(SELRES.length&&SELRES.length<RESIDS.length?'<div class="rdz more"><div><b>+</b>Suelta aquí otro resultado</div></div>':'');
+    if(resL.dataset.k!==h){resL.innerHTML=h;resL.dataset.k=h;}}
+  sumEl.innerHTML='';
+  requestAnimationFrame(()=>rays(drawAll?'*':newId));}
+function rays(animate){
+  const ar=app.getBoundingClientRect();let h='';const sr={};
+  secsEl.querySelectorAll('.sec').forEach(el=>{const nm=el.querySelector('.nm').getBoundingClientRect();sr[el.dataset.sec]={x:nm.left-ar.left-14,y:nm.top-ar.top+nm.height/2};});
+  const sp={};solL.querySelectorAll('.sl').forEach(el=>{const L=el.querySelector('.pl').getBoundingClientRect(),Rr=el.querySelector('.pr').getBoundingClientRect();sp[el.dataset.sol]={lx:L.left-ar.left+3,ly:L.top-ar.top+3,rx:Rr.left-ar.left+3,ry:Rr.top-ar.top+3};});
+  const cur=(x0,y0,x1,y1,k)=>{const mx=x0+(x1-x0)*k;return 'M'+x0+','+y0+' C'+mx+','+y0+' '+mx+','+y1+' '+x1+','+y1;};
+  const dim=s=>OPEN&&OPEN!==s;
+  // 1) ticked R&C -> solutions
+  ON.forEach(id=>{const p=optsEl.querySelector('[data-id="'+id+'"] .pin');if(!p)return;const r=p.getBoundingClientRect(),x0=r.left-ar.left+r.width/2+6,y0=r.top-ar.top+r.height/2;
+    SOLIDS.forEach(sid=>{const w=sum(F.filter(f=>f.rc===id&&f.sol===sid&&(!OPEN||f.sec===OPEN)),f=>f.w);if(w<0.005)return;const t=sp[sid];if(!t)return;
+      h+='<path class="ray'+(animate==='*'||animate===id?' new':'')+'" d="'+cur(x0,y0,t.lx,t.ly,.5)+'" stroke="url(#rg)" stroke-width="'+Math.max(.8,Math.min(6,w*.9)).toFixed(2)+'" stroke-opacity="'+(SELSOL.size&&!SELSOL.has(sid)?.13:.6)+'"/>';});});
+  const rp={};if(M1())resL.querySelectorAll('.rc').forEach(el=>{const L=el.querySelector('.pl').getBoundingClientRect(),Rr=el.querySelector('.pr').getBoundingClientRect();rp[el.dataset.res]={lx:L.left-ar.left+3,ly:L.top-ar.top+3,rx:Rr.left-ar.left+3,ry:Rr.top-ar.top+3};});
+  if(M1()){
+    SOLIDS.forEach(sid=>{if(!SELSOL.has(sid))return;const t0=sp[sid];if(!t0)return;
+      Object.keys(rp).forEach(rid=>{const w=sum(F.filter(f=>f.sol===sid&&f.res===rid&&onF(f)&&(!OPEN||f.sec===OPEN)),f=>f.w);if(w<0.005)return;const t=rp[rid];
+        h+='<path class="ray'+(animate?' new':'')+'" d="'+cur(t0.rx,t0.ry,t.lx,t.ly,.5)+'" stroke="url(#rg)" stroke-width="'+Math.max(.9,Math.min(7,w*.9)).toFixed(2)+'" stroke-opacity=".7"/>';});});
+    Object.keys(rp).forEach(rid=>{const t0=rp[rid];
+      SECS.forEach(x=>{const w=sum(F.filter(f=>f.res===rid&&f.sec===x.s&&onF(f)),f=>f.w);if(w<0.005)return;const t=sr[x.s];
+        h+='<path class="ray'+(animate?' new':'')+'" d="'+cur(t0.rx,t0.ry,t.x,t.y,.5)+'" stroke="url(#rg)" stroke-width="'+Math.max(.9,Math.min(8,w*.9)).toFixed(2)+'" stroke-opacity="'+(dim(x.s)?.12:.7)+'"/>';});});}
+  // 2) solutions -> sectors (from the ticked R&C only)
+  if(!M1())SOLIDS.forEach(sid=>{const t0=sp[sid];if(!t0)return;
+    SECS.forEach(x=>{if(!SELSOL.has(sid))return;const w=sum(F.filter(f=>f.sol===sid&&f.sec===x.s&&onF(f)),f=>f.w);if(w<0.005)return;const t=sr[x.s];
+      h+='<path class="ray'+(animate?' new':'')+'" d="'+cur(t0.rx,t0.ry,t.x,t.y,.5)+'" stroke="url(#rg)" stroke-width="'+Math.max(.9,Math.min(8,w*.9)).toFixed(2)+'" stroke-opacity="'+(dim(x.s)?.12:.7)+'"/>';});});
+  // 3) lighter lines from solutions to each company in an open Companies list
+  if(OPEN&&KIND==='co'){const cr={};secsEl.querySelectorAll('.sec.open .cos li').forEach(li=>{const n=li.querySelector('.cn').getBoundingClientRect();cr[li.dataset.co]={x:n.left-ar.left-12,y:n.top-ar.top+n.height/2};});
+    const SRC=M1()?Object.keys(rp).map(k=>[k,rp[k],f=>f.res===k]):SOLIDS.filter(x=>SELSOL.has(x)).map(k=>[k,sp[k],f=>f.sol===k]);
+    SRC.forEach(([sid,t0,mt])=>{if(!t0)return;
+      Object.keys(cr).forEach(co=>{const w=sum(F.filter(f=>mt(f)&&f.sec===OPEN&&f.co===co&&onF(f)),f=>f.w);if(w<0.005)return;const t=cr[co];
+        h+='<path class="ray co'+(animate==='co'?' new':'')+'" d="'+cur(t0.rx,t0.ry,t.x,t.y,.55)+'" stroke="url(#rgl)" stroke-width="'+Math.max(.7,Math.min(4,w*1.4)).toFixed(2)+'" stroke-opacity=".5"/>';});});}
+  rayg.innerHTML=h;
+  if(!reduce)rayg.querySelectorAll('.ray.new').forEach((p,k)=>{const L=p.getTotalLength();p.animate([{strokeDasharray:L,strokeDashoffset:L},{strokeDasharray:L,strokeDashoffset:0}],{duration:1100,delay:Math.min(k*40,400),easing:'cubic-bezier(.2,.8,.2,1)',fill:'backwards'});});}
+function fillRes(el){const s=el.dataset.sec,rm={},cm={};
+  F.filter(f=>f.sec===s&&onF(f)).forEach(f=>{rm[f.res]=(rm[f.res]||0)+f.w;cm[f.co]=(cm[f.co]||0)+f.w;});
+  const nxt={};D.accts.forEach(a=>nxt[a.co]=a.next);
+  const cs=Object.entries(cm).sort((a,b)=>b[1]-a[1]),rs=Object.entries(rm).sort((a,b)=>b[1]-a[1]);
+  el.querySelector('.res').innerHTML=!rs.length?'':KIND==='co'?
+    '<ul class="cos">'+cs.map((x,ix)=>{const pc=x[1]/TOTAL*100;return '<li data-co="'+esc(x[0])+'"><span class="cn">'+esc(x[0])+(MODES.has('3')?'<button class="stb" data-co="'+esc(x[0])+'">Resultados</button>':'')+'<em>'+(pc<1?'<1%':Math.round(pc)+'%')+'</em></span>'+''+'<span class="cb"><i data-w="'+(x[1]/MAX*100).toFixed(2)+'"></i></span></li>'}).join('')+'</ul>':
+    '<ul>'+rs.map(x=>{const R=RES[x[0]];return '<li>'+esc(R.name)+'<span>Se mide por '+esc(R.measures.split(';')[0].toLowerCase())+'</span></li>'}).join('')+'</ul>';}
+function cta(){const n=ON.size,all=n===caps.length+ress.length;
+  document.getElementById('cta-n').textContent=n?n+(n===1?' seleccionado':' seleccionados'):'Selecciona uno o más';
+  document.getElementById('go').disabled=!n;document.getElementById('cta').classList.toggle('ready',n>0);
+  document.getElementById('selall').textContent=all?'Quitar todo':'Seleccionar todo';}
+document.getElementById('selall').addEventListener('click',()=>{const all=ON.size===caps.length+ress.length;
+  caps.concat(ress).forEach(id=>all?ON.delete(id):ON.add(id));
+  optsEl.querySelectorAll('.op').forEach(b=>b.setAttribute('aria-checked',ON.has(b.dataset.id)));cta();});
+document.getElementById('go').addEventListener('click',()=>{if(ON.size&&!BUSY)enter();});
+optsEl.addEventListener('click',async e=>{const b=e.target.closest('.op');if(!b||BUSY)return;const id=b.dataset.id,on=!ON.has(id);
+  on?ON.add(id):ON.delete(id);b.setAttribute('aria-checked',on);
+  b.querySelector('.dot').animate([{transform:'scale(1)'},{transform:'scale(.82)'},{transform:'scale(1.1)'},{transform:'scale(1)'}],{duration:380,easing:'ease-out'});
+  if(STATE===0){cta();return;}
+  if(STATE===1&&!ON.size){leave();return;}
+  if(STATE===1)update(false,on?id:null);});
+function growBars(){requestAnimationFrame(()=>requestAnimationFrame(()=>secsEl.querySelectorAll('.cos .cb i').forEach(i=>i.style.width=Math.max(1.5,+i.dataset.w*2.2)+'%')));}
+function closeAll(){OPEN=null;KIND=null;secsEl.querySelectorAll('.sec').forEach(x=>{x.classList.remove('open');x.querySelectorAll('.lk').forEach(l=>l.setAttribute('aria-expanded','false'));});}
+function openList(el,kind){const s=el.dataset.sec,same=OPEN===s&&KIND===kind;closeAll();
+  if(!same){OPEN=s;KIND=kind;el.classList.add('open');el.querySelector('.lk[data-k="'+kind+'"]').setAttribute('aria-expanded','true');fillRes(el);
+    el.querySelector('.res').animate([{opacity:0},{opacity:1}],{duration:350});}
+  growBars();update(false);
+  rays(null);setTimeout(()=>rays(KIND==='co'?'co':null),720);}
+secsEl.addEventListener('click',e=>{if(e.target.closest('#reset')){ON.clear();optsEl.querySelectorAll('.op').forEach(b=>b.setAttribute('aria-checked','false'));leave();return;}
+  const lk=e.target.closest('.lk');if(lk)openList(lk.closest('.sec'),lk.dataset.k);});
+
+// ================= company popup: radial drill-down L1 → L4 =================
+const TAX=D.tax||{};
+// Decision makers per company and Level 3 category: key 'Company|Level 3 name' (or '*|Level 3 name' for all companies)
+const DMI=D.dmi||{};
+function dmFor(co,l3){return DMI[co+'|'+l3]||DMI['*|'+l3]||null;}
+const RP={co:null,path:[],yn:'Y',view:'drill'};
+const pop=document.getElementById('rpop'),rsvg=document.getElementById('rsvg');
+function rows(co){return (TAX[co]||[]).filter(r=>r[0]&&r[0]!=='Out of Scope'&&(RP.yn==='ALL'||(RP.yn==='Y'?r[4]:!r[4])));}
+function subline(){const co=RP.co,rs=rows(co),sec=(D.inits.find(i=>i.co===co)||{}).sector||(D.accts.find(a=>a.co===co)||{}).sector||'';
+  const nI=new Set(rs.map(r=>r[6]||r[5])).size;
+  document.getElementById('rp-sub').innerHTML=esc(sec);}
+function openCompany(co){RP.co=co;RP.path=[];RP.yn='Y';RP.view='drill';setViewBtns();document.getElementById('rp-yn').value='Y';
+  document.getElementById('rp-co').textContent=co;subline();
+  rsvg.classList.remove('no','all');pop.querySelector('.rpc').classList.remove('no');pop.hidden=false;requestAnimationFrame(()=>pop.classList.add('on'));drawRadial(true);
+  document.getElementById('rp-x').focus({preventScroll:true});}
+function closeCompany(){hideDM();pop.classList.remove('on');setTimeout(()=>{pop.hidden=true;},350);}
+function wrapLines(s,n){const w=s.split(' '),out=[];let cur='';w.forEach(x=>{if((cur+' '+x).trim().length>n&&cur){out.push(cur);cur=x;}else cur=(cur+' '+x).trim();});if(cur)out.push(cur);return out;}
+function setViewBtns(){document.querySelectorAll('#rp-views button').forEach(b=>b.setAttribute('aria-selected',b.dataset.v===String(RP.view)));}
+function render(){if(RP.view==='drill')drawRadial(false);else if(RP.view==='tree')drawTree();else drawFlat(+RP.view);}
+function fan(items,center,clickable,onPick,hoverCard){
+  const W=760,H=560,cx=200,cy=H/2,R0=120,LMAX=170,mx=Math.max(...items.map(x=>x[1].n),1);
+  const n=items.length,span=Math.min(150,Math.max(46,n*24)),a0=-span/2,step=n>1?span/(n-1):0;
+  const slot=n>1?(span/(n-1))*Math.PI/180*R0:60,thick=Math.max(7,Math.min(46,slot*.72));
+  let h='<g class="spokes">';
+  items.forEach((x,i)=>{const ang=(n>1?a0+i*step:0)*Math.PI/180,bx=cx+Math.cos(ang)*R0,by=cy+Math.sin(ang)*R0;
+    h+='<path d="M'+cx+','+cy+' C'+(cx+40)+','+cy+' '+(bx-50*Math.cos(ang))+','+(by-50*Math.sin(ang))+' '+bx+','+by+'" class="spk"/>';});
+  h+='</g><circle cx="'+cx+'" cy="'+cy+'" r="6" class="ctr"/>';
+  const cl=wrapLines(center,22);h+='<text x="'+(cx-14)+'" y="'+(cy+5-(cl.length-1)*8)+'" text-anchor="end" class="ctl">'+cl.map((l,i)=>'<tspan x="'+(cx-14)+'" dy="'+(i?17:0)+'">'+esc(l)+'</tspan>').join('')+'</text>';
+  items.forEach((x,i)=>{const deg=n>1?a0+i*step:0,len=Math.max(10,x[1].n/mx*LMAX),ang=deg*Math.PI/180;
+    const lx=cx+Math.cos(ang)*(R0+len+12),ly=cy+Math.sin(ang)*(R0+len+12),ls=wrapLines(x[0],26),off=-(ls.length-1)*8.5;
+    h+='<g class="rb" data-k="'+esc(x[0])+'"'+(clickable?' tabindex="0" role="button"':'')+' aria-label="'+esc(x[0])+', '+x[1].n+'" transform="rotate('+deg+' '+cx+' '+cy+')" style="--d:'+(i*45)+'ms">'+
+      '<rect class="bar" x="'+(cx+R0)+'" y="'+(cy-thick/2)+'" width="'+len+'" height="'+thick+'" rx="3"/></g>'+
+      '<text class="rl" x="'+lx+'" y="'+(ly+off)+'" transform="rotate('+deg+' '+lx+' '+ly+')" dominant-baseline="middle" style="--d:'+(i*45+180)+'ms" data-k="'+esc(x[0])+'">'+
+      ls.map((l,j)=>'<tspan x="'+lx+'" dy="'+(j?17:0)+'">'+esc(l)+'</tspan>').join('')+'</text>';});
+  rsvg.setAttribute('viewBox','0 0 '+W+' '+H);rsvg.innerHTML=h;
+  try{const bb=rsvg.getBBox(),vw=Math.max(bb.width+60,720),vh=Math.max(bb.height+50,440),ox=bb.x+bb.width/2-vw/2,oy=bb.y+bb.height/2-vh/2;
+    rsvg.setAttribute('viewBox',ox.toFixed(1)+' '+oy.toFixed(1)+' '+vw.toFixed(1)+' '+vh.toFixed(1));}catch(_){}
+  rsvg.classList.toggle('leaf',!clickable);
+  rsvg.querySelectorAll('.rb,.rl').forEach(el=>{if(clickable){el.addEventListener('click',()=>{if(DRAGGED){DRAGGED=false;return;}onPick(el.dataset.k);});
+      el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onPick(el.dataset.k);}});}
+    el.addEventListener('mouseenter',()=>rsvg.querySelectorAll('[data-k="'+CSS.escape(el.dataset.k)+'"]').forEach(x=>x.classList.add('hov')));
+    el.addEventListener('mouseleave',()=>rsvg.querySelectorAll('.hov').forEach(x=>x.classList.remove('hov')));
+    if(hoverCard){el.classList.add('drag');el.addEventListener('pointerdown',e=>startBarDrag(e,el.dataset.k));}});}
+// ---- drag a Level 3 bar onto the decision-maker placeholder ----
+let DRAGGED=false;
+function startBarDrag(e,key){if(e.button!==0)return;const sx=e.clientX,sy=e.clientY;let g=null;
+  const mv=ev=>{if(!g){if(Math.abs(ev.clientX-sx)+Math.abs(ev.clientY-sy)<6)return;
+      g=document.createElement('div');g.className='dmghost';g.textContent=key;document.body.appendChild(g);DRAGGED=true;document.body.classList.add('dragging-bar');
+      const z=document.getElementById('dz');if(z)z.classList.add('ready');}
+    g.style.transform='translate('+(ev.clientX+12)+'px,'+(ev.clientY+10)+'px)';
+    const z=document.getElementById('dz');if(z){const r=z.getBoundingClientRect();z.classList.toggle('over',ev.clientX>r.left&&ev.clientX<r.right&&ev.clientY>r.top&&ev.clientY<r.bottom);}};
+  const up=ev=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);document.body.classList.remove('dragging-bar');
+    if(!g)return;const z=document.getElementById('dz');let hit=false;
+    if(z){const r=z.getBoundingClientRect();hit=ev.clientX>r.left&&ev.clientX<r.right&&ev.clientY>r.top&&ev.clientY<r.bottom;z.classList.remove('ready','over');
+      if(hit){const cx=r.left+r.width/2,cy=r.top+r.height/2;g.animate([{transform:g.style.transform,opacity:1},{transform:'translate('+cx+'px,'+cy+'px) scale(.4)',opacity:0}],{duration:320,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>g.remove();showDM(null,key);}}
+    if(!hit)g.animate([{opacity:1},{opacity:0}],{duration:200}).onfinish=()=>g.remove();
+    setTimeout(()=>{DRAGGED=false;},0);};
+  addEventListener('pointermove',mv);addEventListener('pointerup',up);}
+const dmc=document.getElementById('dmcard');
+const dmp=document.getElementById('dmpanel');let DMK=null;
+function dzHTML(compact,label){return '<div class="dz'+(compact?' sm':'')+'" id="dz" aria-label="Suelta aquí una barra de nivel 3">'+(label?esc(label):'Ver tomadores de decisión')+'</div>';}
+function showDM(e,l3){DMK=l3;const d=dmFor(RP.co,l3);
+  rsvg.querySelectorAll('.rb').forEach(x=>x.classList.toggle('sel',x.dataset.k===l3));
+  let h=dzHTML(true,l3)+'<div class="dmres"><div class="dpe">Tomadores de decisión · '+esc(RP.co||'')+'</div><button class="dmclr" id="dmclr">Quitar</button>';
+  if(d&&d.groups){h+=d.groups.map(g=>'<section><div class="dpl">'+esc(g[0])+'<span>'+g[1].length+'</span></div><ul>'+g[1].map(p=>'<li><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></li>').join('')+'</ul></section>').join('');}
+  else h+='<p class="dpn">Los tomadores de decisión de esta área están por agregarse.</p>';
+  dmp.innerHTML=h+'</div>';dmp.scrollTop=0;dmp.querySelector('.dmres').animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:380,easing:'cubic-bezier(.2,.8,.2,1)'});}
+function moveDM(){}
+function dmMode(on){pop.querySelector('.rpc').classList.toggle('withdm',on);DMK=null;rsvg.querySelectorAll('.rb.sel').forEach(x=>x.classList.remove('sel'));dmp.innerHTML=on?dzHTML(false):'';}
+dmp.addEventListener('click',e=>{
+  if(e.target.closest('#dmopp')){const sec=(D.inits.find(i=>i.co===RP.co)||{}).sector||(D.accts.find(a=>a.co===RP.co)||{}).sector||'';openOpp(sec);return;}
+  if(e.target.closest('#dmclr')){DMK=null;rsvg.querySelectorAll('.rb.sel').forEach(x=>x.classList.remove('sel'));dmp.innerHTML=dzHTML(false);return;}
+});
+function hideDM(){}
+function drawFlat(k){const rs=rows(RP.co),list=document.getElementById('rp-list');list.hidden=true;rsvg.style.display='';
+  document.getElementById('rp-crumb').innerHTML='<span class="cur">Nivel '+k+'</span>';document.getElementById('rp-lvl').textContent='Nivel '+k;
+  pop.querySelector('.key span').textContent=k===3?'Haz clic en una barra para profundizar, o arrástrala a “Ver tomadores de decisión”':k<4?'Haz clic en una barra para profundizar':'';
+  if(!rs.length){dmMode(false);rsvg.innerHTML='<text x="380" y="220" text-anchor="middle" class="emp">No hay iniciativas'+(RP.yn==='Y'?' abordables':RP.yn==='N'?' no abordables':'')+'.</text>';rsvg.setAttribute('viewBox','0 0 760 440');return;}
+  const g={};rs.forEach(r=>{const key=r[k-1]||'Sin especificar';g[key]=g[key]||{n:0,anc:r.slice(0,k)};g[key].n++;});
+  const items=Object.entries(g).sort((a,b)=>b[1].n-a[1].n);
+  fan(items,RP.co,k<4,key=>{RP.path=g[key].anc.slice(0,k);RP.view='drill';setViewBtns();drawRadial(false);},k===3);dmMode(k===3);}
+function drawTree(){const rs=rows(RP.co),list=document.getElementById('rp-list');rsvg.style.display='none';rsvg.innerHTML='';
+  document.getElementById('rp-crumb').innerHTML='<span class="cur">Full breakdown, Level 1 to Level 4</span>';document.getElementById('rp-lvl').textContent='Todos los niveles';
+  pop.querySelector('.key span').textContent='';
+  if(!rs.length){list.innerHTML='<p class="emp2">No hay iniciativas'+(RP.yn==='Y'?' abordables':RP.yn==='N'?' no abordables':'')+'.</p>';list.hidden=false;return;}
+  const T={};rs.forEach(r=>{let n=T;for(let i=0;i<4;i++){const k=r[i]||'Sin especificar';n[k]=n[k]||{c:0,k:{}};n[k].c++;n=n[k].k;}});
+  const mx=Math.max(...Object.values(T).map(x=>x.c));
+  const node=(o,d)=>'<ul class="tr'+d+'">'+Object.entries(o).sort((a,b)=>b[1].c-a[1].c).map(([k,v])=>'<li><div class="tw"><span class="tl"><em>L'+(d+1)+'</em>'+esc(k)+'</span><span class="tc">'+v.c+'</span></div><span class="tb"><i style="width:'+(v.c/mx*100)+'%"></i></span>'+(d<3?node(v.k,d+1):'')+'</li>').join('')+'</ul>';
+  list.innerHTML='<div class="tree">'+node(T,0)+'</div>';list.hidden=false;}
+function drawRadial(first){
+  const rs=rows(RP.co).filter(r=>RP.path.every((p,i)=>r[i]===p)),lvl=RP.path.length;
+  const crumbs=['Todos los niveles'].concat(RP.path);
+  document.getElementById('rp-crumb').innerHTML=crumbs.map((c,i)=>i===crumbs.length-1?'<span class="cur">'+esc(c)+'</span>':'<button data-up="'+i+'">'+esc(c)+'</button>').join('<i>›</i>');
+  document.getElementById('rp-lvl').textContent=lvl<4?'Nivel '+(lvl+1):'Initiatives';
+  pop.querySelector('.key span').textContent=lvl===2?'Haz clic en una barra para profundizar, o arrástrala a “Ver tomadores de decisión”':lvl<3?'Haz clic en una barra para bajar un nivel':'';
+  const list=document.getElementById('rp-list');
+  if(!rs.length){dmMode(false);rsvg.innerHTML='<text x="380" y="220" text-anchor="middle" class="emp">No hay iniciativas'+(RP.yn==='Y'?' abordables':RP.yn==='N'?' no abordables':'')+' aquí.</text>';rsvg.setAttribute('viewBox','0 0 760 440');return;}
+  if(lvl===4){rsvg.innerHTML='';rsvg.style.display='none';list.innerHTML='<ul>'+rs.map(r=>'<li>'+esc(r[5])+'</li>').join('')+'</ul>';list.hidden=false;return;}
+  list.hidden=true;rsvg.style.display='';
+  const g={};rs.forEach(r=>{const k=r[lvl]||'Sin especificar';g[k]=g[k]||{n:0};g[k].n++;});
+  const items=Object.entries(g).sort((a,b)=>b[1].n-a[1].n);
+  fan(items,RP.path.length?RP.path[RP.path.length-1]:RP.co,lvl<3,key=>{RP.path.push(key);hideDM();drawRadial(false);},lvl===2);dmMode(lvl===2);
+}
+document.getElementById('rp-yn').addEventListener('change',e=>{RP.yn=e.target.value;
+  while(RP.path.length&&!rows(RP.co).some(r=>RP.path.every((p,i)=>r[i]===p)))RP.path.pop();
+  rsvg.classList.toggle('no',RP.yn==='N');rsvg.classList.toggle('all',RP.yn==='ALL');pop.querySelector('.rpc').classList.toggle('no',RP.yn!=='Y');subline();render();});
+document.getElementById('rp-views').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;RP.view=b.dataset.v==='drill'||b.dataset.v==='tree'?b.dataset.v:+b.dataset.v;
+  if(RP.view==='drill')RP.path=[];setViewBtns();render();});
+document.getElementById('rp-crumb').addEventListener('click',e=>{const b=e.target.closest('[data-up]');if(!b)return;RP.path=RP.path.slice(0,+b.dataset.up);RP.view='drill';setViewBtns();drawRadial(false);});
+document.getElementById('rp-x').addEventListener('click',closeCompany);
+pop.querySelector('.rpbg').addEventListener('click',closeCompany);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!pop.hidden){if(RP.view!=='drill'){RP.view='drill';RP.path=[];setViewBtns();drawRadial(false);}else if(RP.path.length){RP.path.pop();drawRadial(false);}else closeCompany();}});
+secsEl.addEventListener('click',e=>{const st=e.target.closest('.stb');if(st){e.stopPropagation();openStory('co',st.dataset.co);return;}
+  const nm=e.target.closest('.sec .row .nm');if(nm&&MODES.has('3')){openStory('sec',nm.closest('.sec').dataset.sec);return;}
+  const li=e.target.closest('.cos li');if(li)openCompany(li.dataset.co);});
+
+
+// ---- "Ver todas las oportunidades": open the accounts page for that sector ----
+const opp=document.getElementById('opp'),oppF=document.getElementById('oppframe');let oppLoaded=false,oppSec='';
+function oppSelect(){try{const d=oppF.contentDocument;const b=d.querySelector('#sect button[data-s="'+(window.CSS?CSS.escape(oppSec):oppSec)+'"]');if(b)b.click();oppF.contentWindow.scrollTo(0,0);}catch(_){}}
+function openOpp(sec){oppSec=sec;
+  if(!oppLoaded){const bin=atob(document.getElementById('oppData').textContent.trim()),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+    oppF.srcdoc=new TextDecoder('utf-8').decode(u);oppF.addEventListener('load',()=>{oppLoaded=true;oppSelect();},{once:true});}
+  else oppSelect();
+  opp.hidden=false;requestAnimationFrame(()=>opp.classList.add('on'));document.body.style.overflow='hidden';}
+function closeOpp(){opp.classList.remove('on');document.body.style.overflow='';setTimeout(()=>{opp.hidden=true;},450);}
+document.getElementById('oppback').addEventListener('click',closeOpp);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!opp.hidden&&pop.hidden)closeOpp();});
+secsEl.addEventListener('click',e=>{const b=e.target.closest('.allopp');if(b){e.stopPropagation();openOpp(b.dataset.sec);}});
+
+let rq=0;const rr=()=>{if(STATE!==1||rq)return;rq=requestAnimationFrame(()=>{rq=0;rays(null);});};
+addEventListener('scroll',rr,{passive:true});addEventListener('resize',rr);
+</script>
+</body>
+</html>
